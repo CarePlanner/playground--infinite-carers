@@ -4,6 +4,9 @@ export default {
     fontSize: 13,
     color: '#333333'
   },
+  Span: {
+
+  },
   A: {
     color: '#256990',
     textDecoration: 'none',
