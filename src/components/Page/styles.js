@@ -4,6 +4,8 @@ export default {
   },
   childrenContainer: {
     padding: 15,
-    fontFamily: 'Droid Sans'
+    fontFamily: 'Droid Sans',
+    fontSize: 13,
+    color: '#333333'
   }
 };
