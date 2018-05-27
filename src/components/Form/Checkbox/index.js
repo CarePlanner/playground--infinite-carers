@@ -5,28 +5,29 @@ import { Span } from '../../Text';
 
 class Checkbox extends React.Component {
 
-  constructor(args) {
-    super(args);
-    this.state = {
-      checked: args.checked,
-      label: args.label
-    }
-  }
-
-  toggle() {
-    this.setState({
-      checked: !this.state.checked
-    })
-  }
-
   render() {
 
-    const { label, checked } = this.state;
+    const { label, children, value, onClick, selectedValues, style } = this.props;
+
+    let isSelected = false;
+
+    if(selectedValues) {
+      if(typeof selectedValues === 'array' && value) {
+        isSelected = selectedValues.indexOf(value) > -1
+      } else {
+        isSelected = !!selectedValues;
+      }
+    }
 
     return (
-      <div style={styles.container} onClick={this.toggle.bind(this)}>
-        <input type={"checkbox"} style={styles.checkbox} checked={checked} />
-        <Span style={styles.label}>{label}</Span>
+      <div style={ style }>
+        <span onClick={ (onClick) ? onClick.bind(this, value || !isSelected) : null }>
+          <input type={"checkbox"} style={styles.checkbox} checked={isSelected} onChange={ null } />
+          <Span style={styles.label}>
+            {label}
+            {children}
+          </Span>
+        </span>
       </div>
     );
   }

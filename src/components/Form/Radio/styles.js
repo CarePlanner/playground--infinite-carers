@@ -1,13 +1,10 @@
 export default {
-  container: {
-    marginTop: 15,
-    marginBottom: 15
-  },
   label: {
     fontSize: 13,
     cursor: 'pointer',
     color: '#256990',
-    marginLeft: 5
+    marginLeft: 5,
+    userSelect: 'none'
   },
   radio: {
     cursor: 'pointer'

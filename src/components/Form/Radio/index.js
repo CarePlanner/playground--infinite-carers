@@ -5,28 +5,19 @@ import { Span } from '../../Text';
 
 class Radio extends React.Component {
 
-  constructor(args) {
-    super(args);
-    this.state = {
-      checked: args.checked,
-      label: args.label
-    }
-  }
-
-  toggle() {
-    this.setState({
-      checked: !this.state.checked
-    })
-  }
-
   render() {
 
-    const { label, checked } = this.state;
+    const { label, children, name, value, onClick, selectedValue, style } = this.props;
 
     return (
-      <div style={styles.container} onClick={this.toggle.bind(this)}>
-        <input type={"radio"} style={styles.radio} checked={checked} />
-        <Span style={styles.label}>{label}</Span>
+      <div style={ style }>
+        <span onClick={ (onClick) ? onClick.bind(this, value) : null }>
+          <input type={"radio"} style={styles.radio} checked={ value === selectedValue } onChange={ null } />
+          <Span style={styles.label}>
+            {label}
+            {children}
+          </Span>
+        </span>
       </div>
     );
   }

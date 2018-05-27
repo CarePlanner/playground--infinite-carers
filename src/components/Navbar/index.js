@@ -1,6 +1,7 @@
 import React from 'react';
 import Radium from 'radium';
 import styles from './styles';
+import { Select } from '../Form';
 
 class Navbar extends React.Component {
 
@@ -57,12 +58,18 @@ class Navbar extends React.Component {
             title: 'Log out'
           }
         ]
-      }
+      },
+      users: [
+        'Aaron Aaronson'
+      ],
+      regions: [
+        'Bristol'
+      ]
     }
   }
 
   render() {
-    const defaults = this.state.defaults;
+    const { defaults, users, regions } = this.state;
 
     const menuItems = (this.props.menuItems) ? this.props.menuItems : defaults.menuItems;
     const secondaryMenuItems = (this.props.secondaryMenuItems) ? this.props.secondaryMenuItems : defaults.secondaryMenuItems;
@@ -71,13 +78,17 @@ class Navbar extends React.Component {
     return (
       <div style={styles.navbarContainer}>
         <div style={styles.navbar}>
-          <img style={styles.logo} src={require('./tiny-logo.png')} />
           <div style={styles.menu}>
+            <img style={styles.logo} src={require('./tiny-logo.png')} />
             {menuItems.map((item) => (
               <div style={[styles.menuItem, (item.key === active) ? styles.menuItem.active : null]} key={item.key}>
                 {item.title}
               </div>
             ))}
+          </div>
+          <div>
+            <Select inline={ true } options={ users } style={{ width: 224 }} />
+            <Select inline={ true } options={ regions } style={{ width: 224, marginLeft: -15 }} />
           </div>
         </div>
         <div style={styles.secondaryMenu}>

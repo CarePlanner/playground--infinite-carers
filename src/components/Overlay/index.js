@@ -11,7 +11,7 @@ class Overlay extends React.Component {
     const { children, onClose, title } = this.props;
 
     return (
-      <div>
+      <div style={styles.frame}>
         <div style={styles.background} />
         <div style={styles.container}>
           <div style={styles.closeButtonContainer} onClick={(onClose) ? onClose : null}>

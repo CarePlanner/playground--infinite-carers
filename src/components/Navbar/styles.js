@@ -8,7 +8,8 @@ export default {
     padding: '0 20px',
     alignContent: 'flex-start',
     alignItems: 'center',
-    background: '#256990'
+    background: '#256990',
+    justifyContent: 'space-between'
   },
   logo: {
     paddingRight: 10

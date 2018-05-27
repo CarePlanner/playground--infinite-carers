@@ -1,9 +1,18 @@
 export default {
+  frame: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'scroll'
+  },
   container: {
     position: 'absolute',
     top: 30,
     left: 77,
     right: 102,
+    marginBottom: 30,
     backgroundColor: '#EFEFEF'
   },
   background: {
