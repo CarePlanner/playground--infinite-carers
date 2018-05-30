@@ -3,6 +3,7 @@ import styles from './styles';
 import { Button, Checkbox, Radio, RadioGroup, TextBox, Select } from '../../../components/Form';
 import { Span, A, H5 } from '../../../components/Text';
 import Overlay from '../../../components/Overlay';
+import HelpBlock from '../../../components/HelpBlock';
 
 export default class StaffHolidayOverlay extends React.Component {
 
@@ -84,8 +85,8 @@ export default class StaffHolidayOverlay extends React.Component {
             </Span>
           </div>
           <div>
-            <Checkbox label={'I have staff working part-time and some working irregular hours'} selectedValues={year.hourly.enabled} onClick={ this.changeEnableHourlySettings.bind(this) } />
-            <div style={[styles.subform, { display: (year.hourly.enabled) ? 'block': 'none' }]}>
+            <Checkbox label={'I have staff working part-time and some working irregular hours'} selectedValues={year.hourly.enabled} onClick={ this.changeEnableHourlySettings.bind(this) } style={ styles.radioPadding } />
+            <div style={[styles.subform, { display: (year.hourly.enabled) ? 'block': 'none' }, { marginBottom: 20 }]}>
               <div style={styles.formSection}>
                 <H5>Holiday entitlement</H5>
                 <Radio label={'12.07% ACAS standard accrual'} value={'acasAccrual'} selectedValue={ year.hourly.entitlement.type } onClick={ this.changeHourlyEntitlementType.bind(this) } style={ styles.radioPadding } />
@@ -125,27 +126,34 @@ export default class StaffHolidayOverlay extends React.Component {
                 <Radio label={'Pay carers their usual rate for midday on a weekday'} value={'usual'} selectedValue={ year.hourly.rate } onClick={ this.changeHourlyRateOfPay.bind(this) } style={ styles.radioPadding } />
                 <div style={[styles.subform, { display: (year.hourly.rate === 'usual') ? 'block': 'none' }]}>
                   <Checkbox label={'Pay carers for holiday even when they have exceeded their entitlement'} selectedValues={[]} name={'workingPartTime'} />
+                  <HelpBlock text={ 'CarePlanner will still warn you before doing this' }/>
                 </div>
                 <Radio label={'Set rate of pay per job title'} value={'perJobTitle'} selectedValue={ year.hourly.rate } onClick={ this.changeHourlyRateOfPay.bind(this) } style={ styles.radioPadding } />
+                <div style={[styles.subform, { display: (year.hourly.rate === 'perJobTitle') ? 'block': 'none' }]}>
+                  <Checkbox label={'Pay carers for holiday even when they have exceeded their entitlement'} selectedValues={[]} name={'workingPartTime'} />
+                  <HelpBlock text={ 'CarePlanner will still warn you before doing this' }/>
+                </div>
                 <Radio label={'Do not pay staff for holiday'} value={'no'} selectedValue={ year.hourly.rate } onClick={ this.changeHourlyRateOfPay.bind(this) } style={ styles.radioPadding } />
               </div>
             </div>
           </div>
           <div>
-            <Checkbox label={'I have staff working full-time with a set number of days of holiday'} selectedValues={year.daily.enabled} onClick={ this.changeEnableDailySettings.bind(this) } />
-            <div style={[styles.subform, { display: (year.daily.enabled) ? 'block': 'none' }]}>
+            <Checkbox label={'I have staff working full-time with a set number of days of holiday'} selectedValues={year.daily.enabled} onClick={ this.changeEnableDailySettings.bind(this) } style={ styles.radioPadding } />
+            <div style={[styles.subform, { display: (year.daily.enabled) ? 'block': 'none' }, { marginBottom: 20 }]}>
               <div style={styles.formSection}>
                 <H5>Holiday entitlement</H5>
-                <Span>
-                  <TextBox
-                    type={ 'number' }
-                    inline={ true }
-                    value={ year.daily.entitlement }
-                    onChange={ this.changeDailyEntitlement.bind(this) }
-                    style={{ width: 40 }}
-                  />
-                  {'days per year'}
-                </Span>
+                <div style={ styles.radioPadding }>
+                  <Span style={{ marginLeft: -10 }}>
+                    <TextBox
+                      type={ 'number' }
+                      inline={ true }
+                      value={ year.daily.entitlement }
+                      onChange={ this.changeDailyEntitlement.bind(this) }
+                      style={{ width: 40 }}
+                    />
+                    {'days per year'}
+                  </Span>
+                </div>
               </div>
               <div style={styles.formSection}>
                 <H5>Excess hours</H5>
@@ -166,10 +174,13 @@ export default class StaffHolidayOverlay extends React.Component {
               </div>
               <div style={styles.formSection}>
                 <H5>Rate of pay</H5>
-                <Span>{`CarePlanner does not support paying holiday for full-time carers.`}</Span>
+                <div style={ styles.radioPadding }>
+                  <Span>{`CarePlanner does not support paying holiday for full-time carers.`}</Span>
+                </div>
               </div>
             </div>
           </div>
+          <Button label={'Save'} theme={'neutral'} onClick={onClose}/>
         </div>
       </Overlay>
     )

@@ -14,6 +14,7 @@ export default {
     paddingLeft: 12,
     paddingRight: 12,
     fontSize: 13,
+    fontFamily: '"Droid Sans"'
   },
   neutral: {
     background: '-webkit-gradient(linear,left bottom,left top,color-stop(0,#ddd),color-stop(1,#fff))',
