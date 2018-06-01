@@ -3,42 +3,38 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="storybook-version" content="3.4.6">
+    <meta name="storybook-version" content="4.0.0-alpha.8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <title>Storybook</title>
-    <style>
-        /*
-          When resizing panels, the drag event breaks if the cursor
-          moves over the iframe. Add the 'dragging' class to the body
-          at drag start and remove it when the drag ends.
-         */
-        .dragging iframe {
-            pointer-events: none;
-        }
+    <link rel="shortcut icon" href="https://www.care-planner.co.uk/sites/default/files/icon.jpg" type="image/jpeg" />
+<title>Playground</title>
+<style>
+  div {
+    font-family: "Circular Std", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", "Lucida Grande", Arial, sans-serif!important;
+    color: #4f739a!important;
+    -webkit-font-smoothing: antialiased;
+  }
+  .Pane, .Resizer {
+    background-color: #f4f8fc;
+  }
+  .Pane > div > div {
+    border: 0
+  }
+  div[role=tablist] {
+    border-bottom: 1px solid #c1d8f0;
+  }
+</style>
 
-        /* Styling the fuzzy search box placeholders */
-        .searchBox::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-            color: #ddd;
-            font-size: 16px;
-        }
-
-        .searchBox::-moz-placeholder { /* Firefox 19+ */
-            color: #ddd;
-            font-size: 16px;
-        }
-
-        .searchBox:focus{
-            border-color: #EEE !important;
-        }
-
-        .btn:hover{
-            background-color: #eee
-        }
-    </style>
-    
 
 </head>
 <body style="margin: 0;">
+    <style>
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
     <div id="root"></div>
-<script type="text/javascript" src="static/manager.a2bc4b482cabde43d5a3.bundle.js"></script></body>
+<script type="text/javascript" src="static/runtime~manager.16e68bc215ed0f26a969.bundle.js"></script><script type="text/javascript" src="static/manager.41b9ce192f4317b614c2.bundle.js"></script></body>
 </html>
