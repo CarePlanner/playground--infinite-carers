@@ -1,1 +1,1 @@
-import staffHoliday from './staffHoliday';
+import staffHoliday from './StaffHoliday';

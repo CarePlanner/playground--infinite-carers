@@ -14,8 +14,9 @@ class StaffHoliday extends React.Component {
   constructor(args) {
     super(args);
     this.state = {
-      data,
+      data: (args.yearTemplate) ? [ { year: '2018', ...args.yearTemplate } ] : data,
       showOverlay: false,
+      enableStaffHoliday: (!!args.enableStaffHoliday) ? args.enableStaffHoliday : false,
       tableHeadings: [
         {
           key: 'year',
