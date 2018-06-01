@@ -8,8 +8,10 @@
     "react-dom": "^16.3.2"
   },
   "devDependencies": {
-    "@storybook/addon-knobs": "3.4.5",
-    "@storybook/react": "^3.4.5",
+    "@storybook/addon-knobs": "4.0.0-alpha.8",
+    "@storybook/addon-options": "4.0.0-alpha.8",
+    "@storybook/react": "4.0.0-alpha.8",
+    "@storybook/ui": "4.0.0-alpha.8",
     "babel-core": "^6.26.3"
   },
   "scripts": {

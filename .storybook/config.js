@@ -1,4 +1,10 @@
 import { configure } from '@storybook/react';
+import { setOptions } from "@storybook/addon-options";
+
+setOptions({
+  name: "CarePlanner Playground",
+  url: "#",
+});
 
 function loadStories() {
   require('../stories/index.js');
