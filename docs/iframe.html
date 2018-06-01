@@ -6,7 +6,27 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <base target="_parent">
     <title>Storybook</title>
-    
+    <title>Playground</title>
+<script>
+  if(window.location.hostname !== 'localhost' && window.location.hostname !== '') {
+    window['_fs_debug'] = false;
+    window['_fs_host'] = 'fullstory.com';
+    window['_fs_org'] = 'CGEWM';
+    window['_fs_namespace'] = 'FS';
+    (function(m,n,e,t,l,o,g,y){
+        if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+        g=m[e]=function(a,b){g.q?g.q.push([a,b]):g._api(a,b);};g.q=[];
+        o=n.createElement(t);o.async=1;o.src='https://'+_fs_host+'/s/fs.js';
+        y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+        g.identify=function(i,v){g(l,{uid:i});if(v)g(l,v)};g.setUserVars=function(v){g(l,v)};
+        g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
+        g.consent=function(a){g("consent",!arguments.length||a)};
+        g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+        g.clearUserCookie=function(){};
+    })(window,document,window['_fs_namespace'],'script','user');
+  }
+</script>
+
     <style>
         :not(.sb-show-main) > .sb-main,
         :not(.sb-show-nopreview) > .sb-nopreview,
@@ -84,5 +104,5 @@
             <code id="error-stack"></code>
         </pre>
     </div>
-<script type="text/javascript" src="static/runtime~preview.a07a7c71ba6050f5447c.bundle.js"></script><script type="text/javascript" src="static/vendors~preview.7d6cf00dfad8736cb829.bundle.js"></script><script type="text/javascript" src="static/preview.b594183578594e2936d0.bundle.js"></script></body>
+<script type="text/javascript" src="static/runtime~preview.a07a7c71ba6050f5447c.bundle.js"></script><script type="text/javascript" src="static/vendors~preview.4e598101324790ddd505.bundle.js"></script><script type="text/javascript" src="static/preview.e02589c889dc6889e428.bundle.js"></script></body>
 </html>
