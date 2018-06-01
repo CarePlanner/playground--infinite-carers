@@ -4,6 +4,7 @@ import { setOptions } from "@storybook/addon-options";
 setOptions({
   name: "CarePlanner Playground",
   url: "#",
+  hierarchySeparator: /\//
 });
 
 function loadStories() {

@@ -12,7 +12,8 @@
     "@storybook/addon-options": "4.0.0-alpha.8",
     "@storybook/react": "4.0.0-alpha.8",
     "@storybook/ui": "4.0.0-alpha.8",
-    "babel-core": "^6.26.3"
+    "babel-core": "^6.26.3",
+    "csv-loader": "^2.1.1"
   },
   "scripts": {
     "prototypes": "start-storybook -p 9001 -c .storybook",
