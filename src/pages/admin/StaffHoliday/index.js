@@ -319,7 +319,6 @@ class StaffHoliday extends React.Component {
           <H1>Staff Holiday</H1>
           <Checkbox label={'Use CarePlanner to track staff holiday allowance.'} selectedValues={enableStaffHoliday} onClick={this.toggleStaffHoliday.bind(this)} style={ styles.radioPadding } />
           <div style={{ display: (enableStaffHoliday) ? 'block' : 'none' }}>
-            <Button label={'Add next year'} theme={'positive'}/>
             <Table headers={headers} rows={rows}></Table>
           </div>
         </Page>
