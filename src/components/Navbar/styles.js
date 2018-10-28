@@ -46,7 +46,6 @@ export default {
   },
   secondaryMenu: {
     position: 'absolute',
-    bottom: -22,
     right: 17,
     display: 'flex',
     backgroundColor: '#256990'
@@ -74,5 +73,36 @@ export default {
     ':last': {
       borderRightWidth: 0
     }
+  },
+  secondaryNavbar: {
+    display: 'flex',
+    height: 37,
+    padding: '0 20px',
+    alignContent: 'flex-start',
+    alignItems: 'center',
+    background: '#1A4A66'
+},
+secondaryNavbarMenuItem: {
+  display: 'flex',
+  height: '100%',
+  alignContent: 'center',
+  alignItems: 'center',
+  fontFamily: 'Droid Sans',
+  fontSize: 13,
+  color: '#FFFFFF',
+  padding: '0 10px',
+  cursor: 'pointer',
+  userSelect: 'none',
+  ':hover': {
+    backgroundColor: '#256990',
+  },
+  'active': {
+      color: '#000000',
+      backgroundColor: '#FFFFFF',
+    ':hover': {
+        color: '#000000',
+        backgroundColor: '#FFFFFF',
+    }
   }
+},
 }
