@@ -6,7 +6,7 @@ class Table extends React.Component {
 
   render() {
 
-    const { headers, rows } = this.props;
+    const { headers, rows, bodyTrStyle, bodyTdOnClick, bodyTdOnMouseMove, bodyTdOnMouseLeave } = this.props;
 
     return (
       <table style={styles.table}>
@@ -21,10 +21,14 @@ class Table extends React.Component {
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr style={((i % 2 === 0) ? styles.trOdd : styles.trEven)}>
-              {row.map((cell) => (
-                <td style={styles.td}>
-                  {cell}
+            <tr style={[((i % 2 === 0) ? styles.trOdd : styles.trEven), bodyTrStyle && bodyTrStyle(row, i)]} key={i}>
+              {row.map((cell, j) => (
+                <td
+                  style={styles.td}
+                  onClick={(e) => bodyTdOnClick && bodyTdOnClick(e, cell, j)}
+                  onMouseMove={(e) => bodyTdOnMouseMove && bodyTdOnMouseMove(e, cell, j)}
+                  onMouseLeave={(e) => bodyTdOnMouseLeave && bodyTdOnMouseLeave(e, cell, j)}>
+                  {(typeof cell === 'string') ? cell : (typeof cell === 'object' && cell.content) ? cell.content : cell}
                 </td>
               ))}
             </tr>
