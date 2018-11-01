@@ -1,8 +1,4 @@
 export default {
-  container: {
-    marginTop: 15,
-    marginBottom: 15
-  },
   button: {
     display: 'inline-block',
     whiteSpace: 'normal',
@@ -14,7 +10,8 @@ export default {
     paddingLeft: 12,
     paddingRight: 12,
     fontSize: 13,
-    fontFamily: '"Droid Sans"'
+    fontFamily: '"Droid Sans"',
+    userSelect: 'none'
   },
   neutral: {
     background: '-webkit-gradient(linear,left bottom,left top,color-stop(0,#ddd),color-stop(1,#fff))',

@@ -4,6 +4,7 @@ import styles from './styles';
 import Dialog from '../Dialog';
 import { H1, Span, A, H5 } from '../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../Form';
+import CarerPopup from './CarerPopup';
 
 class AppointmentDialog extends React.Component {
 
@@ -14,7 +15,7 @@ class AppointmentDialog extends React.Component {
       tabs: {
         'appointment': {
             title: 'Appointment',
-            body: this.renderAppointmentTab()
+            body: () => this.renderAppointmentTab.bind(this)()
         },
         'care-required': {
             title: 'Care Required',
@@ -36,11 +37,22 @@ class AppointmentDialog extends React.Component {
             title: 'History',
             body: ''
         }
-      }
+      },
+      renderCarerSelectorDialog: false
     };
   }
 
+  toggleCarerSelector(e) {
+    this.setState({
+      renderCarerSelectorDialog: !this.state.renderCarerSelectorDialog,
+    });
+  }
+
   renderAppointmentTab() {
+    let carerImageRef = React.createRef();
+
+    let carerPopup = <CarerPopup />;
+
     return (
       <div style={styles.form}>
         <div style={styles.formComponentsContainer}>
@@ -93,7 +105,26 @@ class AppointmentDialog extends React.Component {
           </div>
         </div>
         <div style={styles.formComponentsContainer}>
-          Add carers here
+          <div>
+            <div style={styles.carerAndRun}>
+              <H5 showLine={true}>Carer 1</H5>
+              <div style={styles.runSelector}>
+                Run 1
+                <span style={ styles.runSelectorArrow }>&#9662;</span>
+              </div>
+            </div>
+            <div style={{position: 'relative'}}>
+              <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
+                <div style={styles.carerSelectorImage}></div>
+                <div style={styles.carerSelectorName}>
+                  <H5 style={styles.carerSelectorNameText}>Required</H5>
+                  <span style={ styles.carerSelectorArrow }>&#9662;</span>
+                </div>
+              </div>
+              {this.state.renderCarerSelectorDialog && carerPopup}
+            </div>
+            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} />
+          </div>
         </div>
       </div>
     );

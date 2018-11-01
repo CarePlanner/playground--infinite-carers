@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Radium from 'radium';
 
 import styles from './styles';
@@ -11,10 +12,21 @@ class Text extends React.Component {
 
   render() {
 
-    const { style, onClick } = this.props;
+    const { style, onClick, showLine } = this.props;
+
+    let addLineRightMargin = true;
+
+    if(showLine) {
+        if(ReactDOM.findDOMNode(this) && !ReactDOM.findDOMNode(this).nextSibling) {
+          addLineRightMargin = false;
+        }
+    }
 
     return (
-      <span style={[styles.defaults, ...style]} onClick={(onClick) ? onClick : null}>{this.props.children}</span>
+      <span style={[styles.textContainer, (showLine) ? {flexGrow: 2} : null]}>
+        <span style={[styles.defaults, ...style]} onClick={(onClick) ? onClick : null}>{this.props.children}</span>
+        {showLine && <div style={[styles.line, (!addLineRightMargin) ? {marginRight: 0} : null]}></div>}
+      </span>
     );
   }
 }
@@ -23,7 +35,7 @@ Text = Radium(Text);
 
 function makeText(args, style) {
   return (
-    <Text {...args} style={[args.style, style]}>{args.children}</Text>
+    <Text {...args} style={[style, args.style]}>{args.children}</Text>
   );
 };
 

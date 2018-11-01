@@ -6,14 +6,12 @@ class Button extends React.Component {
 
   render() {
 
-    const { label, onClick, theme } = this.props;
+    const { label, onClick, theme, style } = this.props;
 
     return (
-      <div style={styles.container}>
-        <a style={[styles.button, styles[theme]]} onClick={this.props.onClick}>
-          {label}
-        </a>
-      </div>
+      <a style={[styles.button, styles[theme], style]} onClick={this.props.onClick}>
+        {label}
+      </a>
     );
   }
 }

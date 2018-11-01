@@ -8,7 +8,6 @@ export default {
     border: '1px solid #256990',
     padding: 0,
     borderRadius: 5,
-    overflow: 'hidden',
     backgroundColor: '#FCFDFD',
     zIndex: 100,
     height: 500

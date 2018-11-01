@@ -109,7 +109,7 @@ class Dialog extends React.Component {
             {header}
           </div>}
           {tabs[activeTab].body && <div style={styles.dialogBodyBody}>
-            {tabs[activeTab].body}
+            {(typeof tabs[activeTab].body === 'function') ? tabs[activeTab].body() : tabs[activeTab].body}
           </div>}
           {footer && <div style={styles.dialogBodyFooter}>
             {footer}

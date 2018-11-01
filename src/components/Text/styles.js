@@ -40,5 +40,19 @@ export default {
     display: 'block',
     fontWeight: 700,
     color: '#256990',
+    lineHeight: '20px'
+  },
+  line: {
+    flexGrow: 2,
+    height: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    borderTopWidth: 1,
+    borderTopStyle: 'solid',
+    borderTopColor: '#D8D8D8'
+  },
+  textContainer: {
+    display: 'inline-flex',
+    alignItems: 'center'
   }
 };
