@@ -54,24 +54,33 @@ class AppointmentDialog extends React.Component {
   }
 
   addCarerSlot() {
-    let currentCarers = this.state.selectedCarers;
-    currentCarers.push({});
+    let selectedCarers = this.state.selectedCarers;
+    selectedCarers.push({});
     this.setState({
-      selectedCarers: currentCarers
+      selectedCarers: selectedCarers
     });
   }
 
   removeCarerSlot(i) {
-    let currentCarers = this.state.selectedCarers;
-    currentCarers.splice(i, 1);
+    let selectedCarers = this.state.selectedCarers;
+    selectedCarers.splice(i, 1);
     this.setState({
-      selectedCarers: currentCarers
+      selectedCarers: selectedCarers
+    });
+  }
+
+  selectCarer(i, carer) {
+    let selectedCarers = this.state.selectedCarers;
+    selectedCarers.splice(i, 1, carer);
+    this.setState({
+      selectedCarers: selectedCarers
     });
   }
 
   renderAppointmentTab() {
 
     const { selectedCarers, allCarers } = this.state;
+    const { runsEnabled } = this.props;
 
     return (
       <div style={styles.form}>
@@ -131,8 +140,9 @@ class AppointmentDialog extends React.Component {
                 position={i}
                 allCarers={allCarers}
                 selectedCarers={selectedCarers}
-                onSelectCarer={null}
+                onSelectCarer={this.selectCarer.bind(this)}
                 onRemoveCarerSlot={this.removeCarerSlot.bind(this)}
+                runsEnabled={runsEnabled}
               />
             ))}
             <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} onClick={this.addCarerSlot.bind(this)}/>

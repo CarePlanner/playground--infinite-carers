@@ -22,12 +22,12 @@ class CarerSelector extends React.Component {
   }
 
   selectCarer(carer) {
-    const { onSelectCarer } = this.props;
+    const { onSelectCarer, position } = this.props;
     this.setState({
       selectedCarer: carer
     });
     if(onSelectCarer) {
-      onSelectCarer(carer);
+      onSelectCarer(position, carer);
     }
   }
 
@@ -51,7 +51,7 @@ class CarerSelector extends React.Component {
 
   render() {
 
-    const { position } = this.props;
+    const { position, runsEnabled } = this.props;
     const { selectedCarer } = this.state;
     const slotNumber = position + 1;
 
@@ -59,10 +59,10 @@ class CarerSelector extends React.Component {
       <div>
         <div style={styles.carerAndRun}>
           <H5 showLine={true}>Carer {slotNumber}</H5>
-          <div style={styles.runSelector}>
+          {runsEnabled && <div style={styles.runSelector}>
             Run {slotNumber}
             <span style={ styles.runSelectorArrow }>&#9662;</span>
-          </div>
+          </div>}
         </div>
         <div style={{position: 'relative'}}>
           <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>

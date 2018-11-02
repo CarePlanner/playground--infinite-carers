@@ -26,6 +26,7 @@ class CallMonitoring extends React.Component {
     const self = this;
 
     const { initialDialogPosition } = this.state;
+    const { runsEnabled } = this.props;
 
     const navbar = (
       <Navbar activeMenuItem={'manage'} activeSecondaryNavbarMenuItem={'call-monitoring'} />
@@ -93,9 +94,8 @@ class CallMonitoring extends React.Component {
     <AppointmentDialog
       parent={this.ref}
       dialogPosition={initialDialogPosition}
-    >
-      {<span></span>}
-    </AppointmentDialog>
+      runsEnabled={runsEnabled}
+    />
   )
 
   const hoverBox = (

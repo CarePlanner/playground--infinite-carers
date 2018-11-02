@@ -10,7 +10,7 @@ export default {
     borderRadius: 5,
     backgroundColor: '#FCFDFD',
     zIndex: 100,
-    height: 500
+    minHeight: 500
   },
   dialogTitleBar: {
     position: 'relative',
