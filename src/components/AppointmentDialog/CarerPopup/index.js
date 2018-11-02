@@ -9,10 +9,54 @@ class CarerPopup extends React.Component {
   constructor(args) {
     super(args);
     this.state = {
+      highlightedCarer: null,
+      selectedCarer: args.selectedCarer
     };
   }
 
+  selectCarer(carer) {
+    const { onClose, onSelectCarer } = this.props;
+    const { selectedCarer } = this.state;
+    if(onSelectCarer) {
+      if(selectedCarer && (carer.id === selectedCarer.id)) {
+        this.setState({
+          selectedCarer: null
+        })
+        onSelectCarer(null);
+      } else {
+        this.setState({
+          selectedCarer: carer
+        })
+        onSelectCarer(carer);
+      }
+    }
+    if(onClose) {
+      onClose();
+    }
+  }
+
+  showCarerDetails(carer) {
+    this.setState({
+      highlightedCarer: carer
+    });
+  }
+
+  renderCarerDetailsSection(carer) {
+    return (
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={styles.carerImage}></div>
+        <H5 showLine={true}>
+          <Span>{carer.name} </Span><Span style={{color: '#9B9B9B'}}> · Active</Span>
+        </H5>
+      </div>
+    );
+  }
+
   render() {
+
+    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot } = this.props;
+    const { selectedCarer, highlightedCarer } = this.state;
+
 
     return (
       <div style={[styles.popup]}>
@@ -34,65 +78,26 @@ class CarerPopup extends React.Component {
             <TextBox style={{width: 'calc(100% - 25px)'}}/>
           </div>
           <div style={styles.carers}>
-            <div style={styles.carer} key={1}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={2}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={3}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={4}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={5}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={6}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={7}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={8}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
-            <div style={styles.carer} key={9}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <H5 style={styles.carerNameText}>Required</H5>
-              </div>
-            </div>
+            {allCarers.map((carer, i) => {
+              const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
+              const isHighlightedCarer = highlightedCarer && (carer.id === highlightedCarer.id);
+              return (
+                <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (!isSelectedCarer && isHighlightedCarer) ? styles.highlightedCarer : null]} key={i} onClick={() => this.selectCarer(carer)} onMouseOver={() => this.showCarerDetails(carer)}>
+                  <div style={styles.carerImage}></div>
+                  <div style={styles.carerName}>
+                    <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null]}>{carer.name}</Span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div style={styles.popupRightSection}>
           <div style={styles.popupRightSectionBody}>
-            <div style={styles.popupRightSectionBodyBody}></div>
+            <div style={styles.popupRightSectionBodyBody}>
+              {highlightedCarer && this.renderCarerDetailsSection(highlightedCarer)}
+              {(selectedCarer && !highlightedCarer) && this.renderCarerDetailsSection(selectedCarer)}
+            </div>
             <div style={styles.popupRightSectionBodyFooter}>
               <div style={{
                 display: 'flex',
@@ -108,8 +113,8 @@ class CarerPopup extends React.Component {
             </div>
           </div>
           <div style={styles.popupRightSectionFooter}>
-            <A style={{color: '#FF0400'}}>Remove Slot</A>
-            <Button theme={'neutral'} label={'OK'} style={{width: 50}} />
+            <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={() => onRemoveCarerSlot(position)}>Remove Slot</A>
+            <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={onClose} />
           </div>
         </div>
       </div>

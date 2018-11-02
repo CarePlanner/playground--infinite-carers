@@ -5,6 +5,7 @@ import Dialog from '../Dialog';
 import { H1, Span, A, H5 } from '../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../Form';
 import CarerPopup from './CarerPopup';
+import CarerSelector from './CarerSelector';
 
 class AppointmentDialog extends React.Component {
 
@@ -38,20 +39,39 @@ class AppointmentDialog extends React.Component {
             body: ''
         }
       },
-      renderCarerSelectorDialog: false
+      allCarers: [
+        {
+          id: 1,
+          name: 'Dale Webb'
+        },
+        {
+          id: 2,
+          name: 'James Hollister'
+        }
+      ],
+      selectedCarers: [{}]
     };
   }
 
-  toggleCarerSelector(e) {
+  addCarerSlot() {
+    let currentCarers = this.state.selectedCarers;
+    currentCarers.push({});
     this.setState({
-      renderCarerSelectorDialog: !this.state.renderCarerSelectorDialog,
+      selectedCarers: currentCarers
+    });
+  }
+
+  removeCarerSlot(i) {
+    let currentCarers = this.state.selectedCarers;
+    currentCarers.splice(i, 1);
+    this.setState({
+      selectedCarers: currentCarers
     });
   }
 
   renderAppointmentTab() {
-    let carerImageRef = React.createRef();
 
-    let carerPopup = <CarerPopup />;
+    const { selectedCarers, allCarers } = this.state;
 
     return (
       <div style={styles.form}>
@@ -106,24 +126,16 @@ class AppointmentDialog extends React.Component {
         </div>
         <div style={styles.formComponentsContainer}>
           <div>
-            <div style={styles.carerAndRun}>
-              <H5 showLine={true}>Carer 1</H5>
-              <div style={styles.runSelector}>
-                Run 1
-                <span style={ styles.runSelectorArrow }>&#9662;</span>
-              </div>
-            </div>
-            <div style={{position: 'relative'}}>
-              <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
-                <div style={styles.carerSelectorImage}></div>
-                <div style={styles.carerSelectorName}>
-                  <H5 style={styles.carerSelectorNameText}>Required</H5>
-                  <span style={ styles.carerSelectorArrow }>&#9662;</span>
-                </div>
-              </div>
-              {this.state.renderCarerSelectorDialog && carerPopup}
-            </div>
-            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} />
+            {selectedCarers.map((carer, i) => (
+              <CarerSelector
+                position={i}
+                allCarers={allCarers}
+                selectedCarers={selectedCarers}
+                onSelectCarer={null}
+                onRemoveCarerSlot={this.removeCarerSlot.bind(this)}
+              />
+            ))}
+            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} onClick={this.addCarerSlot.bind(this)}/>
           </div>
         </div>
       </div>

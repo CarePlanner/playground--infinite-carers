@@ -40,7 +40,7 @@ export default {
   popupLeftSection: {
     display: 'flex',
     flexDirection: 'column',
-    flexGrow: 1,
+    width: 250,
     height: '100%',
     borderRight: '1px solid #CCCCCC',
   },
@@ -59,6 +59,7 @@ export default {
   popupRightSectionBodyBody: {
     display: 'flex',
     flexGrow: 4,
+    flexDirection: 'column'
   },
   popupRightSectionBodyFooter: {
   },
@@ -70,7 +71,7 @@ export default {
     padding: 20
   },
   popupLeftSectionHeader: {
-    flexGrow: 1,
+    flexShrink: 1,
     padding: 20
   },
   carers: {
@@ -90,30 +91,37 @@ export default {
     backgroundColor: '#FFFFFF',
     transition: 'background-color .1s ease-in-out',
     ':hover': {
-      backgroundColor: '#D8D8D8'
+      backgroundColor: '#EFEFEF'
     }
   },
   carerImage: {
     borderRadius: '100%',
     width: 30,
     height: 30,
-    backgroundColor: '#EEEEEE'
+    backgroundColor: '#EEEEEE',
+    marginRight: 10
   },
   carerName: {
     display: 'flex',
-    marginLeft: 10,
     userSelect: 'none'
   },
   carerNameText: {
-    color: '#9B9B9B'
   },
-  line: {
-    width: 100,
-    height: 1,
-    marginLeft: 10,
-    marginRight: 10,
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
-    borderTopColor: '#D8D8D8'
+  selectedCarer: {
+    backgroundColor: '#256990',
+    ':hover': {
+      backgroundColor: '#256990'
+    }
+  },
+  selectedCarerNameText: {
+    color: '#E9F0F4',
+    fontWeight: 'bold',
+    ':hover': {
+      color: '#E9F0F4',
+      fontWeight: 'bold',
+    }
+  },
+  highlightedCarer: {
+    backgroundColor: '#EFEFEF'
   }
 };
