@@ -3,6 +3,7 @@ import Radium from 'radium';
 import styles from './styles';
 import { H1, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
+// import { closeCarerPopup, selectCarer, removeCarerSlot } from './actions';
 
 class CarerPopup extends React.Component {
 
@@ -122,4 +123,28 @@ class CarerPopup extends React.Component {
   }
 }
 
-export default Radium(CarerPopup);
+// const mapStateToProps = state => {
+//   return {
+//     selectedCarer: state.selectedCarer
+//   };
+// };
+//
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onClose: () => {
+//       dispatch(closeCarerPopup());
+//     },
+//     onSelectCarer: (id) => {
+//       dispatch(selectCarer(id));
+//     },
+//     onRemoveCarerSlot: (id) => {
+//       dispatch(removeCarerSlot(id));
+//     }
+//   };
+// };
+//
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(CarerPopup);
+export default Radium(CarerPopup)
