@@ -59,7 +59,10 @@ export default {
   popupRightSectionBodyBody: {
     display: 'flex',
     flexGrow: 4,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    H1: {
+      color: '#CCCCCC'
+    }
   },
   popupRightSectionBodyFooter: {
   },
@@ -74,7 +77,14 @@ export default {
     flexShrink: 1,
     padding: 20
   },
+  popupLeftSectionFooter: {
+    flexShrink: 1,
+    padding: 20,
+    borderTop: '1px solid #CCCCCC'
+  },
   carers: {
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 2,
     overflow: 'scroll',
   },
@@ -120,8 +130,5 @@ export default {
       color: '#E9F0F4',
       fontWeight: 'bold',
     }
-  },
-  highlightedCarer: {
-    backgroundColor: '#EFEFEF'
   }
 };
