@@ -13,6 +13,7 @@ class CarerSelector extends React.Component {
       renderCarerSelectorDialog: false,
       selectedCarer: null
     };
+    this.elem = React.createRef();
   }
 
   toggleCarerSelector() {
@@ -38,6 +39,7 @@ class CarerSelector extends React.Component {
 
     return (
       <CarerPopup
+        selector={this.elem}
         position={position}
         allCarers={allCarers}
         selectedCarers={selectedCarers}
@@ -64,7 +66,7 @@ class CarerSelector extends React.Component {
             <span style={ styles.runSelectorArrow }>&#9662;</span>
           </div>}
         </div>
-        <div style={{position: 'relative'}}>
+        <div style={{position: 'relative'}} ref={this.elem}>
           <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
             <div style={styles.carerSelectorImage}></div>
             {!selectedCarer && <div style={styles.carerSelectorName}>

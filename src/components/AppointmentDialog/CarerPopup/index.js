@@ -62,6 +62,45 @@ class CarerPopup extends React.Component {
     );
   }
 
+  calculatePopupPosition() {
+      const { x: selectorX, y: selectorY, height: selectorHeight } = this.props.selector.current.getBoundingClientRect();
+      let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
+
+      windowMaxX-=50; //Buffer of 50px between the edges
+      windowMaxY-=100; //Buffer of 50px between the edges (taking into account 50px offset)
+
+      const initialMaxX = selectorX + styles.popup.width;
+      const initialMaxY = selectorY + styles.popup.height;
+
+      const minX = 50;
+
+      const maxX = (windowMaxX - selectorX) - styles.popup.width;
+      const maxY = (windowMaxY - selectorY) - styles.popup.height;
+
+      let popupX = (initialMaxX < windowMaxX) ? (selectorX < 50) ? -selectorX + 50 : 0 : maxX;
+      let popupY = (initialMaxY < windowMaxY) ? 50 : maxY;
+
+      let popupArrowX = (popupX >= 0) ? minX - (styles.popupArrow.left * 2.25) : -popupX + styles.popupArrow.left;
+      let popupArrowY = styles.popupArrow.top;
+
+      let popupArrowPsudoStyle = 'popupArrowAbove';
+
+      if(popupY < 0) {
+          if(selectorY > (windowMaxY - (selectorY + selectorHeight))) {
+              //Put popup above the selector
+              popupY = -styles.popup.height - styles.popupArrow.height;
+              popupArrowY = styles.popup.height - 1;
+              popupArrowPsudoStyle = 'popupArrowBelow';
+          }
+      }
+
+      return [
+          { top: popupY, left: popupX },
+          { top: popupArrowY, left: popupArrowX },
+          popupArrowPsudoStyle
+      ];
+  }
+
   render() {
 
     const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot } = this.props;
@@ -71,28 +110,28 @@ class CarerPopup extends React.Component {
 
     const noMatchingCarers = !filteredCarers.length || (filteredCarers.length === 1 && filteredCarers[0] === selectedCarer);
 
+    const popupPosition = this.calculatePopupPosition();
+
     return (
-      <div style={[styles.popup]}>
-        <div style={styles.popupArrow}>
-          <div style={styles.popupArrow['::before']}></div>
-          <div style={styles.popupArrow['::after']}></div>
+      <div style={[styles.popup, popupPosition[0]]}>
+        <div style={[styles.popupArrow, popupPosition[1]]}>
+          <div style={styles[popupPosition[2]]['::before']}></div>
+          <div style={styles[popupPosition[2]]['::after']}></div>
         </div>
         <div style={styles.popupLeftSection}>
           <div style={styles.popupLeftSectionHeader}>
             <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
           </div>
-          <div style={styles.carers}>
-            <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={() => this.selectCarer(null)}>
-              <div style={styles.carerImage}></div>
-              <div style={styles.carerName}>
-                <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
-              </div>
+          <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={() => this.selectCarer(null)}>
+            <div style={styles.carerName}>
+              <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
             </div>
+          </div>
+          <div style={styles.carers}>
             {filteredCarers.map((carer, i) => {
               const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
               return (
                 <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
-                  <div style={styles.carerImage}></div>
                   <div style={styles.carerName}>
                     <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null]}>{carer.name}</Span>
                   </div>
@@ -133,7 +172,10 @@ class CarerPopup extends React.Component {
           </div>
           <div style={styles.popupRightSectionFooter}>
             <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={this.closePopup.bind(this)} />
-            <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={() => onRemoveCarerSlot(position)}>Carer Not Required</A>
+            <div>
+                <A style={{marginRight: 20}} onClick={() => onClose()}>Cancel</A>
+                <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={() => onRemoveCarerSlot(position)}>Carer Not Required</A>
+            </div>
           </div>
         </div>
       </div>

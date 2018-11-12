@@ -19,23 +19,43 @@ export default {
     height: 10,
     top: -8,
     left: 15,
-    userSelect: 'none',
-    '::before': {
-      position: 'absolute',
-      borderColor: 'transparent',
-      borderStyle: 'solid',
-      borderWidth: '0 .5rem .5rem .5rem',
-      top: 0,
-      borderBottomColor: '#CCCCCC'
-    },
-    '::after': {
-      position: 'absolute',
-      borderColor: 'transparent',
-      borderStyle: 'solid',
-      borderWidth: '0 .5rem .5rem .5rem',
-      top: 1,
-      borderBottomColor: '#FFFFFF',
-    }
+    userSelect: 'none'
+  },
+  popupArrowAbove: {
+      '::before': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '0 .5rem .5rem .5rem',
+        top: 0,
+        borderBottomColor: '#CCCCCC'
+      },
+      '::after': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '0 .5rem .5rem .5rem',
+        top: 1,
+        borderBottomColor: '#FFFFFF',
+      }
+  },
+  popupArrowBelow: {
+      '::before': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '.5rem .5rem 0',
+        bottom: 0,
+        borderTopColor: '#CCCCCC'
+      },
+      '::after': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '.5rem .5rem 0',
+        bottom: 1,
+        borderTopColor: '#FFFFFF',
+      }
   },
   popupLeftSection: {
     display: 'flex',
@@ -71,15 +91,15 @@ export default {
     justifyContent: 'space-between',
     alignItems: 'baseline',
     borderTop: '1px solid #CCCCCC',
-    padding: 20
+    padding: 15
   },
   popupLeftSectionHeader: {
     flexShrink: 1,
-    padding: 20
+    padding: 15
   },
   popupLeftSectionFooter: {
     flexShrink: 1,
-    padding: 20,
+    padding: 15,
     borderTop: '1px solid #CCCCCC'
   },
   carers: {
@@ -90,7 +110,6 @@ export default {
   },
   carer: {
     position: 'relative',
-    display: 'flex',
     alignContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
