@@ -1,36 +1,30 @@
 import React from 'react';
 import Radium from 'radium';
+import { connect } from 'react-redux';
 import styles from './styles';
 import { H1, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
-// import { closeCarerPopup, selectCarer, removeCarerSlot } from './actions';
+import { deselectCarer, selectCarer, removeCarerSlot } from '../actions';
 
 class CarerPopup extends React.Component {
 
   constructor(args) {
     super(args);
     this.state = {
-      highlightedCarer: null,
-      selectedCarer: args.selectedCarer
+      highlightedCarer: null
     };
   }
 
   selectCarer(carer) {
-    const { onClose, onSelectCarer } = this.props;
-    const { selectedCarer } = this.state;
-    if(onSelectCarer) {
-      if(selectedCarer && (carer.id === selectedCarer.id)) {
-        this.setState({
-          selectedCarer: null
-        })
-        onSelectCarer(null);
-      } else {
-        this.setState({
-          selectedCarer: carer
-        })
-        onSelectCarer(carer);
-      }
+    const { onClose, position, carerSlots } = this.props;
+    const selectedCarer = carerSlots[position].carer;
+
+    if(selectedCarer && (carer.id === selectedCarer.id)) {
+      this.props.deselectCarer(position);
+    } else {
+      this.props.selectCarer(position, carer);
     }
+
     if(onClose) {
       onClose();
     }
@@ -53,11 +47,16 @@ class CarerPopup extends React.Component {
     );
   }
 
+  removeCarerSlot() {
+    const { id } = this.props;
+    this.props.removeCarerSlot(id);
+  }
+
   render() {
 
-    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot } = this.props;
-    const { selectedCarer, highlightedCarer } = this.state;
-
+    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot, carerSlots } = this.props;
+    const { highlightedCarer } = this.state;
+    const selectedCarer = carerSlots[position].carer;
 
     return (
       <div style={[styles.popup]}>
@@ -114,7 +113,7 @@ class CarerPopup extends React.Component {
             </div>
           </div>
           <div style={styles.popupRightSectionFooter}>
-            <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={() => onRemoveCarerSlot(position)}>Remove Slot</A>
+            <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={this.removeCarerSlot.bind(this)}>Remove Slot</A>
             <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={onClose} />
           </div>
         </div>
@@ -123,28 +122,19 @@ class CarerPopup extends React.Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     selectedCarer: state.selectedCarer
-//   };
-// };
-//
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     onClose: () => {
-//       dispatch(closeCarerPopup());
-//     },
-//     onSelectCarer: (id) => {
-//       dispatch(selectCarer(id));
-//     },
-//     onRemoveCarerSlot: (id) => {
-//       dispatch(removeCarerSlot(id));
-//     }
-//   };
-// };
-//
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(CarerPopup);
-export default Radium(CarerPopup)
+const mapStateToProps = state => {
+  return { ...state.appointmentDialogReducer };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
+    deselectCarer: (position) => dispatch(deselectCarer(position)),
+    removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Radium(CarerPopup));

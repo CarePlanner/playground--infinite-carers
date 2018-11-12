@@ -7,28 +7,56 @@ import {
 
 const initialState = {
   carerSlots: [
-    {}
+    {
+      id: 1,
+      carer: null
+    }
   ]
 };
 
-function selectCarer(state, action) {
+let id = 1;
 
+function selectCarer(state, action) {
+  let { carerSlots } = state;
+
+  const { carer, position } = action.payload;
+
+  carerSlots[position].carer = carer;
+
+  return { ...state, carerSlots };
 }
 
 function deselectCarer(state, action) {
+  let { carerSlots } = state;
 
+  const { carer, position } = action.payload;
+
+  carerSlots[position].carer = null;
+
+  return { ...state, carerSlots };
 }
 
 function addCarerSlot(state, action) {
   let { carerSlots } = state;
 
-  carerSlots.push({});
+  id++;
+
+  carerSlots.push({
+    id: id,
+    carer: null
+  });
 
   return { ...state, carerSlots };
 }
 
 function removeCarerSlot(state, action) {
+  let { carerSlots } = state;
 
+  const { id } = action.payload;
+
+  carerSlots = carerSlots.filter((carerSlot, i) => (carerSlot.id !== id));
+
+  return { ...state, carerSlots };
 }
 
 export default (state = initialState, action) => {

@@ -51,8 +51,7 @@ class AppointmentDialog extends React.Component {
           id: 2,
           name: 'James Hollister'
         }
-      ],
-      selectedCarers: [{}]
+      ]
     };
   }
 
@@ -60,28 +59,10 @@ class AppointmentDialog extends React.Component {
     this.props.addCarerSlot();
   }
 
-  removeCarerSlot(i) {
-    let selectedCarers = this.state.selectedCarers;
-    selectedCarers.splice(i, 1);
-    this.setState({
-      selectedCarers: selectedCarers
-    });
-  }
-
-  selectCarer(i, carer) {
-    let selectedCarers = this.state.selectedCarers;
-    selectedCarers.splice(i, 1, carer);
-    this.setState({
-      selectedCarers: selectedCarers
-    });
-  }
-
   renderAppointmentTab() {
 
-    const { selectedCarers, allCarers } = this.state;
+    const { allCarers } = this.state;
     const { runsEnabled, carerSlots } = this.props;
-
-    console.log(carerSlots)
 
     return (
       <div style={styles.form}>
@@ -136,13 +117,12 @@ class AppointmentDialog extends React.Component {
         </div>
         <div style={styles.formComponentsContainer}>
           <div>
-            {carerSlots.map((carer, i) => (
+            {carerSlots.map((carerSlot, i) => (
               <CarerSelector
+                key={carerSlot.id}
+                id={carerSlot.id}
                 position={i}
                 allCarers={allCarers}
-                selectedCarers={carerSlots}
-                onSelectCarer={this.selectCarer.bind(this)}
-                onRemoveCarerSlot={this.removeCarerSlot.bind(this)}
                 runsEnabled={runsEnabled}
               />
             ))}

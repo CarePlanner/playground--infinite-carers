@@ -3,17 +3,18 @@ export const DESELECT_CARER = 'DESELECT_CARER';
 export const ADD_CARER_SLOT = 'ADD_CARER_SLOT';
 export const REMOVE_CARER_SLOT = 'REMOVE_CARER_SLOT';
 
-export const selectCarer = id => ({
+export const selectCarer = (position, carer) => ({
   type: SELECT_CARER,
   payload: {
-    id
+    position,
+    carer
   }
 });
 
-export const deselectCarer = id => ({
-  type: SELECT_CARER,
+export const deselectCarer = position => ({
+  type: DESELECT_CARER,
   payload: {
-    id
+    position
   }
 });
 
