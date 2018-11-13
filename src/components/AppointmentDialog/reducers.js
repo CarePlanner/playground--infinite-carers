@@ -6,34 +6,38 @@ import {
 } from './actions';
 
 const initialState = {
-  carerSlots: [
-    {
-      id: 1,
-      carer: null
-    }
-  ]
+  carerSlots: [{ id: 1, carer: null}],
+  selectedCarers: []
 };
 
 let id = 1;
 
 function selectCarer(state, action) {
-  let { carerSlots } = state;
+  let { carerSlots, selectedCarers } = state;
 
   const { carer, position } = action.payload;
 
-  carerSlots[position].carer = carer;
+  const currentSelectedCarer = carerSlots[position].carer;
 
-  return { ...state, carerSlots };
+  if(currentSelectedCarer !== null) {
+    selectedCarers = selectedCarers.filter((selectedCarer) => (selectedCarer.id !== currentSelectedCarer.id));
+  }
+
+  carerSlots[position].carer = carer;
+  selectedCarers = [...selectedCarers, carer];
+
+  return { ...state, carerSlots, selectedCarers };
 }
 
 function deselectCarer(state, action) {
-  let { carerSlots } = state;
+  let { carerSlots, selectedCarers } = state;
 
   const { carer, position } = action.payload;
 
   carerSlots[position].carer = null;
+  selectedCarers = selectedCarers.filter((selectedCarer) => (selectedCarer.id !== carer.id));
 
-  return { ...state, carerSlots };
+  return { ...state, carerSlots, selectedCarers };
 }
 
 function addCarerSlot(state, action) {
@@ -41,22 +45,29 @@ function addCarerSlot(state, action) {
 
   id++;
 
-  carerSlots.push({
-    id: id,
-    carer: null
-  });
+  carerSlots = [...carerSlots, { id, carer: null }];
 
   return { ...state, carerSlots };
 }
 
 function removeCarerSlot(state, action) {
-  let { carerSlots } = state;
+  let { carerSlots, selectedCarers } = state;
 
   const { id } = action.payload;
+  let carerInSlot = null;
 
-  carerSlots = carerSlots.filter((carerSlot, i) => (carerSlot.id !== id));
+  carerSlots = carerSlots.filter((carerSlot, i) => {
+    if(carerSlot.id === id) {
+      carerInSlot = carerSlot.carer;
+    }
+    return carerSlot.id !== id;
+  });
 
-  return { ...state, carerSlots };
+  if(carerInSlot !== null) {
+    selectedCarers = selectedCarers.filter((selectedCarer) => (selectedCarer.id !== carerInSlot.id));
+  }
+
+  return { ...state, carerSlots, selectedCarers };
 }
 
 export default (state = initialState, action) => {

@@ -12,7 +12,7 @@ class CarerPopup extends React.Component {
     super(args);
     this.state = {
       highlightedCarer: null,
-      selectedCarer: args.selectedCarer,
+      selectedCarer: args.carerSlots[args.position].carer,
       searchQuery: ''
     };
     this.searchField = React.createRef();
@@ -23,24 +23,35 @@ class CarerPopup extends React.Component {
   }
 
   selectCarer(carer) {
-    const { onSelectCarer } = this.props;
     const { selectedCarer } = this.state;
-    if(carer === null) {
-      this.setState({
-        selectedCarer: null
-      })
-    } else {
+    const { selectedCarers } = this.props;
+
+    const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
+    const inAnotherCarerSlot = selectedCarers.includes(carer) && !isSelectedCarer;
+
+    if(!inAnotherCarerSlot) {
       this.setState({
         selectedCarer: carer
-      })
+      });
     }
   }
 
+  selectCarerRequired() {
+    this.setState({
+      selectedCarer: null
+    });
+  }
+
   closePopup() {
-    const { onSelectCarer, onClose } = this.props;
+    const { onClose, position, carerSlots } = this.props;
     const { selectedCarer } = this.state;
-    if(onSelectCarer) {
-      onSelectCarer(selectedCarer);
+
+    if(selectedCarer !== null) {
+      this.props.selectCarer(position, selectedCarer);
+    } else {
+      if(carerSlots[position].carer !== null) {
+        this.props.deselectCarer(position, carerSlots[position].carer);
+      }
     }
 
     if(onClose) {
@@ -111,7 +122,7 @@ class CarerPopup extends React.Component {
 
   render() {
 
-    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot } = this.props;
+    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot, selectedCarers } = this.props;
     const { selectedCarer, highlightedCarer, searchQuery } = this.state;
 
     const filteredCarers = allCarers.filter((carer) => ((selectedCarer && (carer.id === selectedCarer.id)) || !searchQuery || new RegExp(searchQuery, 'i').test(carer.name)));
@@ -130,7 +141,7 @@ class CarerPopup extends React.Component {
           <div style={styles.popupLeftSectionHeader}>
             <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
           </div>
-          <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={() => this.selectCarer(null)}>
+          <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
             <div style={styles.carerName}>
               <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
             </div>
@@ -138,10 +149,11 @@ class CarerPopup extends React.Component {
           <div style={styles.carers}>
             {filteredCarers.map((carer, i) => {
               const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
+              const inAnotherCarerSlot = selectedCarers.includes(carer) && !isSelectedCarer;
               return (
-                <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
+                <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
                   <div style={styles.carerName}>
-                    <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null]}>{carer.name}</Span>
+                    <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null, (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
                   </div>
                 </div>
               );
@@ -198,7 +210,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
-    deselectCarer: (position) => dispatch(deselectCarer(position)),
+    deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer)),
     removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
   };
 };

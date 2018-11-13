@@ -11,10 +11,11 @@ export const selectCarer = (position, carer) => ({
   }
 });
 
-export const deselectCarer = position => ({
+export const deselectCarer = (position, carer) => ({
   type: DESELECT_CARER,
   payload: {
-    position
+    position,
+    carer
   }
 });
 

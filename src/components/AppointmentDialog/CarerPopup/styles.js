@@ -149,5 +149,11 @@ export default {
       color: '#E9F0F4',
       fontWeight: 'bold',
     }
+  },
+  disabledCarer: {
+    cursor: 'not-allowed'
+  },
+  disabledCarerText: {
+    color: '#AAAAAA'
   }
 };
