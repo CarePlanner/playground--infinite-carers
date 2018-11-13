@@ -115,8 +115,11 @@ class CarerPopup extends React.Component {
   }
 
   removeCarerSlot() {
-    const { id } = this.props;
-    this.props.removeCarerSlot(id);
+    const { id, carerSlots} = this.props;
+
+    if(carerSlots.length > 1) {
+      this.props.removeCarerSlot(id);
+    }
   }
 
   calculatePopupPosition() {
@@ -243,7 +246,7 @@ class CarerPopup extends React.Component {
             <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={this.closePopup.bind(this)} />
             <div>
                 <A style={{marginRight: 20}} onClick={onClose}>Cancel</A>
-                <A style={[{color: '#FF0400'}, (position === 0) ? {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
+                <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
             </div>
           </div>
         </div>
