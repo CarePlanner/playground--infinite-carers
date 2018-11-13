@@ -5,6 +5,9 @@ import styles from './styles';
 import { H1, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
 import CarerPopup from '../CarerPopup';
+import {
+  selectRun
+} from '../actions';
 
 class CarerSelector extends React.Component {
 
@@ -12,6 +15,13 @@ class CarerSelector extends React.Component {
     super(args);
     this.state = {
       renderCarerSelectorDialog: false,
+      selectedRun: 0,
+      runs: [
+        'Add to Run',
+        'Run 1',
+        'Run 2',
+        'Run 3'
+      ]
     };
     this.elem = React.createRef();
   }
@@ -19,6 +29,17 @@ class CarerSelector extends React.Component {
   toggleCarerSelector() {
     this.setState({
       renderCarerSelectorDialog: !this.state.renderCarerSelectorDialog,
+    });
+  }
+
+  selectRun(run) {
+    const { position, carerSlots } = this.props;
+    const { selectedRun } = this.state;
+
+    this.props.selectRun(position, run);
+
+    this.setState({
+      selectedRun: run
     });
   }
 
@@ -38,6 +59,22 @@ class CarerSelector extends React.Component {
     );
   }
 
+  renderRunSelector() {
+    const { selectedRun, runs } = this.state;
+
+    return (
+      <Select
+        style={(selectedRun == 0) ? styles.runSelector : styles.selectedRunSelector}
+        value={selectedRun}
+        options={runs}
+        onChange={(e) => this.selectRun.bind(this)(e.target.value)}
+        hideArrow={true}
+      >
+        <span style={(selectedRun == 0) ? styles.runSelectorArrow : styles.selectedRunSelectorArrow }>&#9662;</span>
+      </Select>
+    );
+  }
+
   render() {
 
     const { position, runsEnabled, carerSlots } = this.props;
@@ -48,10 +85,7 @@ class CarerSelector extends React.Component {
       <div>
         <div style={styles.carerAndRun}>
           <H5 showLine={true}>Carer {slotNumber}</H5>
-          {runsEnabled && <div style={styles.runSelector}>
-            Run {slotNumber}
-            <span style={ styles.runSelectorArrow }>&#9662;</span>
-          </div>}
+          {runsEnabled && this.renderRunSelector()}
         </div>
         <div style={{position: 'relative'}} ref={this.elem}>
           <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
@@ -76,7 +110,13 @@ const mapStateToProps = state => {
   return { ...state.appointmentDialogReducer };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    selectRun: (position, run) => dispatch(selectRun(position, run))
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Radium(CarerSelector));

@@ -4,15 +4,28 @@ import {
   ADD_CARER_SLOT,
   REMOVE_CARER_SLOT,
   SELECT_TRAVEL_METHOD,
-  SELECT_SHADOWING_SUPERVISING
+  SELECT_SHADOWING_SUPERVISING,
+  SELECT_RUN
 } from './actions';
 
+let id = 1;
+
 const initialState = {
-  carerSlots: [{ id: 1, carer: null, travelMethod: 0, shadowingSupervising: 0}],
-  selectedCarers: []
+  carerSlots: [newSlot()],
+  selectedCarers: [],
+  selectedRuns: []
 };
 
-let id = 1;
+function newSlot() {
+  id++;
+  return {
+    id,
+    carer: null,
+    travelMethod: 0,
+    shadowingSupervising: 0,
+    run: 0
+  };
+}
 
 function selectCarer(state, action) {
   let { carerSlots, selectedCarers } = state;
@@ -47,7 +60,7 @@ function addCarerSlot(state, action) {
 
   id++;
 
-  carerSlots = [...carerSlots, { id, carer: null, travelMethod: 0, shadowingSupervising: 0 }];
+  carerSlots = [...carerSlots, newSlot()];
 
   return { ...state, carerSlots };
 }
@@ -92,6 +105,16 @@ function selectShadowingSupervising(state, action) {
   return { ...state, carerSlots };
 }
 
+function selectRun(state, action) {
+  let { carerSlots, selectedRuns } = state;
+
+  const { run, position } = action.payload;
+
+  carerSlots[position].run = run;
+
+  return { ...state, carerSlots, selectedRuns };
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SELECT_CARER:
@@ -106,6 +129,8 @@ export default (state = initialState, action) => {
       return selectTravelMethod(state, action);
     case SELECT_SHADOWING_SUPERVISING:
       return selectShadowingSupervising(state, action);
+    case SELECT_RUN:
+      return selectRun(state, action);
     default:
       return state;
   }
