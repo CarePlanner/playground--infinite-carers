@@ -1,13 +1,14 @@
 export default {
   popup: {
     display: 'flex',
+    flexDirection: 'column',
     position: 'absolute',
     width: 660,
     boxShadow: '0 2px 10px 0px rgba(204,204,204,.5)',
     border: '1px solid #CCCCCC',
     padding: 0,
     zIndex: 100,
-    height: 351,
+    height: 550,
     top: 50,
     left: 0,
     backgroundColor: '#FFFFFF'
@@ -57,26 +58,23 @@ export default {
         borderTopColor: '#FFFFFF',
       }
   },
+  popupTopSection: {
+    display: 'flex',
+    flexGrow: 2
+  },
   popupLeftSection: {
     display: 'flex',
     flexDirection: 'column',
     width: 250,
-    height: '100%',
     borderRight: '1px solid #CCCCCC',
   },
   popupRightSection: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 2,
-    height: '100%',
-  },
-  popupRightSectionBody: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 4,
     padding: 15
   },
-  popupRightSectionBodyBody: {
+  popupRightSectionBody: {
     display: 'flex',
     flexGrow: 4,
     flexDirection: 'column',
@@ -84,9 +82,7 @@ export default {
       color: '#CCCCCC'
     }
   },
-  popupRightSectionBodyFooter: {
-  },
-  popupRightSectionFooter: {
+  popupBottomSection: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'baseline',

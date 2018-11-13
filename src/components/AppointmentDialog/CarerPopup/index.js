@@ -180,74 +180,74 @@ class CarerPopup extends React.Component {
           <div style={styles[popupPosition[2]]['::before']}></div>
           <div style={styles[popupPosition[2]]['::after']}></div>
         </div>
-        <div style={styles.popupLeftSection}>
-          <div style={styles.popupLeftSectionHeader}>
-            <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
-          </div>
-          <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
-            <div style={styles.carerName}>
-              <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
+        <div style={styles.popupTopSection}>
+          <div style={styles.popupLeftSection}>
+            <div style={styles.popupLeftSectionHeader}>
+              <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
             </div>
-          </div>
-          <div style={styles.carers}>
-            {filteredCarers.map((carer, i) => {
-              const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
-              const wasSelectedCarer = carerSlot.carer && (carer.id === carerSlot.carer.id)
-              const inAnotherCarerSlot = selectedCarers.includes(carer) && !wasSelectedCarer;
-              return (
-                <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
-                  <div style={styles.carerName}>
-                    <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null, (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
+            <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
+              <div style={styles.carerName}>
+                <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
+              </div>
+            </div>
+            <div style={styles.carers}>
+              {filteredCarers.map((carer, i) => {
+                const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
+                const wasSelectedCarer = carerSlot.carer && (carer.id === carerSlot.carer.id)
+                const inAnotherCarerSlot = selectedCarers.includes(carer) && !wasSelectedCarer;
+                return (
+                  <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
+                    <div style={styles.carerName}>
+                      <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null, (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
+                    </div>
                   </div>
+                );
+              })}
+              {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={styles.popupRightSectionBody.H1}>No matching carers found</H2></div>}
+            </div>
+            <div style={styles.popupLeftSectionFooter}>
+              <Button theme={'neutral'} label={'Recommend'} style={{width: 'calc(100% - 25px)'}} />
+            </div>
+          </div>
+          <div style={styles.popupRightSection}>
+              <div style={[styles.popupRightSectionBody, (!selectedCarer) ? {alignItems: 'center', justifyContent: 'center'} : null]}>
+                {!selectedCarer && <H1 style={styles.popupRightSectionBody.H1}>Select a carer</H1>}
+                {selectedCarer && this.renderCarerDetailsSection(selectedCarer)}
+              </div>
+              <div style={styles.popupRightSectionBodyFooter}>
+                <div style={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10
+                }}>
+                  <H5 showLine={true}>Settings</H5>
                 </div>
-              );
-            })}
-            {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={styles.popupRightSectionBodyBody.H1}>No matching carers found</H2></div>}
-          </div>
-          <div style={styles.popupLeftSectionFooter}>
-            <Button theme={'neutral'} label={'Recommend'} style={{width: 'calc(100% - 25px)'}} />
-          </div>
+                <A>Select to mark as shadow or supervisor</A>
+              </div>
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                  marginTop: 20
+                }}>
+                  <H5 showLine={true}>Travel Method</H5>
+                </div>
+                <Select
+                  value={travelMethod}
+                  options={travelMethodOptions}
+                  onChange={(e) => this.selectTravelMethod.bind(this)(e.target.value)}
+                ></Select>
+              </div>
+            </div>
         </div>
-        <div style={styles.popupRightSection}>
-          <div style={styles.popupRightSectionBody}>
-            <div style={[styles.popupRightSectionBodyBody, (!selectedCarer) ? {alignItems: 'center', justifyContent: 'center'} : null]}>
-              {!selectedCarer && <H1 style={styles.popupRightSectionBodyBody.H1}>Select a carer</H1>}
-              {selectedCarer && this.renderCarerDetailsSection(selectedCarer)}
-            </div>
-            <div style={styles.popupRightSectionBodyFooter}>
-              <div style={{
-                display: 'flex',
-                alignContent: 'center',
-                alignItems: 'center',
-                marginBottom: 10
-              }}>
-                <H5 showLine={true}>Settings</H5>
-              </div>
-              <A>Select to mark as shadow or supervisor</A>
-            </div>
-            <div>
-              <div style={{
-                display: 'flex',
-                alignContent: 'center',
-                alignItems: 'center',
-                marginBottom: 10,
-                marginTop: 20
-              }}>
-                <H5 showLine={true}>Travel Method</H5>
-              </div>
-              <Select
-                value={travelMethod}
-                options={travelMethodOptions}
-                onChange={(e) => this.selectTravelMethod.bind(this)(e.target.value)}
-              ></Select>
-            </div>
-          </div>
-          <div style={styles.popupRightSectionFooter}>
-            <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={this.closePopup.bind(this)} />
-            <div>
-                <A style={{marginRight: 20}} onClick={onClose}>Cancel</A>
-                <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
-            </div>
+        <div style={styles.popupBottomSection}>
+          <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={this.closePopup.bind(this)} />
+          <div>
+              <A style={{marginRight: 20}} onClick={onClose}>Cancel</A>
+              <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
           </div>
         </div>
       </div>
