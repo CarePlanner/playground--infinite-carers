@@ -1,5 +1,6 @@
 import React from 'react';
 import Radium from 'radium';
+import { connect } from 'react-redux';
 import styles from './styles';
 import { H1, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
@@ -11,7 +12,6 @@ class CarerSelector extends React.Component {
     super(args);
     this.state = {
       renderCarerSelectorDialog: false,
-      selectedCarer: null
     };
     this.elem = React.createRef();
   }
@@ -22,30 +22,17 @@ class CarerSelector extends React.Component {
     });
   }
 
-  selectCarer(carer) {
-    const { onSelectCarer, position } = this.props;
-    this.setState({
-      selectedCarer: carer
-    });
-    if(onSelectCarer) {
-      onSelectCarer(position, carer);
-    }
-  }
-
   renderCarerPopup() {
 
-    const { allCarers, selectedCarers, position, onRemoveCarerSlot } = this.props;
+    const { allCarers, position, onRemoveCarerSlot, id } = this.props;
     const { selectedCarer } = this.state;
 
     return (
       <CarerPopup
         selector={this.elem}
+        id={id}
         position={position}
         allCarers={allCarers}
-        selectedCarers={selectedCarers}
-        selectedCarer={selectedCarer}
-        onRemoveCarerSlot={onRemoveCarerSlot}
-        onSelectCarer={this.selectCarer.bind(this)}
         onClose={this.toggleCarerSelector.bind(this)}
       />
     );
@@ -53,8 +40,8 @@ class CarerSelector extends React.Component {
 
   render() {
 
-    const { position, runsEnabled } = this.props;
-    const { selectedCarer } = this.state;
+    const { position, runsEnabled, carerSlots } = this.props;
+    const selectedCarer = carerSlots[position].carer;
     const slotNumber = position + 1;
 
     return (
@@ -85,4 +72,11 @@ class CarerSelector extends React.Component {
   }
 }
 
-export default Radium(CarerSelector);
+const mapStateToProps = state => {
+  return { ...state.appointmentDialogReducer };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Radium(CarerSelector));

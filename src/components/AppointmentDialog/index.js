@@ -1,11 +1,14 @@
 import React from 'react';
 import Radium from 'radium';
+import { connect } from 'react-redux';
 import styles from './styles';
 import Dialog from '../Dialog';
 import { H1, Span, A, H5 } from '../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../Form';
 import CarerPopup from './CarerPopup';
 import CarerSelector from './CarerSelector';
+
+import { addCarerSlot } from './actions';
 
 class AppointmentDialog extends React.Component {
 
@@ -47,80 +50,19 @@ class AppointmentDialog extends React.Component {
         {
           id: 2,
           name: 'James Hollister'
-      },
-      {
-        id: 1,
-        name: 'Dale Webb'
-      },
-      {
-        id: 2,
-        name: 'James Hollister'
-    },
-    {
-      id: 1,
-      name: 'Dale Webb'
-    },
-    {
-      id: 2,
-      name: 'James Hollister'
-  },
-  {
-    id: 1,
-    name: 'Dale Webb'
-  },
-  {
-    id: 2,
-    name: 'James Hollister'
-},
-{
-  id: 1,
-  name: 'Dale Webb'
-},
-{
-  id: 2,
-  name: 'James Hollister'
-},
-{
-  id: 1,
-  name: 'Dale Webb'
-},
-{
-  id: 2,
-  name: 'James Hollister'
-}
-      ],
-      selectedCarers: [{}]
+        }
+      ]
     };
   }
 
-  addCarerSlot() {
-    let selectedCarers = this.state.selectedCarers;
-    selectedCarers.push({});
-    this.setState({
-      selectedCarers: selectedCarers
-    });
-  }
-
-  removeCarerSlot(i) {
-    let selectedCarers = this.state.selectedCarers;
-    selectedCarers.splice(i, 1);
-    this.setState({
-      selectedCarers: selectedCarers
-    });
-  }
-
-  selectCarer(i, carer) {
-    let selectedCarers = this.state.selectedCarers;
-    selectedCarers.splice(i, 1, carer);
-    this.setState({
-      selectedCarers: selectedCarers
-    });
+  addSlot() {
+    this.props.addCarerSlot();
   }
 
   renderAppointmentTab() {
 
-    const { selectedCarers, allCarers } = this.state;
-    const { runsEnabled } = this.props;
+    const { allCarers } = this.state;
+    const { runsEnabled, carerSlots } = this.props;
 
     return (
       <div style={styles.form}>
@@ -175,17 +117,16 @@ class AppointmentDialog extends React.Component {
         </div>
         <div style={styles.formComponentsContainer}>
           <div>
-            {selectedCarers.map((carer, i) => (
+            {carerSlots.map((carerSlot, i) => (
               <CarerSelector
+                key={carerSlot.id}
+                id={carerSlot.id}
                 position={i}
                 allCarers={allCarers}
-                selectedCarers={selectedCarers}
-                onSelectCarer={this.selectCarer.bind(this)}
-                onRemoveCarerSlot={this.removeCarerSlot.bind(this)}
                 runsEnabled={runsEnabled}
               />
             ))}
-            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} onClick={this.addCarerSlot.bind(this)}/>
+            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} onClick={this.addSlot.bind(this)}/>
           </div>
         </div>
       </div>
@@ -220,4 +161,17 @@ class AppointmentDialog extends React.Component {
   }
 }
 
-export default Radium(AppointmentDialog);
+const mapStateToProps = state => {
+  return { ...state.appointmentDialogReducer };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addCarerSlot: () => dispatch(addCarerSlot())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Radium(AppointmentDialog));

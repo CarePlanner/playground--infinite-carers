@@ -9,6 +9,9 @@ import { Button, Checkbox, Radio, Select, TextBox } from '../../../components/Fo
 import Table from '../../../components/Table';
 import AppointmentDialog from '../../../components/AppointmentDialog';
 import HoverBox from '../../../components/HoverBox';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers';
 
 class CallMonitoring extends React.Component {
 
@@ -19,6 +22,7 @@ class CallMonitoring extends React.Component {
       renderAppointmentDialog: false
     };
     this.ref = React.createRef();
+    this.store = createStore(rootReducer);
   }
 
   render() {
@@ -105,48 +109,50 @@ class CallMonitoring extends React.Component {
   )
 
     return (
-      <div ref={this.ref}>
-        <Page navbar={navbar}>
-          <div style={{display: 'flex', alignContent: 'flex-start', alignItems: 'center', justifyContent: 'flex-start'}}>
-            <div>
-              <H5>Date</H5>
-              <Select></Select>
+      <Provider store={this.store}>
+        <div ref={this.ref}>
+          <Page navbar={navbar}>
+            <div style={{display: 'flex', alignContent: 'flex-start', alignItems: 'center', justifyContent: 'flex-start'}}>
+              <div>
+                <H5>Date</H5>
+                <Select></Select>
+              </div>
+              <div>
+                <H5>Carers</H5>
+                <Select options={['AaronNolan']}></Select>
+              </div>
+              <div>
+                <H5>Clients</H5>
+                <Select options={['AaronNolan']}></Select>
+              </div>
+              <div>
+                <H5>Status</H5>
+                <Select options={['AaronNolan']}></Select>
+              </div>
+              <div>
+                <H5>Care Provided</H5>
+                <Select options={['AaronNolan']}></Select>
+              </div>
+              <div>
+                <H5>Duration Reasons</H5>
+                <Select options={['AaronNolan']}></Select>
+              </div>
             </div>
+            <Button label={'Filter'} theme={'neutral'} />
             <div>
-              <H5>Carers</H5>
-              <Select options={['AaronNolan']}></Select>
+              <Table
+                headers={headers}
+                rows={rows}
+                bodyTrStyle={bodyTrStyle}
+                bodyTrOnClick={bodyTrOnClick}
+                bodyTdOnMouseMove={bodyTdOnMouseMove}
+                bodyTdOnMouseLeave={bodyTdOnMouseLeave}>
+              </Table>
             </div>
-            <div>
-              <H5>Clients</H5>
-              <Select options={['AaronNolan']}></Select>
-            </div>
-            <div>
-              <H5>Status</H5>
-              <Select options={['AaronNolan']}></Select>
-            </div>
-            <div>
-              <H5>Care Provided</H5>
-              <Select options={['AaronNolan']}></Select>
-            </div>
-            <div>
-              <H5>Duration Reasons</H5>
-              <Select options={['AaronNolan']}></Select>
-            </div>
-          </div>
-          <Button label={'Filter'} theme={'neutral'} />
-          <div>
-            <Table
-              headers={headers}
-              rows={rows}
-              bodyTrStyle={bodyTrStyle}
-              bodyTrOnClick={bodyTrOnClick}
-              bodyTdOnMouseMove={bodyTdOnMouseMove}
-              bodyTdOnMouseLeave={bodyTdOnMouseLeave}>
-            </Table>
-          </div>
-        </Page>
-        {this.state.renderAppointmentDialog && dialog}
-      </div>
+          </Page>
+          {this.state.renderAppointmentDialog && dialog}
+        </div>
+      </Provider>
     );
   }
 }
