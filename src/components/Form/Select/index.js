@@ -6,10 +6,10 @@ class Select extends React.Component {
 
   render() {
 
-    const { multiple, options, style, inline, disabled, value, onChange, placeholder } = this.props;
+    const { multiple, options, style, disabled, value, onChange, placeholder } = this.props;
 
     return (
-      <div style={[styles.container, (inline) ? styles.inline : null]}>
+      <div style={styles.container}>
         <select
           multiple={multiple}
           value={value}

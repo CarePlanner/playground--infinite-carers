@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styles from './styles';
 import { H1, H2, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
-import { deselectCarer, selectCarer, removeCarerSlot } from '../actions';
+import { deselectCarer, selectCarer, removeCarerSlot, selectTravelMethod } from '../actions';
 
 class CarerPopup extends React.Component {
 
@@ -13,7 +13,17 @@ class CarerPopup extends React.Component {
     this.state = {
       highlightedCarer: null,
       selectedCarer: args.carerSlots[args.position].carer,
-      searchQuery: ''
+      searchQuery: '',
+      travelMethod: args.carerSlots[args.position].travelMethod,
+      travelMethodOptions: [
+        (args.carerSlots[args.position].carer !== null) ? `${args.carerSlots[args.position].carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+        'Bicycle',
+        'Driving',
+        'Motorcycle',
+        'Passenger',
+        'Public Transport',
+        'Walking'
+      ]
     };
     this.searchField = React.createRef();
   }
@@ -23,35 +33,63 @@ class CarerPopup extends React.Component {
   }
 
   selectCarer(carer) {
-    const { selectedCarer } = this.state;
-    const { selectedCarers } = this.props;
+    const { selectedCarers, carerSlots, position } = this.props;
 
-    const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
-    const inAnotherCarerSlot = selectedCarers.includes(carer) && !isSelectedCarer;
+    const wasSelectedCarer = carerSlots[position].carer && (carer.id === carerSlots[position].carer.id)
+    const inAnotherCarerSlot = selectedCarers.includes(carer) && !wasSelectedCarer;
 
     if(!inAnotherCarerSlot) {
       this.setState({
-        selectedCarer: carer
+        selectedCarer: carer,
+        travelMethodOptions: [
+          (carer !== null) ? `${carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+          'Bicycle',
+          'Driving',
+          'Motorcycle',
+          'Passenger',
+          'Public Transport',
+          'Walking'
+        ]
       });
     }
   }
 
   selectCarerRequired() {
     this.setState({
-      selectedCarer: null
+      selectedCarer: null,
+      travelMethodOptions: [
+        'Carer\'s Default',
+        'Bicycle',
+        'Driving',
+        'Motorcycle',
+        'Passenger',
+        'Public Transport',
+        'Walking'
+      ]
+    });
+  }
+
+  selectTravelMethod(travelMethod) {
+    this.setState({
+      travelMethod: travelMethod
     });
   }
 
   closePopup() {
     const { onClose, position, carerSlots } = this.props;
-    const { selectedCarer } = this.state;
+    const { selectedCarer, travelMethod } = this.state;
+    const carerSlot = carerSlots[position];
 
     if(selectedCarer !== null) {
       this.props.selectCarer(position, selectedCarer);
     } else {
-      if(carerSlots[position].carer !== null) {
-        this.props.deselectCarer(position, carerSlots[position].carer);
+      if(carerSlot.carer !== null) {
+        this.props.deselectCarer(position, carerSlot.carer);
       }
+    }
+
+    if(travelMethod !== carerSlot.travelMethod) {
+      this.props.selectTravelMethod(position, travelMethod);
     }
 
     if(onClose) {
@@ -122,8 +160,10 @@ class CarerPopup extends React.Component {
 
   render() {
 
-    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot, selectedCarers } = this.props;
-    const { selectedCarer, highlightedCarer, searchQuery } = this.state;
+    const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot, selectedCarers, carerSlots } = this.props;
+    const { selectedCarer, highlightedCarer, searchQuery, travelMethod, travelMethodOptions } = this.state;
+
+    const carerSlot = carerSlots[position];
 
     const filteredCarers = allCarers.filter((carer) => ((selectedCarer && (carer.id === selectedCarer.id)) || !searchQuery || new RegExp(searchQuery, 'i').test(carer.name)));
 
@@ -149,7 +189,8 @@ class CarerPopup extends React.Component {
           <div style={styles.carers}>
             {filteredCarers.map((carer, i) => {
               const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
-              const inAnotherCarerSlot = selectedCarers.includes(carer) && !isSelectedCarer;
+              const wasSelectedCarer = carerSlot.carer && (carer.id === carerSlot.carer.id)
+              const inAnotherCarerSlot = selectedCarers.includes(carer) && !wasSelectedCarer;
               return (
                 <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
                   <div style={styles.carerName}>
@@ -179,15 +220,23 @@ class CarerPopup extends React.Component {
               }}>
                 <H5 showLine={true}>Settings</H5>
               </div>
-              <Checkbox
-                label={'Shadow'}
-              />
-              <Checkbox
-                label={'Supervision'}
-              />
-              <Checkbox
-                label={'Unannounced Supervision'}
-              />
+              <A>Select to mark as shadow or supervisor</A>
+            </div>
+            <div>
+              <div style={{
+                display: 'flex',
+                alignContent: 'center',
+                alignItems: 'center',
+                marginBottom: 10,
+                marginTop: 20
+              }}>
+                <H5 showLine={true}>Travel Method</H5>
+              </div>
+              <Select
+                value={travelMethod}
+                options={travelMethodOptions}
+                onChange={(e) => this.selectTravelMethod.bind(this)(e.target.value)}
+              ></Select>
             </div>
           </div>
           <div style={styles.popupRightSectionFooter}>
@@ -211,7 +260,8 @@ const mapDispatchToProps = dispatch => {
   return {
     selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
     deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer)),
-    removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
+    removeCarerSlot: (id) => dispatch(removeCarerSlot(id)),
+    selectTravelMethod: (position, travelMethod) => dispatch(selectTravelMethod(position, travelMethod)),
   };
 };
 

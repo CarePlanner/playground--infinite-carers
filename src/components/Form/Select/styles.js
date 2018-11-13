@@ -1,5 +1,6 @@
 export default {
   container: {
+    display: 'inline-block',
     position: 'relative',
     fontFamily: 'Droid Sans',
     fontSize: 13,
@@ -23,11 +24,6 @@ export default {
     boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
     transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
     WebkitAppearance: 'none'
-  },
-  inline: {
-    display: 'inline-block',
-    marginLeft: 10,
-    marginRight: 10
   },
   disabled: {
     cursor: 'not-allowed',

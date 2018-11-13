@@ -2,11 +2,12 @@ import {
   SELECT_CARER,
   DESELECT_CARER,
   ADD_CARER_SLOT,
-  REMOVE_CARER_SLOT
+  REMOVE_CARER_SLOT,
+  SELECT_TRAVEL_METHOD
 } from './actions';
 
 const initialState = {
-  carerSlots: [{ id: 1, carer: null}],
+  carerSlots: [{ id: 1, carer: null, travelMethod: 0}],
   selectedCarers: []
 };
 
@@ -45,7 +46,7 @@ function addCarerSlot(state, action) {
 
   id++;
 
-  carerSlots = [...carerSlots, { id, carer: null }];
+  carerSlots = [...carerSlots, { id, carer: null, travelMethod: 0 }];
 
   return { ...state, carerSlots };
 }
@@ -70,6 +71,16 @@ function removeCarerSlot(state, action) {
   return { ...state, carerSlots, selectedCarers };
 }
 
+function selectTravelMethod(state, action) {
+  let { carerSlots } = state;
+
+  const { travelMethod, position } = action.payload;
+
+  carerSlots[position].travelMethod = travelMethod;
+
+  return { ...state, carerSlots };
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SELECT_CARER:
@@ -80,6 +91,8 @@ export default (state = initialState, action) => {
       return addCarerSlot(state, action);
     case REMOVE_CARER_SLOT:
       return removeCarerSlot(state, action);
+    case SELECT_TRAVEL_METHOD:
+      return selectTravelMethod(state, action);
     default:
       return state;
   }

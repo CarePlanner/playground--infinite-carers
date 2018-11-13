@@ -45,11 +45,17 @@ class AppointmentDialog extends React.Component {
       allCarers: [
         {
           id: 1,
-          name: 'Dale Webb'
+          name: 'Dale Webb',
+          crmStatus: 'Active',
+          jobTitle: 'HCA',
+          defaultTravelMethod: 'Walking'
         },
         {
           id: 2,
-          name: 'James Hollister'
+          name: 'James Hollister',
+          crmStatus: 'Active',
+          jobTitle: 'HCA',
+          defaultTravelMethod: 'Public Transport'
         }
       ]
     };
