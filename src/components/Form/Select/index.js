@@ -6,7 +6,7 @@ class Select extends React.Component {
 
   render() {
 
-    const { multiple, options, style, disabled, value, onChange, placeholder } = this.props;
+    const { multiple, options, style, disabled, value, onChange, placeholder, hideArrow } = this.props;
 
     return (
       <div style={styles.container}>
@@ -20,7 +20,7 @@ class Select extends React.Component {
           {(!value) ? <option value="" disabled selected>{placeholder || 'Select a value'}</option> : null}
           {options ? options.map((option, i) => <option value={i}>{option}</option>) : null}
         </select>
-        <span style={ styles.arrow }>&#9662;</span>
+        {!hideArrow && <span style={ styles.arrow }>&#9662;</span>}
       </div>
     );
   }

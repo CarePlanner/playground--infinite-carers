@@ -2,9 +2,27 @@ import React from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
-import { H1, H2, Span, A, H5 } from '../../Text';
-import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
-import { deselectCarer, selectCarer, removeCarerSlot, selectTravelMethod } from '../actions';
+import {
+  H1,
+  H2,
+  Span,
+  A,
+  H5
+} from '../../Text';
+import {
+  Button,
+  Checkbox,
+  Radio,
+  Select,
+  TextBox
+} from '../../Form';
+import {
+  deselectCarer,
+  selectCarer,
+  removeCarerSlot,
+  selectTravelMethod,
+  selectShadowingSupervising
+} from '../actions';
 
 class CarerPopup extends React.Component {
 
@@ -23,6 +41,13 @@ class CarerPopup extends React.Component {
         'Passenger',
         'Public Transport',
         'Walking'
+      ],
+      shadowingSupervising: args.carerSlots[args.position].shadowingSupervising,
+      shadowingSupervisingOptions: [
+        'Select to mark as shadow or supervisor',
+        'Shadow',
+        'Supervisor',
+        'Unannounced Supervisor'
       ]
     };
     this.searchField = React.createRef();
@@ -75,9 +100,15 @@ class CarerPopup extends React.Component {
     });
   }
 
+  selectShadowingSupervising(shadowingSupervising) {
+    this.setState({
+      shadowingSupervising: shadowingSupervising
+    });
+  }
+
   closePopup() {
     const { onClose, position, carerSlots } = this.props;
-    const { selectedCarer, travelMethod } = this.state;
+    const { selectedCarer, travelMethod, shadowingSupervising } = this.state;
     const carerSlot = carerSlots[position];
 
     if(selectedCarer !== null) {
@@ -90,6 +121,10 @@ class CarerPopup extends React.Component {
 
     if(travelMethod !== carerSlot.travelMethod) {
       this.props.selectTravelMethod(position, travelMethod);
+    }
+
+    if(shadowingSupervising !== carerSlot.shadowingSupervising) {
+      this.props.selectShadowingSupervising(position, shadowingSupervising);
     }
 
     if(onClose) {
@@ -120,6 +155,20 @@ class CarerPopup extends React.Component {
     if(carerSlots.length > 1) {
       this.props.removeCarerSlot(id);
     }
+  }
+
+  renderShadowSelectComponent() {
+    const { shadowingSupervising, shadowingSupervisingOptions } = this.state;
+
+    return (
+      <Select
+        value={shadowingSupervising}
+        options={shadowingSupervisingOptions}
+        style={(shadowingSupervising == 0) ? styles.shadowingSupervisingNoneSelected : null}
+        onChange={(e) => this.selectShadowingSupervising.bind(this)(e.target.value)}
+        hideArrow={shadowingSupervising == 0}
+      ></Select>
+    )
   }
 
   calculatePopupPosition() {
@@ -223,7 +272,7 @@ class CarerPopup extends React.Component {
                 }}>
                   <H5 showLine={true}>Settings</H5>
                 </div>
-                <A>Select to mark as shadow or supervisor</A>
+                {this.renderShadowSelectComponent()}
               </div>
               <div>
                 <div style={{
@@ -265,6 +314,7 @@ const mapDispatchToProps = dispatch => {
     deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer)),
     removeCarerSlot: (id) => dispatch(removeCarerSlot(id)),
     selectTravelMethod: (position, travelMethod) => dispatch(selectTravelMethod(position, travelMethod)),
+    selectShadowingSupervising: (position, shadowingSupervising) => dispatch(selectShadowingSupervising(position, shadowingSupervising))
   };
 };
 

@@ -3,6 +3,7 @@ export const DESELECT_CARER = 'DESELECT_CARER';
 export const ADD_CARER_SLOT = 'ADD_CARER_SLOT';
 export const REMOVE_CARER_SLOT = 'REMOVE_CARER_SLOT';
 export const SELECT_TRAVEL_METHOD = 'SELECT_TRAVEL_METHOD';
+export const SELECT_SHADOWING_SUPERVISING = 'SELECT_SHADOWING_SUPERVISING';
 
 export const selectCarer = (position, carer) => ({
   type: SELECT_CARER,
@@ -36,5 +37,13 @@ export const selectTravelMethod = (position, travelMethod) => ({
   payload: {
     position,
     travelMethod
+  }
+});
+
+export const selectShadowingSupervising = (position, shadowingSupervising) => ({
+  type: SELECT_SHADOWING_SUPERVISING,
+  payload: {
+    position,
+    shadowingSupervising
   }
 });
