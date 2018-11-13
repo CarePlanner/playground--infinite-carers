@@ -1,6 +1,5 @@
 export default {
   container: {
-    display: 'inline-block',
     position: 'relative',
     fontFamily: 'Droid Sans',
     fontSize: 13,
@@ -10,6 +9,7 @@ export default {
     position: 'relative',
     display: 'block',
     height: 32,
+    width: '100%',
     paddingTop: 6,
     paddingBottom: 6,
     paddingLeft: 12,
