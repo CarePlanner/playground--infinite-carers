@@ -175,38 +175,42 @@ class CarerPopup extends React.Component {
       const { x: selectorX, y: selectorY, height: selectorHeight } = this.props.selector.current.getBoundingClientRect();
       let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
 
-      windowMaxX-=50; //Buffer of 50px between the edges
-      windowMaxY-=100; //Buffer of 50px between the edges (taking into account 50px offset)
-
       const initialMaxX = selectorX + styles.popup.width;
       const initialMaxY = selectorY + styles.popup.height;
 
-      const minX = 50;
+      const initialMinX = 50;
+      const initialMinY = selectorY - styles.popup.height - styles.popupArrow.height;
 
       const maxX = (windowMaxX - selectorX) - styles.popup.width;
       const maxY = (windowMaxY - selectorY) - styles.popup.height;
 
-      let popupX = (initialMaxX < windowMaxX) ? (selectorX < 50) ? -selectorX + 50 : 0 : maxX;
-      let popupY = (initialMaxY < windowMaxY) ? 50 : maxY;
+      let popupX = (initialMaxX < windowMaxX) ? (selectorX < 50) ? -selectorX : 0 : maxX;
+      let popupY = 0;
 
-      let popupArrowX = (popupX >= 0) ? minX - (styles.popupArrow.left * 2.25) : -popupX + styles.popupArrow.left;
-      let popupArrowY = styles.popupArrow.top;
+      const imageOffsetX = 50;
 
-      let popupArrowPsudoStyle = 'popupArrowAbove';
+      let popupArrowX = (popupX >= 0) ? imageOffsetX - (styles.popupArrow.left * 2.25) : -popupX + styles.popupArrow.left;
+      let popupArrowY = 0;
 
-      if(popupY < 0) {
-          if(selectorY > (windowMaxY - (selectorY + selectorHeight))) {
-              //Put popup above the selector
-              popupY = -styles.popup.height - styles.popupArrow.height;
-              popupArrowY = styles.popup.height - 1;
-              popupArrowPsudoStyle = 'popupArrowBelow';
-          }
+      let popupArrowPseudoStyle = '';
+
+      const spaceAboveSelector = selectorY;
+      const spaceBelowSelector = windowMaxY - selectorY - selectorHeight;
+
+      if(spaceAboveSelector < spaceBelowSelector) {
+        popupY = (initialMaxY < windowMaxY) ? (selectorY < 50) ? -selectorY + 50 : styles.popup.top : maxY;
+        popupArrowY = styles.popupArrow.top;
+        popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
+      } else {
+        popupY = (initialMinY < 0) ? -initialMinY - styles.popup.height : -styles.popup.height - styles.popupArrow.height;
+        popupArrowY = styles.popup.height - 1;
+        popupArrowPseudoStyle = (popupY + styles.popup.height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
       }
 
       return [
           { top: popupY, left: popupX },
           { top: popupArrowY, left: popupArrowX },
-          popupArrowPsudoStyle
+          popupArrowPseudoStyle
       ];
   }
 

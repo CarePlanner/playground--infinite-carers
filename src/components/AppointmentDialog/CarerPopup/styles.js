@@ -58,6 +58,14 @@ export default {
         borderTopColor: '#FFFFFF',
       }
   },
+  popupArrowGone: {
+      '::before': {
+        display: 'none'
+      },
+      '::after': {
+        display: 'none'
+      }
+  },
   popupTopSection: {
     display: 'flex',
     flexGrow: 2
