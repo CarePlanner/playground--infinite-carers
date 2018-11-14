@@ -20,26 +20,6 @@ class AppointmentDialog extends React.Component {
         'appointment': {
             title: 'Appointment',
             body: () => this.renderAppointmentTab.bind(this)()
-        },
-        'care-required': {
-            title: 'Care Required',
-            body: ''
-        },
-        'finance': {
-            title: 'Finance',
-            body: ''
-        },
-        'travel': {
-            title: 'Travel',
-            body: ''
-        },
-        'Notes': {
-            title: 'Notes',
-            body: ''
-        },
-        'History': {
-            title: 'History',
-            body: ''
         }
       },
       allCarers: [

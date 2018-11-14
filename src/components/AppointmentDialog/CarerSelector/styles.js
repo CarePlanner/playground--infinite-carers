@@ -59,7 +59,7 @@ export default {
   },
   carerSelector: {
     position: 'relative',
-    display: 'flex',
+    display: 'inline-flex',
     alignContent: 'center',
     alignItems: 'center',
     paddingLeft: 10,

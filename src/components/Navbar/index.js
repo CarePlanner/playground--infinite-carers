@@ -111,9 +111,9 @@ class Navbar extends React.Component {
               </div>
             ))}
           </div>
-          <div>
-            <Select inline={ true } placeholder={ 'User Search' } options={ users } style={{ width: 224 }} />
-            <Select inline={ true } placeholder={ 'All' } options={ regions } style={{ width: 224, marginLeft: -15 }} />
+          <div style={{display: 'flex'}}>
+            <Select placeholder={ 'User Search' } options={ users } style={{ width: 224 }} />
+            <Select placeholder={ 'All' } options={ regions } style={{ width: 224, marginLeft: 10 }} />
           </div>
         </div>
         <div style={styles.secondaryMenu}>

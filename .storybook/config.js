@@ -5,7 +5,9 @@ setOptions({
   name: "CarePlanner Playground",
   url: "#",
   hierarchySeparator: /\//,
+  goFullScreen: true,
   showAddonPanel: false,
+  showStoriesPanel: false
 });
 
 function loadStories() {

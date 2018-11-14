@@ -15,36 +15,32 @@ class Dialog extends React.Component {
       tabs: args.tabs,
       activeTab: args.activeTab
     };
+  }
 
-    if(args.parent && args.parent.current) {
-      let parentDomElement = args.parent.current;
-      if(parentDomElement.onmousemove) {
-        this.state.previousParentFunctions.onmousemove = parentDomElement.onmousemove;
-        parentDomElement.onmousemove = (e) => {
-          parentDomElement.onmousemove(e);
-          this.moveDialog.bind(this)(e);
-        }
-      } else {
-        parentDomElement.onmousemove = this.moveDialog.bind(this);
+  componentDidMount() {
+    if(document.body.onmousemove) {
+      this.state.previousParentFunctions.onmousemove = document.body.onmousemove;
+      document.body.onmousemove = (e) => {
+        document.body.onmousemove(e);
+        this.moveDialog.bind(this)(e);
       }
-      if(parentDomElement.onmouseup) {
-        this.state.previousParentFunctions.onmouseup = parentDomElement.onmouseup;
-        parentDomElement.onmouseup = (e) => {
-          parentDomElement.onmouseup(e);
-          this.stopMovingDialog.bind(this)(e);
-        }
-      } else {
-        parentDomElement.onmouseup = this.stopMovingDialog.bind(this);
+    } else {
+      document.body.onmousemove = this.moveDialog.bind(this);
+    }
+    if(document.body.onmouseup) {
+      this.state.previousParentFunctions.onmouseup = document.body.onmouseup;
+      document.body.onmouseup = (e) => {
+        document.body.onmouseup(e);
+        this.stopMovingDialog.bind(this)(e);
       }
+    } else {
+      document.body.onmouseup = this.stopMovingDialog.bind(this);
     }
   }
 
   componentWillUnmount() {
-    if(this.props.parent && this.props.parent.current) {
-      let parentDomElement = this.props.parent.current;
-      parentDomElement.onmousemove = this.state.previousParentFunctions.onmousemove;
-      parentDomElement.onmouseup = this.state.previousParentFunctions.onmouseup;
-    }
+      document.body.onmousemove = this.state.previousParentFunctions.onmousemove;
+      document.body.onmouseup = this.state.previousParentFunctions.onmouseup;
   }
 
   startMovingDialog(e) {

@@ -8,7 +8,7 @@ export default {
     border: '1px solid #CCCCCC',
     padding: 0,
     zIndex: 100,
-    height: 550,
+    height: 400,
     top: 50,
     left: 0,
     backgroundColor: '#FFFFFF'
