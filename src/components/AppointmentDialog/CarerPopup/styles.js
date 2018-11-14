@@ -136,9 +136,18 @@ export default {
   },
   carerName: {
     display: 'flex',
+    flexDirection: 'column',
     userSelect: 'none'
   },
   carerNameText: {
+  },
+  carerIcons: {
+    display: 'flex'
+  },
+  carerIcon: {
+    marginTop: 2,
+    width: 15,
+    height: 15
   },
   selectedCarer: {
     backgroundColor: '#256990',
@@ -153,6 +162,9 @@ export default {
       color: '#E9F0F4',
       fontWeight: 'bold',
     }
+  },
+  selectedCarerIcon: {
+    fill: '#E9F0F4'
   },
   disabledCarer: {
     cursor: 'not-allowed'

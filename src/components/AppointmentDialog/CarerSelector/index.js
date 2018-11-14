@@ -8,6 +8,7 @@ import CarerPopup from '../CarerPopup';
 import {
   selectRun
 } from '../actions';
+const shadowingIcon = require('../../../assets/shadowing.png');
 
 class CarerSelector extends React.Component {
 
@@ -78,7 +79,8 @@ class CarerSelector extends React.Component {
   render() {
 
     const { position, runsEnabled, carerSlots } = this.props;
-    const selectedCarer = carerSlots[position].carer;
+    const carerSlot = carerSlots[position];
+    const selectedCarer = carerSlot.carer;
     const slotNumber = position + 1;
 
     return (
@@ -90,14 +92,13 @@ class CarerSelector extends React.Component {
         <div style={{position: 'relative'}} ref={this.elem}>
           <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
             <div style={styles.carerSelectorImage}></div>
-            {!selectedCarer && <div style={styles.carerSelectorName}>
-              <H5 style={styles.carerSelectorNameText}>Required</H5>
-              <span style={ styles.carerSelectorArrow }>&#9662;</span>
-            </div>}
-            {selectedCarer && <div style={styles.carerSelectorName}>
-              <H5 style={[styles.carerSelectorNameText, styles.selectedCarerSelectorNameText]}>{selectedCarer.name}</H5>
-              <span style={[styles.carerSelectorArrow, styles.selectedCarerSelectorArrow]}>&#9662;</span>
-            </div>}
+            <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
+              {(selectedCarer) ? selectedCarer.name : 'Required'}
+              <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
+              <div style={styles.carerSelectorIcons}>
+                {carerSlot.shadowingSupervising == 1 && <img style={styles.carerSelectorIcon} src={shadowingIcon} />}
+              </div>
+            </H5>
           </div>
           {this.state.renderCarerSelectorDialog && this.renderCarerPopup()}
         </div>

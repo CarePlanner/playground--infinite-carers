@@ -36,6 +36,13 @@ class AppointmentDialog extends React.Component {
           crmStatus: 'Active',
           jobTitle: 'HCA',
           defaultTravelMethod: 'Public Transport'
+        },
+        {
+          id: 3,
+          name: 'Matthew Sharp',
+          crmStatus: 'Active',
+          jobTitle: 'HCA',
+          defaultTravelMethod: 'Driving'
         }
       ]
     };

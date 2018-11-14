@@ -1,5 +1,5 @@
 import React from 'react';
-import Radium from 'radium';
+import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
 import {
@@ -23,6 +23,9 @@ import {
   selectTravelMethod,
   selectShadowingSupervising
 } from '../actions';
+const drivingIcon = require('../../../assets/driving.png');
+const drivingIconSelected = require('../../../assets/driving-selected.png');
+const drivingIconDisabled = require('../../../assets/driving-disabled.png');
 
 class CarerPopup extends React.Component {
 
@@ -252,6 +255,9 @@ class CarerPopup extends React.Component {
                   <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
                     <div style={styles.carerName}>
                       <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null, (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
+                      <div style={styles.carerIcons}>
+                        {carer.defaultTravelMethod === 'Driving' && <img style={styles.carerIcon} src={(isSelectedCarer) ? drivingIconSelected : (inAnotherCarerSlot) ? drivingIconDisabled : drivingIcon} />}
+                      </div>
                     </div>
                   </div>
                 );

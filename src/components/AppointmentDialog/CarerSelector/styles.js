@@ -78,19 +78,20 @@ export default {
     backgroundColor: '#EEEEEE',
     pointerEvents: 'none'
   },
-  carerSelectorName: {
-    display: 'flex',
-    marginLeft: 10,
-    pointerEvents: 'none',
-    userSelect: 'none'
-  },
   carerSelectorNameText: {
+    marginLeft: 10,
     color: '#9B9B9B'
   },
   carerSelectorArrow: {
     marginLeft: 5,
     color: '#9B9B9B',
     userSelect: 'none'
+  },
+  carerSelectorIcons: {
+
+  },
+  carerSelectorIcon: {
+    maxHeight: 15
   },
   selectedCarerSelectorNameText: {
     color: '#256990'
