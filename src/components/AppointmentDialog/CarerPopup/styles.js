@@ -92,10 +92,12 @@ export default {
   },
   popupBottomSection: {
     display: 'flex',
+    minHeight: 60,
     justifyContent: 'space-between',
-    alignItems: 'baseline',
+    alignItems: 'center',
     borderTop: '1px solid #CCCCCC',
-    padding: 15
+    paddingLeft: 15,
+    paddingRight: 15
   },
   popupLeftSectionHeader: {
     flexShrink: 1,
