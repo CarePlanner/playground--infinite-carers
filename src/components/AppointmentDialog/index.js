@@ -21,30 +21,7 @@ class AppointmentDialog extends React.Component {
             title: 'Appointment',
             body: () => this.renderAppointmentTab.bind(this)()
         }
-      },
-      allCarers: [
-        {
-          id: 1,
-          name: 'Dale Webb',
-          crmStatus: 'Active',
-          jobTitle: 'HCA',
-          defaultTravelMethod: 'Walking'
-        },
-        {
-          id: 2,
-          name: 'James Hollister',
-          crmStatus: 'Active',
-          jobTitle: 'HCA',
-          defaultTravelMethod: 'Public Transport'
-        },
-        {
-          id: 3,
-          name: 'Matthew Sharp',
-          crmStatus: 'Active',
-          jobTitle: 'HCA',
-          defaultTravelMethod: 'Driving'
-        }
-      ]
+      }
     };
   }
 
@@ -54,7 +31,7 @@ class AppointmentDialog extends React.Component {
 
   renderAppointmentTab() {
 
-    const { allCarers } = this.state;
+    const { allCarers } = this.props;
     const { runsEnabled, carerSlots } = this.props;
 
     return (
