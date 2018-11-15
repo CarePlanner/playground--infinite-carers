@@ -15,32 +15,18 @@ class Dialog extends React.Component {
       tabs: args.tabs,
       activeTab: args.activeTab
     };
+    this.moveDialog = this.moveDialog.bind(this);
+    this.stopMovingDialog = this.stopMovingDialog.bind(this);
   }
 
   componentDidMount() {
-    if(document.body.onmousemove) {
-      this.state.previousParentFunctions.onmousemove = document.body.onmousemove;
-      document.body.onmousemove = (e) => {
-        document.body.onmousemove(e);
-        this.moveDialog.bind(this)(e);
-      }
-    } else {
-      document.body.onmousemove = this.moveDialog.bind(this);
-    }
-    if(document.body.onmouseup) {
-      this.state.previousParentFunctions.onmouseup = document.body.onmouseup;
-      document.body.onmouseup = (e) => {
-        document.body.onmouseup(e);
-        this.stopMovingDialog.bind(this)(e);
-      }
-    } else {
-      document.body.onmouseup = this.stopMovingDialog.bind(this);
-    }
+    document.addEventListener('mousemove', this.moveDialog);
+    document.addEventListener('mouseup', this.stopMovingDialog);
   }
 
   componentWillUnmount() {
-      document.body.onmousemove = this.state.previousParentFunctions.onmousemove;
-      document.body.onmouseup = this.state.previousParentFunctions.onmouseup;
+    document.removeEventListener('mousemove', this.moveDialog);
+    document.removeEventListener('mouseup', this.stopMovingDialog);
   }
 
   startMovingDialog(e) {

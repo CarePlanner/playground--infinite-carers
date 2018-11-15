@@ -10,6 +10,10 @@ class Text extends React.Component {
     super(args);
   }
 
+  componentDidMount() {
+    this.DOMNode = ReactDOM.findDOMNode(this);
+  }
+
   render() {
 
     const { style, onClick, showLine } = this.props;
@@ -17,7 +21,7 @@ class Text extends React.Component {
     let addLineRightMargin = true;
 
     if(showLine) {
-        if(ReactDOM.findDOMNode(this) && !ReactDOM.findDOMNode(this).nextSibling) {
+        if(this.DOMNode && !this.DOMNode.nextSibling) {
           addLineRightMargin = false;
         }
     }

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -54,10 +55,23 @@ class CarerPopup extends React.Component {
       ]
     };
     this.searchField = React.createRef();
+    this.closePopupWithoutSaving = this.closePopupWithoutSaving.bind(this);
   }
 
   componentDidMount() {
     this.searchField.current._reactInternalFiber.child.stateNode.focus();
+    document.addEventListener('click', this.closePopupWithoutSaving);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.closePopupWithoutSaving);
+  }
+
+  closePopupWithoutSaving(e) {
+    const popupDOMNode = ReactDOM.findDOMNode(this);
+    if(e.target !== popupDOMNode && !popupDOMNode.contains(e.target)) {
+      this.props.onClose();
+    }
   }
 
   selectCarer(carer) {
