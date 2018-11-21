@@ -80,7 +80,7 @@ export default {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 2,
-    padding: 15
+    padding: 10
   },
   popupRightSectionBody: {
     display: 'flex',
@@ -92,27 +92,27 @@ export default {
   },
   popupBottomSection: {
     display: 'flex',
-    minHeight: 60,
+    minHeight: 50,
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTop: '1px solid #CCCCCC',
-    paddingLeft: 15,
-    paddingRight: 15
+    paddingLeft: 10,
+    paddingRight: 10
   },
   popupLeftSectionHeader: {
     flexShrink: 1,
-    padding: 15
+    padding: 10
   },
   popupLeftSectionFooter: {
     flexShrink: 1,
-    padding: 15,
+    padding: 10,
     borderTop: '1px solid #CCCCCC'
   },
   carers: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 2,
-    overflow: 'scroll',
+    overflowX: 'hidden',
   },
   carer: {
     position: 'relative',
@@ -138,16 +138,12 @@ export default {
   },
   carerName: {
     display: 'flex',
-    flexDirection: 'column',
     userSelect: 'none'
   },
   carerNameText: {
   },
-  carerIcons: {
-    display: 'flex'
-  },
   carerIcon: {
-    marginTop: 2,
+    marginRight: 5,
     width: 15,
     height: 15
   },

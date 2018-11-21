@@ -255,12 +255,12 @@ class CarerPopup extends React.Component {
             <div style={styles.popupLeftSectionHeader}>
               <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
             </div>
-            <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
-              <div style={styles.carerName}>
-                <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Required</Span>
-              </div>
-            </div>
             <div style={styles.carers}>
+              <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
+                <div style={styles.carerName}>
+                  <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Carer Required</Span>
+                </div>
+              </div>
               {filteredCarers.map((carer, i) => {
                 const isSelectedCarer = selectedCarer && (carer.id === selectedCarer.id);
                 const wasSelectedCarer = carerSlot.carer && (carer.id === carerSlot.carer.id)
@@ -268,10 +268,8 @@ class CarerPopup extends React.Component {
                 return (
                   <div style={[styles.carer, (isSelectedCarer) ? styles.selectedCarer : null, (inAnotherCarerSlot) ? styles.disabledCarer : null]} key={i} onClick={() => this.selectCarer(carer)}>
                     <div style={styles.carerName}>
+                      {carer.defaultTravelMethod === 'Driving' && <img style={styles.carerIcon} src={(isSelectedCarer) ? drivingIconSelected : (inAnotherCarerSlot) ? drivingIconDisabled : drivingIcon} />}
                       <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : null, (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
-                      <div style={styles.carerIcons}>
-                        {carer.defaultTravelMethod === 'Driving' && <img style={styles.carerIcon} src={(isSelectedCarer) ? drivingIconSelected : (inAnotherCarerSlot) ? drivingIconDisabled : drivingIcon} />}
-                      </div>
                     </div>
                   </div>
                 );
