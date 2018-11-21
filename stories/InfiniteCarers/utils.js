@@ -16,7 +16,7 @@ export function personalDetailsTransformer(row, i) {
 
   return {
     id: i + 1,
-    name: row[0].match(/.+\s./)[0],
+    name: row[0],
     crmStatus: row[1].trim(),
     jobTitle: (row[2] !== 'unknown' && row[2] !== 'Not assigned') ? row[2].trim() : undefined,
     defaultTravelMethod: getTravelMethod(row[3]),
