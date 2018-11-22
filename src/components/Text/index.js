@@ -27,7 +27,7 @@ class Text extends React.Component {
     }
 
     return (
-      <span style={[styles.textContainer, (showLine) ? {flexGrow: 2} : null]}>
+      <span style={[styles.textContainer, {flexGrow: 2}]}>
         <span style={[styles.defaults, ...style]} onClick={(onClick) ? onClick : null}>{this.props.children}</span>
         {showLine && <div style={[styles.line, (!addLineRightMargin) ? {marginRight: 0} : null]}></div>}
       </span>

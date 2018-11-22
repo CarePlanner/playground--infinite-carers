@@ -17,6 +17,7 @@ import {
   Select,
   TextBox
 } from '../../Form';
+import Overlay from '../../Overlay';
 import {
   deselectCarer,
   selectCarer,
@@ -52,7 +53,8 @@ class CarerPopup extends React.Component {
         'Shadow',
         'Supervisor',
         'Unannounced Supervisor'
-      ]
+      ],
+      renderRecommendedOverlay: false
     };
     this.searchField = React.createRef();
     this.closePopupWithoutSaving = this.closePopupWithoutSaving.bind(this);
@@ -295,6 +297,18 @@ class CarerPopup extends React.Component {
     }
   }
 
+  openRecommendedOverlay() {
+    this.setState({
+      renderRecommendedOverlay: true
+    });
+  }
+
+  closeRecommendedOverlay() {
+    this.setState({
+      renderRecommendedOverlay: false
+    });
+  }
+
   renderShadowSelectComponent() {
     const { shadowingSupervising, shadowingSupervisingOptions } = this.state;
 
@@ -355,7 +369,7 @@ class CarerPopup extends React.Component {
   render() {
 
     const { onClose, allCarers, onSelectCarer, position, onRemoveCarerSlot, selectedCarers, carerSlots } = this.props;
-    const { selectedCarer, highlightedCarer, searchQuery, travelMethod, travelMethodOptions } = this.state;
+    const { selectedCarer, highlightedCarer, searchQuery, travelMethod, travelMethodOptions, renderRecommendedOverlay } = this.state;
 
     const carerSlot = carerSlots[position];
 
@@ -398,7 +412,7 @@ class CarerPopup extends React.Component {
               {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={styles.popupRightSectionBody.H1}>No matching carers found</H2></div>}
             </div>
             <div style={styles.popupLeftSectionFooter}>
-              <Button theme={'neutral'} label={'Recommend'} style={{width: 'calc(100% - 25px)'}} />
+              <Button theme={'neutral'} label={'Recommend'} style={{width: 'calc(100% - 25px)'}} onClick={this.openRecommendedOverlay.bind(this)}/>
             </div>
           </div>
           <div style={styles.popupRightSection}>
@@ -442,6 +456,7 @@ class CarerPopup extends React.Component {
               <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
           </div>
         </div>
+        {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay.bind(this)}><div style={{height: 1000}}/></Overlay>}
       </div>
     );
   }

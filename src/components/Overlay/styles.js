@@ -1,6 +1,6 @@
 export default {
   frame: {
-    position: 'absolute',
+    position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
@@ -46,9 +46,12 @@ export default {
     marginBottom: 20,
     borderBottomWidth: 1,
     borderBottomStyle: 'dotted',
-    borderBottomColor: '#BDBDBD'
+    borderBottomColor: '#BDBDBD',
+    width: '100%'
   },
   innerContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
     padding: 20
   },
 };
