@@ -31,8 +31,7 @@ class AppointmentDialog extends React.Component {
 
   renderAppointmentTab() {
 
-    const { allCarers } = this.props;
-    const { runsEnabled, carerSlots } = this.props;
+    const { allCarers, runsEnabled, carerSlots, careRequired } = this.props;
 
     return (
       <div style={styles.form}>
@@ -93,6 +92,7 @@ class AppointmentDialog extends React.Component {
                 id={carerSlot.id}
                 position={i}
                 allCarers={allCarers}
+                careRequired={careRequired}
                 runsEnabled={runsEnabled}
               />
             ))}

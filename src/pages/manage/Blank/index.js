@@ -25,7 +25,7 @@ class Blank extends React.Component {
   }
 
   render() {
-    const { runsEnabled, carers } = this.props;
+    const { runsEnabled, carers, careRequired } = this.props;
     const { initialDialogPosition } = this.state;
 
     const navbar = (
@@ -40,6 +40,7 @@ class Blank extends React.Component {
             dialogPosition={initialDialogPosition}
             runsEnabled={runsEnabled}
             allCarers={carers}
+            careRequired={careRequired}
           />
         </Page>
       </div>

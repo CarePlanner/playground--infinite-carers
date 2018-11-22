@@ -15,11 +15,21 @@ const data = require('./anon.csv');
 
 const transformedData = data.map(personalDetailsTransformer);
 
+const careRequired = [
+  'Help prepare for bed',
+  'Laundry',
+  'Medication support',
+  // 'Personal care',
+  // 'Catheter Care',
+  // 'Female carer'
+]
+
 stories.add('Example', () => (
   <Provider store={createStore(rootReducer)}>
     <Blank
       runsEnabled={boolean('Switch on "Runs"', true)}
       carers={transformedData}
+      careRequired={careRequired}
     />
   </Provider>
 ));

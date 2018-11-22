@@ -46,7 +46,7 @@ class CarerSelector extends React.Component {
 
   renderCarerPopup() {
 
-    const { allCarers, position, onRemoveCarerSlot, id } = this.props;
+    const { allCarers, position, onRemoveCarerSlot, id, careRequired } = this.props;
     const { selectedCarer } = this.state;
 
     return (
@@ -55,6 +55,7 @@ class CarerSelector extends React.Component {
         id={id}
         position={position}
         allCarers={allCarers}
+        careRequired={careRequired}
         onClose={this.toggleCarerSelector.bind(this)}
       />
     );

@@ -8,7 +8,7 @@ export default {
     border: '1px solid #CCCCCC',
     padding: 0,
     zIndex: 100,
-    height: 400,
+    height: 600,
     top: 50,
     left: 0,
     backgroundColor: '#FFFFFF'
@@ -84,11 +84,20 @@ export default {
   },
   popupRightSectionBody: {
     display: 'flex',
-    flexGrow: 4,
+    flexGrow: 2,
     flexDirection: 'column',
     H1: {
       color: '#CCCCCC'
     }
+  },
+  recommendedTextStatement: {
+    paddingBottom: 15
+  },
+  recommendedTextStatementPositive: {
+    color: '#060'
+  },
+  recommendedTextStatementNegative: {
+    color: '#DF2D2A'
   },
   popupBottomSection: {
     display: 'flex',
