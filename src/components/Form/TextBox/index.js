@@ -16,7 +16,8 @@ class TextBox extends React.Component {
       min,
       max,
       ref,
-      onKeyUp
+      onKeyUp,
+      placeholder
     } = this.props;
 
     return (
@@ -24,6 +25,7 @@ class TextBox extends React.Component {
         ref={ref}
         type={type}
         value={value}
+        placeholder={placeholder}
         onChange={ (onChange) ? onChange.bind(this) : null }
         onKeyUp={onKeyUp}
         style={[styles.textBox, (inline) ? styles.inline : null, (disabled) ? styles.disabled : null, style]}

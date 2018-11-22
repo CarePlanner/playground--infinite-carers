@@ -388,7 +388,7 @@ class CarerPopup extends React.Component {
         <div style={styles.popupTopSection}>
           <div style={styles.popupLeftSection}>
             <div style={styles.popupLeftSectionHeader}>
-              <TextBox ref={this.searchField} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
+              <TextBox ref={this.searchField} placeholder={'Search'} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
             </div>
             <div style={styles.carers}>
               <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
