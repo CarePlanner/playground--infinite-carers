@@ -3,12 +3,16 @@ import Radium from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
 import Dialog from '../Dialog';
-import { H1, Span, A, H5 } from '../Text';
+import { H1, H2, Span, A, H5 } from '../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../Form';
 import CarerPopup from './CarerPopup';
 import CarerSelector from './CarerSelector';
 
 import { addCarerSlot } from './actions';
+
+const bin = require('../../assets/bin.png');
+const cross = require('../../assets/cross.png');
+const reload = require('../../assets/reload.png');
 
 class AppointmentDialog extends React.Component {
 
@@ -96,7 +100,7 @@ class AppointmentDialog extends React.Component {
                 runsEnabled={runsEnabled}
               />
             ))}
-            <Button theme={'neutral'} label={'Add Carer'} style={{width: 200}} onClick={this.addSlot.bind(this)}/>
+            <Button theme={'neutral'} label={'Add Carer'} style={{width: '100%'}} onClick={this.addSlot.bind(this)}/>
           </div>
         </div>
       </div>
@@ -104,7 +108,29 @@ class AppointmentDialog extends React.Component {
   }
 
   renderHeader() {
-    return null
+    return (
+      <div style={styles.header}>
+        <div>
+          <H2>Client: </H2>
+          &nbsp;
+          <H2 style={styles.headerClientName}>Amelie Gibson</H2>
+        </div>
+        <div style={styles.headerLinks}>
+          <A style={styles.headerLink}>
+            <img src={cross} style={styles.headerLinkImage} />
+            Cancel
+          </A>
+          <A style={styles.headerLink}>
+            <img src={bin} style={styles.headerLinkImage} />
+            Delete
+          </A>
+          <A style={styles.headerLink}>
+            <img src={reload} style={styles.headerLinkImage} />
+            View in schedule
+          </A>
+        </div>
+      </div>
+    );
   }
 
   renderFooter() {

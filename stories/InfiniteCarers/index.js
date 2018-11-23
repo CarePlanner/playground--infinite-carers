@@ -18,10 +18,7 @@ const transformedData = data.map(personalDetailsTransformer);
 const careRequired = [
   'Help prepare for bed',
   'Laundry',
-  'Medication support',
-  // 'Personal care',
-  // 'Catheter Care',
-  // 'Female carer'
+  'Medication support'
 ]
 
 stories.add('Example', () => (

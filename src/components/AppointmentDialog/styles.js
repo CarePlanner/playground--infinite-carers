@@ -1,26 +1,37 @@
 export default {
   form: {
     display: 'flex',
-    alignContent: 'center',
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20
+    alignContent: 'center'
   },
   formComponentsContainer: {
-    width: '50%'
+    flexGrow: 1
   },
   formRow: {
     display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
     marginBottom: 20
   },
   formLabelContainer: {
     display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
     width: 120
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  headerClientName: {
+    color: '#256990'
+  },
+  headerLinks: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  headerLink: {
+    display: 'flex',
+    marginLeft: 15
+  },
+  headerLinkImage: {
+    marginRight: 5,
+    height: 15
   },
   carerAndRun: {
     display: 'flex',

@@ -8,7 +8,6 @@ export default {
   textBox: {
     position: 'relative',
     display: 'block',
-    height: 32,
     width: '100%',
     paddingTop: 6,
     paddingBottom: 6,
@@ -25,7 +24,8 @@ export default {
     borderRadius: 4,
     boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
     transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
-    WebkitAppearance: 'none'
+    WebkitAppearance: 'none',
+    boxSizing: 'border-box'
   },
   disabled: {
     cursor: 'not-allowed',
@@ -33,7 +33,7 @@ export default {
   },
   arrow: {
     position: 'absolute',
-    top: 8,
+    top: 5,
     right: 10,
     color: '#888888'
   }

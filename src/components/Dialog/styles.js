@@ -3,7 +3,7 @@ export default {
     display: 'flex',
     flexDirection: 'column',
     position: 'absolute',
-    width: 872,
+    width: 730,
     boxShadow: '0 10px 10px 1px rgba(0,0,0,.45)',
     border: '1px solid #256990',
     padding: 0,
@@ -57,8 +57,8 @@ export default {
   dialogBody: {
     display: 'flex',
     flexDirection: 'column',
-    padding: 10,
-    height: '100%'
+    padding: 20,
+    flexGrow: 2
   },
   dialogBodyHeader: {
     paddingLeft: 20,
@@ -66,9 +66,10 @@ export default {
   },
   dialogBodyFooter: {
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   dialogBodyBody: {
-    flexGrow: 2
+    flexGrow: 2,
+    padding: 20
   }
 };

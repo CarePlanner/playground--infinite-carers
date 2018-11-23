@@ -5,7 +5,6 @@ export default {
     paddingBottom: 6,
     paddingLeft: 12,
     paddingRight: 12,
-    height: 18,
     fontWeight: 400,
     fontSize: 13,
     fontFamily: 'Droid Sans',
@@ -16,7 +15,8 @@ export default {
     borderColor: '#CCCCCC',
     borderRadius: 4,
     boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075)',
-    transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s'
+    transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
+    boxSizing: 'border-box'
   },
   inline: {
     display: 'inline-block',

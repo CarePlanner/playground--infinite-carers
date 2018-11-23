@@ -388,7 +388,7 @@ class CarerPopup extends React.Component {
         <div style={styles.popupTopSection}>
           <div style={styles.popupLeftSection}>
             <div style={styles.popupLeftSectionHeader}>
-              <TextBox ref={this.searchField} placeholder={'Search'} style={{width: 'calc(100% - 25px)'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
+              <TextBox ref={this.searchField} placeholder={'Search'} style={{width: '100%'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
             </div>
             <div style={styles.carers}>
               <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
@@ -412,7 +412,7 @@ class CarerPopup extends React.Component {
               {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={styles.popupRightSectionBody.H1}>No matching carers found</H2></div>}
             </div>
             <div style={styles.popupLeftSectionFooter}>
-              <Button theme={'neutral'} label={'Recommend'} style={{width: 'calc(100% - 25px)'}} onClick={this.openRecommendedOverlay.bind(this)}/>
+              <Button theme={'neutral'} label={'Recommend'} style={{width: '100%'}} onClick={this.openRecommendedOverlay.bind(this)}/>
             </div>
           </div>
           <div style={styles.popupRightSection}>
