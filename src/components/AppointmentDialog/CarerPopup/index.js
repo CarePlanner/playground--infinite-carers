@@ -276,7 +276,7 @@ class CarerPopup extends React.Component {
             <Span>{carer.name} </Span><Span style={{color: '#9B9B9B'}}> · Active</Span>
           </H5>
         </div>
-        <div>
+        <div style={{maxHeight: 210, overflowX: 'hidden'}}>
           {this.renderVisitText(carer)}
           {this.renderAvailabilityText(carer)}
           {this.renderOverlapsText(carer)}
