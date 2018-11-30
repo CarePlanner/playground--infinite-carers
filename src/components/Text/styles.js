@@ -38,7 +38,7 @@ export default {
     display: 'block',
     fontWeight: 700,
     color: '#256990',
-    lineHeight: '20px'
+    lineHeight: '17px'
   },
   line: {
     flexGrow: 2,

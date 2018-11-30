@@ -8,7 +8,6 @@ import CarerPopup from '../CarerPopup';
 import {
   selectRun
 } from '../actions';
-const shadowingIcon = require('../../../assets/shadowing.png');
 
 class CarerSelector extends React.Component {
 
@@ -77,6 +76,29 @@ class CarerSelector extends React.Component {
     );
   }
 
+  renderShadowingSupervisingText() {
+    const { shadowingSupervising } = this.props.carerSlots[this.props.position];
+    switch(shadowingSupervising) {
+      case 3:
+      case '3':
+        return (
+          <Span style={styles.carerSelectorIndicators}>Unannounced Supervisor</Span>
+        );
+      case 2:
+      case '2':
+        return (
+          <Span style={styles.carerSelectorIndicators}>Supervisor</Span>
+        );
+      case 1:
+      case '1':
+        return (
+          <Span style={styles.carerSelectorIndicators}>Shadow</Span>
+        );
+      default:
+        return null;
+    }
+  }
+
   render() {
 
     const { position, runsEnabled, carerSlots } = this.props;
@@ -96,9 +118,7 @@ class CarerSelector extends React.Component {
             <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
               {(selectedCarer) ? selectedCarer.name : 'Required'}
               <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
-              <div style={styles.carerSelectorIcons}>
-                {carerSlot.shadowingSupervising == 1 && <img style={styles.carerSelectorIcon} src={shadowingIcon} />}
-              </div>
+              <div>{this.renderShadowingSupervisingText()}</div>
             </H5>
           </div>
           {this.state.renderCarerSelectorDialog && this.renderCarerPopup()}

@@ -87,11 +87,9 @@ export default {
     color: '#9B9B9B',
     userSelect: 'none'
   },
-  carerSelectorIcons: {
-
-  },
-  carerSelectorIcon: {
-    maxHeight: 15
+  carerSelectorIndicators: {
+    fontSize: 11,
+    fontWeight: 'normal'
   },
   selectedCarerSelectorNameText: {
     color: '#256990'
