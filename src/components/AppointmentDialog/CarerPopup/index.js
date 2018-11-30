@@ -57,11 +57,22 @@ class CarerPopup extends React.Component {
       renderRecommendedOverlay: false
     };
     this.searchField = React.createRef();
+    this.carersList = React.createRef();
     this.closePopupWithoutSaving = this.closePopupWithoutSaving.bind(this);
   }
 
   componentDidMount() {
+    const { position, carerSlots, allCarers } = this.props;
+    const carer = carerSlots[position].carer;
+
     this.searchField.current._reactInternalFiber.child.stateNode.focus();
+
+    const listPosition = allCarers.indexOf(carer);
+
+    if(carer) {
+      this.carersList.current.scrollTop = 35 + (35 * listPosition);
+    }
+
     document.addEventListener('click', this.closePopupWithoutSaving);
   }
 
@@ -390,7 +401,7 @@ class CarerPopup extends React.Component {
             <div style={styles.popupLeftSectionHeader}>
               <TextBox ref={this.searchField} placeholder={'Search'} style={{width: '100%'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
             </div>
-            <div style={styles.carers}>
+            <div style={styles.carers} ref={this.carersList}>
               <div style={[styles.carer, (selectedCarer === null) ? styles.selectedCarer : null]} key={-1} onClick={this.selectCarerRequired.bind(this)}>
                 <div style={styles.carerName}>
                   <Span style={[styles.carerNameText, (selectedCarer === null) ? styles.selectedCarerNameText : null]}>Carer Required</Span>
