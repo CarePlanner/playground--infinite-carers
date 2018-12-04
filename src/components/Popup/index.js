@@ -8,14 +8,21 @@ class Popup extends React.Component {
   constructor(args) {
     super(args);
     this.clickOff = this.clickOff.bind(this);
+    this.calculatePopupPosition = this.calculatePopupPosition.bind(this);
+  }
+
+  componentWillMount() {
+    this.calculatePopupPosition();
   }
 
   componentDidMount() {
     document.addEventListener('click', this.clickOff);
+    document.addEventListener('scroll', this.calculatePopupPosition);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.clickOff);
+    document.removeEventListener('scroll', this.calculatePopupPosition);
   }
 
   clickOff(e) {
@@ -27,17 +34,19 @@ class Popup extends React.Component {
   }
 
   calculatePopupPosition() {
-      const { x: triggerX, y: triggerY, height: triggerHeight } = this.props.trigger.current.getBoundingClientRect();
+      const width = (this.props.style && this.props.style.width) || styles.popup.width;
+      const height = (this.props.style && this.props.style.height) || styles.popup.height;
+      const { x: triggerX, y: triggerY, height: triggerHeight, top, left } = this.props.trigger.current.getBoundingClientRect();
       let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
 
-      const initialMaxX = triggerX + styles.popup.width;
-      const initialMaxY = triggerY + styles.popup.height;
+      const initialMaxX = triggerX + width;
+      const initialMaxY = triggerY + height;
 
       const initialMinX = 50;
-      const initialMinY = triggerY - styles.popup.height - styles.popupArrow.height;
+      const initialMinY = triggerY - height - styles.popupArrow.height;
 
-      const maxX = (windowMaxX - triggerX) - styles.popup.width;
-      const maxY = (windowMaxY - triggerY) - styles.popup.height;
+      const maxX = (windowMaxX - triggerX) - width;
+      const maxY = (windowMaxY - triggerY) - height;
 
       let popupX = (initialMaxX < windowMaxX) ? (triggerX < 50) ? -triggerX : 0 : maxX;
       let popupY = 0;
@@ -57,26 +66,28 @@ class Popup extends React.Component {
         popupArrowY = styles.popupArrow.top;
         popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
       } else {
-        popupY = (initialMinY < 0) ? -initialMinY - styles.popup.height : -styles.popup.height - styles.popupArrow.height;
-        popupArrowY = styles.popup.height - 1;
-        popupArrowPseudoStyle = (popupY + styles.popup.height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
+        popupY = (initialMinY < 0) ? -initialMinY - height : -height - styles.popupArrow.height;
+        popupArrowY = height - 1;
+        popupArrowPseudoStyle = (popupY + height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
       }
 
-      return [
-          { top: popupY, left: popupX },
+      this.setState({
+        popupPosition: [
+          { top: popupY + top, left: popupX + left },
           { top: popupArrowY, left: popupArrowX },
           popupArrowPseudoStyle
-      ];
+        ]
+      });
   }
 
   render() {
 
-    const { children } = this.props;
+    const { children, style } = this.props;
 
-    const popupPosition = this.calculatePopupPosition();
+    const { popupPosition } = this.state;
 
     return (
-      <div style={[styles.popup, popupPosition[0]]}>
+      <div style={[styles.popup, popupPosition[0], style]}>
         <div style={[styles.popupArrow, popupPosition[1]]}>
           <div style={styles[popupPosition[2]]['::before']}></div>
           <div style={styles[popupPosition[2]]['::after']}></div>

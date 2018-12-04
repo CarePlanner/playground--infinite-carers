@@ -2,7 +2,7 @@ export default {
   popup: {
     display: 'flex',
     flexDirection: 'column',
-    position: 'absolute',
+    position: 'fixed',
     width: 262,
     boxShadow: '0 2px 10px 0px rgba(204,204,204,.5)',
     border: '1px solid #CCCCCC',

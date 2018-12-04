@@ -6,6 +6,7 @@ import { H1, Span, A, H5 } from '../../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../../Form';
 import CarerPopup from '../CarerPopup';
 import Overlay from '../../../Overlay';
+import Popup from '../../../Popup';
 import {
   selectRun
 } from '../../actions';
@@ -23,9 +24,11 @@ class CarerSelector extends React.Component {
         'Run 2',
         'Run 3'
       ],
-      renderRecommendedOverlay: false
+      renderRecommendedOverlay: false,
+      renderRecommendedPopup: false
     };
     this.elem = React.createRef();
+    this.renderRecommendedPopup = this.renderRecommendedPopup.bind(this);
   }
 
   toggleCarerSelector() {
@@ -45,6 +48,19 @@ class CarerSelector extends React.Component {
     });
   }
 
+  renderRecommendedPopup(render) {
+    const { position, carerSlots } = this.props;
+    const selectedCarer = carerSlots[position].carer;
+    if(this.state.renderRecommendedPopup !== render) {
+      if(!selectedCarer) {
+        return;
+      }
+      this.setState({
+        renderRecommendedPopup: render
+      });
+    }
+  }
+
   openRecommendedOverlay() {
     this.setState({
       renderRecommendedOverlay: true
@@ -60,7 +76,13 @@ class CarerSelector extends React.Component {
   renderCarerPopup() {
 
     const { allCarers, position, onRemoveCarerSlot, id, careRequired } = this.props;
-    const { selectedCarer } = this.state;
+    const { selectedCarer, renderRecommendedPopup } = this.state;
+
+    if(renderRecommendedPopup !== false) {
+      this.setState({
+        renderRecommendedPopup: false
+      });
+    }
 
     return (
       <CarerPopup
@@ -116,7 +138,7 @@ class CarerSelector extends React.Component {
   render() {
 
     const { position, runsEnabled, carerSlots } = this.props;
-    const { renderRecommendedOverlay, renderCarerSelectorDialog } = this.state;
+    const { renderRecommendedOverlay, renderCarerSelectorDialog, renderRecommendedPopup } = this.state;
     const carerSlot = carerSlots[position];
     const selectedCarer = carerSlot.carer;
     const slotNumber = position + 1;
@@ -127,8 +149,8 @@ class CarerSelector extends React.Component {
           <H5 showLine={true}>Carer {slotNumber}</H5>
           {runsEnabled && this.renderRunSelector()}
         </div>
-        <div style={{position: 'relative'}} ref={this.elem}>
-          <div style={styles.carerSelector} onClick={this.toggleCarerSelector.bind(this)}>
+        <div style={{position: 'relative'}}>
+          <div style={styles.carerSelector} ref={this.elem} onClick={this.toggleCarerSelector.bind(this)} onMouseOver={() => this.renderRecommendedPopup(true)} onMouseOut={() => this.renderRecommendedPopup(false)}>
             <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
               {(selectedCarer) ? selectedCarer.name : 'Required'}
               <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
@@ -136,6 +158,7 @@ class CarerSelector extends React.Component {
             </H5>
           </div>
           {renderCarerSelectorDialog && this.renderCarerPopup()}
+          {renderRecommendedPopup && <Popup trigger={this.elem} style={{width: 100, height: 100}}>{selectedCarer.name}</Popup>}
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay.bind(this)}><div style={{height: 1000}}/></Overlay>}
       </div>
