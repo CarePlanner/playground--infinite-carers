@@ -2,12 +2,12 @@ import React from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
-import { H1, Span, A, H5 } from '../../Text';
-import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
+import { H1, Span, A, H5 } from '../../../Text';
+import { Button, Checkbox, Radio, Select, TextBox } from '../../../Form';
 import CarerPopup from '../CarerPopup';
 import {
   selectRun
-} from '../actions';
+} from '../../actions';
 
 class CarerSelector extends React.Component {
 

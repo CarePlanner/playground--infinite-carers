@@ -5,8 +5,6 @@ import styles from './styles';
 import Dialog from '../Dialog';
 import { H1, H2, Span, A, H5 } from '../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../Form';
-import CarerPopup from './CarerPopup';
-import CarerSelector from './CarerSelector';
 
 import { addCarerSlot } from './actions';
 
@@ -35,7 +33,7 @@ class AppointmentDialog extends React.Component {
 
   renderAppointmentTab() {
 
-    const { allCarers, runsEnabled, carerSlots, careRequired } = this.props;
+    const { allCarers, runsEnabled, carerSlots, careRequired, CarerSelector } = this.props;
 
     return (
       <div style={styles.form}>

@@ -9,25 +9,25 @@ import {
   Span,
   A,
   H5
-} from '../../Text';
+} from '../../../Text';
 import {
   Button,
   Checkbox,
   Radio,
   Select,
   TextBox
-} from '../../Form';
-import Overlay from '../../Overlay';
+} from '../../../Form';
+import Overlay from '../../../Overlay';
 import {
   deselectCarer,
   selectCarer,
   removeCarerSlot,
   selectTravelMethod,
   selectShadowingSupervising
-} from '../actions';
-const drivingIcon = require('../../../assets/driving.png');
-const drivingIconSelected = require('../../../assets/driving-selected.png');
-const drivingIconDisabled = require('../../../assets/driving-disabled.png');
+} from '../../actions';
+const drivingIcon = require('../../../../assets/driving.png');
+const drivingIconSelected = require('../../../../assets/driving-selected.png');
+const drivingIconDisabled = require('../../../../assets/driving-disabled.png');
 
 class CarerPopup extends React.Component {
 
