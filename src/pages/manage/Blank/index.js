@@ -6,7 +6,7 @@ import Page from '../../../components/Page';
 import Navbar from '../../../components/Navbar';
 import AppointmentDialog from '../../../components/AppointmentDialog';
 import { setCarers } from './actions';
-import CarerSelector from '../../../components/AppointmentDialog/VariantI/CarerSelector';
+import CarerSelector from '../../../components/AppointmentDialog/VariantJ/CarerSelector';
 
 class Blank extends React.Component {
 
