@@ -64,9 +64,9 @@ class CarerPopup extends React.Component {
       }
       if(!wasSelectedCarer) {
         this.props.selectCarer(position, carer);
-      }
-      if(onClose) {
-        setTimeout(onClose, 500);
+        if(onClose) {
+          setTimeout(onClose, 500);
+        }
       }
     }
   }
