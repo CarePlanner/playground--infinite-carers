@@ -4,6 +4,7 @@ import Radium, { Style } from 'radium';
 import { connect } from 'react-redux';
 import styles from './styles';
 import Popup from '../../../Popup';
+import CarerDetails from '../CarerDetails';
 import {
   H1,
   H2,
@@ -95,9 +96,26 @@ class CarerPopup extends React.Component {
     });
   }
 
+  renderCarerDetailsPopup(carer, trigger) {
+    const { careRequired } = this.props;
+    return (
+      <Popup
+        trigger={trigger}
+        style={{width: 500, height: 350}}
+        allowOffViewport={true}
+      >
+        <CarerDetails
+          carer={carer}
+          careRequired={careRequired}
+        />
+      </Popup>
+    )
+  }
+
   updateSearchQuery(input) {
     this.setState({
-      searchQuery: input
+      searchQuery: input,
+      highlightedCarer: null
     });
   }
 
@@ -144,7 +162,7 @@ class CarerPopup extends React.Component {
                   {carer.defaultTravelMethod === 'Driving' && <img style={styles.carerIcon} src={(isSelectedCarer) ? drivingIconSelected : (inAnotherCarerSlot) ? drivingIconDisabled : drivingIcon} />}
                   <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
                 </div>
-                {isHighlightedCarer && <Popup trigger={this.carersListItems[filteredCarers.indexOf(highlightedCarer)]} style={{width: 100, height: 100}}>{highlightedCarer.name}</Popup>}
+                {isHighlightedCarer && this.renderCarerDetailsPopup(highlightedCarer, this.carersListItems[filteredCarers.indexOf(highlightedCarer)])}
               </div>
             );
           })}

@@ -7,6 +7,7 @@ import { Button, Checkbox, Radio, Select, TextBox } from '../../../Form';
 import CarerPopup from '../CarerPopup';
 import Overlay from '../../../Overlay';
 import Popup from '../../../Popup';
+import CarerDetails from '../CarerDetails';
 import {
   selectRun
 } from '../../actions';
@@ -16,7 +17,7 @@ class CarerSelector extends React.Component {
   constructor(args) {
     super(args);
     this.state = {
-      renderCarerSelectorDialog: false,
+      renderCarerPopup: false,
       selectedRun: 0,
       runs: [
         'Add to Run',
@@ -25,16 +26,29 @@ class CarerSelector extends React.Component {
         'Run 3'
       ],
       renderRecommendedOverlay: false,
-      renderRecommendedPopup: false
+      renderCarerDetailsPopup: false
     };
     this.elem = React.createRef();
-    this.renderRecommendedPopup = this.renderRecommendedPopup.bind(this);
+    this.renderCarerDetailsPopup = this.renderCarerDetailsPopup.bind(this);
   }
 
-  toggleCarerSelector() {
+  showHideCarerPopup() {
     this.setState({
-      renderCarerSelectorDialog: !this.state.renderCarerSelectorDialog,
+      renderCarerPopup: !this.state.renderCarerPopup,
     });
+  }
+
+  showHideCarerDetailsPopup(render) {
+    const { position, carerSlots } = this.props;
+    const selectedCarer = carerSlots[position].carer;
+    if(this.state.renderCarerDetailsPopup !== render) {
+      if(!selectedCarer) {
+        return;
+      }
+      this.setState({
+        renderCarerDetailsPopup: render
+      });
+    }
   }
 
   selectRun(run) {
@@ -48,17 +62,20 @@ class CarerSelector extends React.Component {
     });
   }
 
-  renderRecommendedPopup(render) {
-    const { position, carerSlots } = this.props;
-    const selectedCarer = carerSlots[position].carer;
-    if(this.state.renderRecommendedPopup !== render) {
-      if(!selectedCarer) {
-        return;
-      }
-      this.setState({
-        renderRecommendedPopup: render
-      });
-    }
+  renderCarerDetailsPopup() {
+    const { carerSlots, position, careRequired } = this.props;
+    return (
+      <Popup
+        trigger={this.elem}
+        style={{width: 500, height: 350}}
+        allowOffViewport={true}
+      >
+        <CarerDetails
+          carer={carerSlots[position].carer}
+          careRequired={careRequired}
+        />
+      </Popup>
+    )
   }
 
   openRecommendedOverlay() {
@@ -76,11 +93,11 @@ class CarerSelector extends React.Component {
   renderCarerPopup() {
 
     const { allCarers, position, onRemoveCarerSlot, id, careRequired } = this.props;
-    const { selectedCarer, renderRecommendedPopup } = this.state;
+    const { renderCarerDetailsPopup } = this.state;
 
-    if(renderRecommendedPopup !== false) {
+    if(renderCarerDetailsPopup !== false) {
       this.setState({
-        renderRecommendedPopup: false
+        renderCarerDetailsPopup: false
       });
     }
 
@@ -91,7 +108,7 @@ class CarerSelector extends React.Component {
         position={position}
         allCarers={allCarers}
         careRequired={careRequired}
-        onClose={this.toggleCarerSelector.bind(this)}
+        onClose={this.showHideCarerPopup.bind(this)}
       />
     );
   }
@@ -138,7 +155,7 @@ class CarerSelector extends React.Component {
   render() {
 
     const { position, runsEnabled, carerSlots } = this.props;
-    const { renderRecommendedOverlay, renderCarerSelectorDialog, renderRecommendedPopup } = this.state;
+    const { renderRecommendedOverlay, renderCarerPopup, renderCarerDetailsPopup } = this.state;
     const carerSlot = carerSlots[position];
     const selectedCarer = carerSlot.carer;
     const slotNumber = position + 1;
@@ -150,15 +167,15 @@ class CarerSelector extends React.Component {
           {runsEnabled && this.renderRunSelector()}
         </div>
         <div style={{position: 'relative'}}>
-          <div style={styles.carerSelector} ref={this.elem} onClick={this.toggleCarerSelector.bind(this)} onMouseOver={() => this.renderRecommendedPopup(true)} onMouseOut={() => this.renderRecommendedPopup(false)}>
+          <div style={styles.carerSelector} ref={this.elem} onClick={this.showHideCarerPopup.bind(this)} onMouseOver={() => this.showHideCarerDetailsPopup(true)} onMouseOut={() => this.showHideCarerDetailsPopup(false)}>
             <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
               {(selectedCarer) ? selectedCarer.name : 'Required'}
               <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
               <div>{this.renderShadowingSupervisingText()}</div>
             </H5>
           </div>
-          {renderCarerSelectorDialog && this.renderCarerPopup()}
-          {renderRecommendedPopup && <Popup trigger={this.elem} style={{width: 100, height: 100}}>{selectedCarer.name}</Popup>}
+          {renderCarerPopup && this.renderCarerPopup()}
+          {renderCarerDetailsPopup && this.renderCarerDetailsPopup()}
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay.bind(this)}><div style={{height: 1000}}/></Overlay>}
       </div>

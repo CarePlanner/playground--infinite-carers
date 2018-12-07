@@ -16,6 +16,7 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
+    this.popupDOMNode = ReactDOM.findDOMNode(this);
     document.addEventListener('click', this.clickOff);
     document.addEventListener('scroll', this.calculatePopupPosition);
   }
@@ -27,13 +28,13 @@ class Popup extends React.Component {
 
   clickOff(e) {
     const { onClickOff } = this.props;
-    const popupDOMNode = ReactDOM.findDOMNode(this);
-    if(e.target !== popupDOMNode && !popupDOMNode.contains(e.target)) {
+    if(e.target !== this.popupDOMNode && !this.popupDOMNode.contains(e.target)) {
       onClickOff && onClickOff();
     }
   }
 
   calculatePopupPosition() {
+      const allowOffViewport = !!this.props.allowOffViewport;
       const width = (this.props.style && this.props.style.width) || styles.popup.width;
       const height = (this.props.style && this.props.style.height) || styles.popup.height;
       const { x: triggerX, y: triggerY, height: triggerHeight, top, left } = this.props.trigger.current.getBoundingClientRect();
@@ -62,11 +63,11 @@ class Popup extends React.Component {
       const spaceBelowSelector = windowMaxY - triggerY - triggerHeight;
 
       if(spaceAboveSelector < spaceBelowSelector) {
-        popupY = (initialMaxY < windowMaxY) ? (triggerY < 50) ? -triggerY + 50 : styles.popup.top : maxY;
+        popupY = (initialMaxY > windowMaxY && !allowOffViewport) ? maxY : ((triggerY < 50) ? -triggerY + 50 : styles.popup.top);
         popupArrowY = styles.popupArrow.top;
         popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
       } else {
-        popupY = (initialMinY < 0) ? -initialMinY - height : -height - styles.popupArrow.height;
+        popupY = (initialMinY < 0 && !allowOffViewport) ? -initialMinY - height : -height - styles.popupArrow.height;
         popupArrowY = height - 1;
         popupArrowPseudoStyle = (popupY + height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
       }
@@ -87,7 +88,7 @@ class Popup extends React.Component {
     const { popupPosition } = this.state;
 
     return (
-      <div style={[styles.popup, popupPosition[0], style]}>
+      <div {...this.props} style={[styles.popup, popupPosition[0], style]}>
         <div style={[styles.popupArrow, popupPosition[1]]}>
           <div style={styles[popupPosition[2]]['::before']}></div>
           <div style={styles[popupPosition[2]]['::after']}></div>

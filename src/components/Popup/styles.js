@@ -68,7 +68,7 @@ export default {
   },
   popupBody: {
     display: 'flex',
-    flexGrow: 2,
+    flexGrow: 1,
     flexDirection: 'column'
   }
 };
