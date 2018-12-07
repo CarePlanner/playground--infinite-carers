@@ -22,7 +22,9 @@ import {
 import {
   deselectCarer,
   selectCarer,
-  removeCarerSlot
+  removeCarerSlot,
+  selectTravelMethod,
+  selectShadowingSupervising
 } from '../../actions';
 const drivingIcon = require('../../../../assets/driving.png');
 const drivingIconSelected = require('../../../../assets/driving-selected.png');
@@ -35,37 +37,52 @@ class CarerPopup extends React.Component {
     this.state = {
       highlightedCarer: null,
       renderSlotSettingsPopup: false,
-      searchQuery: ''
+      searchQuery: '',
+      travelMethodOptions: [
+        (args.slot.carer !== null) ? `${args.slot.carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+        'Bicycle',
+        'Driving',
+        'Motorcycle',
+        'Passenger',
+        'Public Transport',
+        'Walking'
+      ],
+      shadowingSupervisingOptions: [
+        'Select to mark as shadow or supervisor',
+        'Shadow',
+        'Supervisor',
+        'Unannounced Supervisor'
+      ]
     };
     this.searchField = React.createRef();
     this.carersList = React.createRef();
     this.slotSettingsLink = React.createRef();
     this.carersListItems = args.allCarers.map(React.createRef);
-    this.renderSlotSettingsPopup = this.renderSlotSettingsPopup.bind(this);
+    this.showHideSlotSettingsPopup = this.showHideSlotSettingsPopup.bind(this);
+    this.selectTravelMethod = this.selectTravelMethod.bind(this);
+    this.selectShadowingSupervising = this.selectShadowingSupervising.bind(this);
   }
 
   componentDidMount() {
-    const { position, carerSlots, allCarers } = this.props;
-    const carer = carerSlots[position].carer;
+    const { slot, allCarers } = this.props;
 
     this.searchField.current._reactInternalFiber.child.stateNode.focus();
 
-    const listPosition = allCarers.indexOf(carer);
+    const listPosition = allCarers.indexOf(slot.carer);
 
-    if(carer) {
+    if(slot.carer) {
       this.carersList.current.scrollTop = 35 * listPosition;
     }
   }
 
   selectCarer(carer) {
-    const { selectedCarers, carerSlots, position, onClose } = this.props;
-    const carerSlot = carerSlots[position];
-    const wasSelectedCarer = carerSlot.carer && (carer.id === carerSlot.carer.id)
+    const { selectedCarers, position, slot, onClose } = this.props;
+    const wasSelectedCarer = slot.carer && (carer.id === slot.carer.id)
     const inAnotherCarerSlot = selectedCarers.includes(carer) && !wasSelectedCarer;
 
     if(!inAnotherCarerSlot) {
-      if(carerSlot.carer !== null) {
-        this.props.deselectCarer(position, carerSlot.carer);
+      if(slot.carer !== null) {
+        this.props.deselectCarer(position, slot.carer);
       }
       if(!wasSelectedCarer) {
         this.props.selectCarer(position, carer);
@@ -74,6 +91,27 @@ class CarerPopup extends React.Component {
         }
       }
     }
+  }
+
+  selectTravelMethod(travelMethod) {
+    const { position, slot } = this.props;
+    this.props.selectTravelMethod(position, travelMethod);
+    this.setState({
+      travelMethodOptions: [
+        (slot.carer !== null) ? `${slot.carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+        'Bicycle',
+        'Driving',
+        'Motorcycle',
+        'Passenger',
+        'Public Transport',
+        'Walking'
+      ]
+    });
+  }
+
+  selectShadowingSupervising(shadowingSupervising) {
+    const { position } = this.props;
+    this.props.selectShadowingSupervising(position, shadowingSupervising);
   }
 
   highlightCarer(carer) {
@@ -90,7 +128,7 @@ class CarerPopup extends React.Component {
     }
   }
 
-  renderSlotSettingsPopup() {
+  showHideSlotSettingsPopup() {
     this.setState({
       renderSlotSettingsPopup: !this.state.renderSlotSettingsPopup
     });
@@ -103,6 +141,7 @@ class CarerPopup extends React.Component {
         trigger={trigger}
         style={{width: 500, height: 350}}
         allowOffViewport={true}
+        showOnSides={true}
       >
         <CarerDetails
           carer={carer}
@@ -110,6 +149,38 @@ class CarerPopup extends React.Component {
         />
       </Popup>
     )
+  }
+
+  renderSlotSettingsPopup() {
+    const { travelMethodOptions, shadowingSupervisingOptions } = this.state;
+    const { slot } = this.props;
+
+    return (
+      <Popup trigger={this.slotSettingsLink} showOnSides={true}>
+        <div style={styles.popupBody}>
+          <div style={styles.slotSettingsHeader}>
+            <H5 showLine={true}>Settings</H5>
+          </div>
+            <Select
+              value={slot.shadowingSupervising}
+              options={shadowingSupervisingOptions}
+              style={(slot.shadowingSupervising == 0) ? styles.shadowingSupervisingNoneSelected : null}
+              onChange={(e) => this.selectShadowingSupervising(e.target.value)}
+              hideArrow={slot.shadowingSupervising == 0}
+            ></Select>
+        </div>
+        <div style={styles.popupBody}>
+          <div style={styles.slotSettingsHeader}>
+            <H5 showLine={true}>Travel Method</H5>
+          </div>
+          <Select
+            value={slot.travelMethod}
+            options={travelMethodOptions}
+            onChange={(e) => this.selectTravelMethod(e.target.value)}
+          ></Select>
+        </div>
+      </Popup>
+    );
   }
 
   updateSearchQuery(input) {
@@ -120,7 +191,7 @@ class CarerPopup extends React.Component {
   }
 
   removeCarerSlot() {
-    const { id, carerSlots} = this.props;
+    const { id, carerSlots } = this.props;
 
     if(carerSlots.length > 1) {
       this.props.removeCarerSlot(id);
@@ -129,11 +200,10 @@ class CarerPopup extends React.Component {
 
   render() {
 
-    const { allCarers, onSelectCarer, position, onRemoveCarerSlot, selectedCarers, carerSlots, selector, onClose } = this.props;
+    const { allCarers, onSelectCarer, onRemoveCarerSlot, selectedCarers, slot, selector, onClose } = this.props;
     const { highlightedCarer, searchQuery, renderSlotSettingsPopup } = this.state;
 
-    const carerSlot = carerSlots[position];
-    const selectedCarer = carerSlot.carer;
+    const selectedCarer = slot.carer;
 
     const filteredCarers = allCarers.filter((carer) => ((selectedCarer && (carer.id === selectedCarer.id)) || !searchQuery || new RegExp(searchQuery, 'i').test(carer.name)));
 
@@ -169,8 +239,8 @@ class CarerPopup extends React.Component {
           {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={{color: '#CCCCCC'}}>No matching carers found</H2></div>}
         </div>
         <div style={styles.popupBodyFooter} ref={this.slotSettingsLink}>
-          <A onClick={this.renderSlotSettingsPopup}>Change Slot Settings and Travel Method</A>
-          {renderSlotSettingsPopup && <Popup trigger={this.slotSettingsLink} style={{width: 100, height: 100}}>Slot Settings</Popup>}
+          <A onClick={this.showHideSlotSettingsPopup}>Change Slot Settings and Travel Method</A>
+          {renderSlotSettingsPopup && this.renderSlotSettingsPopup()}
         </div>
       </Popup>
     );
@@ -185,7 +255,9 @@ const mapDispatchToProps = dispatch => {
   return {
     selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
     deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer)),
-    removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
+    removeCarerSlot: (id) => dispatch(removeCarerSlot(id)),
+    selectTravelMethod: (position, travelMethod) => dispatch(selectTravelMethod(position, travelMethod)),
+    selectShadowingSupervising: (position, shadowingSupervising) => dispatch(selectShadowingSupervising(position, shadowingSupervising))
   };
 };
 

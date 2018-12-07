@@ -91,6 +91,7 @@ function selectTravelMethod(state, action) {
   const { travelMethod, position } = action.payload;
 
   carerSlots[position].travelMethod = travelMethod;
+  carerSlots = [...carerSlots];
 
   return { ...state, carerSlots };
 }
@@ -101,6 +102,7 @@ function selectShadowingSupervising(state, action) {
   const { shadowingSupervising, position } = action.payload;
 
   carerSlots[position].shadowingSupervising = shadowingSupervising;
+  carerSlots = [...carerSlots];
 
   return { ...state, carerSlots };
 }
@@ -111,6 +113,7 @@ function selectRun(state, action) {
   const { run, position } = action.payload;
 
   carerSlots[position].run = run;
+  carerSlots = [...carerSlots];
 
   return { ...state, carerSlots, selectedRuns };
 }

@@ -92,6 +92,7 @@ class AppointmentDialog extends React.Component {
               <CarerSelector
                 key={carerSlot.id}
                 id={carerSlot.id}
+                slot={carerSlot}
                 position={i}
                 allCarers={allCarers}
                 careRequired={careRequired}

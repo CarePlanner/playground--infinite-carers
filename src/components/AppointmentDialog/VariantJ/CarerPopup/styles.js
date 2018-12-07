@@ -6,6 +6,15 @@ export default {
     borderBottomColor: '#CCCCCC',
     borderBottomStyle: 'solid',
   },
+  popupBody: {
+    padding: 15
+  },
+  slotSettingsHeader: {
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10
+  },
   popupBodyFooter: {
     flexShrink: 1,
     padding: 15,
@@ -67,5 +76,27 @@ export default {
   },
   disabledCarerText: {
     color: '#AAAAAA'
+  },
+  shadowingSupervisingNoneSelected: {
+    color: '#256990',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    userSelect: 'none',
+    height: 'initial',
+    width: 'initial',
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    borderStyle: 'solid',
+    borderColor: 'transparent',
+    boxShadow: 'none',
+    transition: 'border-color ease-in-out .15s,box-shadow ease-in-out .15s',
+    WebkitAppearance: 'none',
+    ':hover': {
+      textDecoration: 'underline'
+    }
   }
 };

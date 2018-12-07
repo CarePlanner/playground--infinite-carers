@@ -16,20 +16,20 @@ class Text extends React.Component {
 
   render() {
 
-    const { style, onClick, showLine } = this.props;
+    const { style, onClick, showLine, children, ...inheritedProps } = this.props;
 
     let addLineRightMargin = true;
 
     if(showLine) {
-        if(this.DOMNode && !this.DOMNode.nextSibling) {
-          addLineRightMargin = false;
-        }
+      if(this.DOMNode && !this.DOMNode.nextSibling) {
+        addLineRightMargin = false;
+      }
     }
 
     return (
-      <span style={[styles.textContainer, {flexGrow: 2}]}>
-        <span style={[styles.defaults, ...style]} onClick={(onClick) ? onClick : null}>{this.props.children}</span>
-        {showLine && <div style={[styles.line, (!addLineRightMargin) ? {marginRight: 0} : null]}></div>}
+      <span style={[styles.textContainer, { flexGrow: 2 }]} {...inheritedProps}>
+        <span style={[styles.defaults, ...style]} onClick={(onClick) ? onClick : null}>{children}</span>
+        {showLine && <div style={[styles.line, (!addLineRightMargin) ? { marginRight: 0 } : null]}></div>}
       </span>
     );
   }

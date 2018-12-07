@@ -34,10 +34,10 @@ class Popup extends React.Component {
   }
 
   calculatePopupPosition() {
-      const allowOffViewport = !!this.props.allowOffViewport;
+      const { allowOffViewport, showOnSides } = this.props;
       const width = (this.props.style && this.props.style.width) || styles.popup.width;
       const height = (this.props.style && this.props.style.height) || styles.popup.height;
-      const { x: triggerX, y: triggerY, height: triggerHeight, top, left } = this.props.trigger.current.getBoundingClientRect();
+      const { x: triggerX, y: triggerY, height: triggerHeight, width: triggerWidth, top, left } = this.props.trigger.current.getBoundingClientRect();
       let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
 
       const initialMaxX = triggerX + width;
@@ -61,15 +61,31 @@ class Popup extends React.Component {
 
       const spaceAboveSelector = triggerY;
       const spaceBelowSelector = windowMaxY - triggerY - triggerHeight;
+      const spaceOnLeftOfSelector = triggerX;
+      const spaceOnRightOfSelector = windowMaxX - triggerX - triggerWidth;
 
-      if(spaceAboveSelector < spaceBelowSelector) {
-        popupY = (initialMaxY > windowMaxY && !allowOffViewport) ? maxY : ((triggerY < 50) ? -triggerY + 50 : styles.popup.top);
-        popupArrowY = styles.popupArrow.top;
-        popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
+      if(showOnSides) {
+        if(spaceOnLeftOfSelector < spaceOnRightOfSelector) {
+          popupX = (initialMaxX > windowMaxX && !allowOffViewport) ? maxX : triggerWidth;
+          popupArrowX = styles.popupArrow.left;
+          popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
+        } else {
+          popupX = (initialMinX < 0 && !allowOffViewport) ? -initialMinX - width : -width - styles.popupArrow.width;
+          popupArrowX = width - 1;
+          popupArrowPseudoStyle = 'popupArrowOnRight';
+        }
+        popupY = - ((height / 2) - (triggerHeight / 2));
+        popupArrowY = height / 2 - 1;
       } else {
-        popupY = (initialMinY < 0 && !allowOffViewport) ? -initialMinY - height : -height - styles.popupArrow.height;
-        popupArrowY = height - 1;
-        popupArrowPseudoStyle = (popupY + height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
+        if(spaceAboveSelector < spaceBelowSelector) {
+          popupY = (initialMaxY > windowMaxY && !allowOffViewport) ? maxY : ((triggerY < 50) ? -triggerY + 50 : styles.popup.top);
+          popupArrowY = styles.popupArrow.top;
+          popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
+        } else {
+          popupY = (initialMinY < 0 && !allowOffViewport) ? -initialMinY - height : -height - styles.popupArrow.height;
+          popupArrowY = height - 1;
+          popupArrowPseudoStyle = (popupY + height > -styles.popupArrow.height) ? 'popupArrowGone' : 'popupArrowBelow';
+        }
       }
 
       this.setState({
@@ -83,12 +99,12 @@ class Popup extends React.Component {
 
   render() {
 
-    const { children, style } = this.props;
+    const { children, style, ...inheritedProps } = this.props;
 
     const { popupPosition } = this.state;
 
     return (
-      <div {...this.props} style={[styles.popup, popupPosition[0], style]}>
+      <div style={[styles.popup, popupPosition[0], style]} {...inheritedProps}>
         <div style={[styles.popupArrow, popupPosition[1]]}>
           <div style={styles[popupPosition[2]]['::before']}></div>
           <div style={styles[popupPosition[2]]['::after']}></div>

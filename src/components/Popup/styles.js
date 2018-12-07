@@ -58,6 +58,24 @@ export default {
         borderTopColor: '#FFFFFF',
       }
   },
+  popupArrowOnRight: {
+      '::before': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '.5rem .5rem 0',
+        right: 0,
+        borderLeftColor: '#CCCCCC'
+      },
+      '::after': {
+        position: 'absolute',
+        borderColor: 'transparent',
+        borderStyle: 'solid',
+        borderWidth: '.5rem .5rem 0',
+        right: 1,
+        borderLeftColor: '#FFFFFF',
+      }
+  },
   popupArrowGone: {
       '::before': {
         display: 'none'
