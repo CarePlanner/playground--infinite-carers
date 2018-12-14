@@ -140,7 +140,6 @@ class CarerPopup extends React.Component {
       <Popup
         trigger={trigger}
         style={{width: 500, height: 350}}
-        allowOffViewport={true}
         showOnSides={true}
       >
         <CarerDetails
@@ -156,18 +155,22 @@ class CarerPopup extends React.Component {
     const { slot } = this.props;
 
     return (
-      <Popup trigger={this.slotSettingsLink} showOnSides={true}>
+      <Popup
+        trigger={this.slotSettingsLink}
+        showOnSides={true}
+        style={{ height: (slot.shadowingSupervising == 0) ? 157 : 172 }}
+      >
         <div style={styles.popupBody}>
           <div style={styles.slotSettingsHeader}>
             <H5 showLine={true}>Settings</H5>
           </div>
-            <Select
-              value={slot.shadowingSupervising}
-              options={shadowingSupervisingOptions}
-              style={(slot.shadowingSupervising == 0) ? styles.shadowingSupervisingNoneSelected : null}
-              onChange={(e) => this.selectShadowingSupervising(e.target.value)}
-              hideArrow={slot.shadowingSupervising == 0}
-            ></Select>
+          <Select
+            value={slot.shadowingSupervising}
+            options={shadowingSupervisingOptions}
+            style={(slot.shadowingSupervising == 0) ? styles.shadowingSupervisingNoneSelected : null}
+            onChange={(e) => this.selectShadowingSupervising(e.target.value)}
+            hideArrow={slot.shadowingSupervising == 0}
+          ></Select>
         </div>
         <div style={styles.popupBody}>
           <div style={styles.slotSettingsHeader}>

@@ -6,7 +6,7 @@ import Page from '../../../components/Page';
 import Navbar from '../../../components/Navbar';
 import AppointmentDialog from '../../../components/AppointmentDialog';
 import { setCarers } from './actions';
-import CarerSelector from '../../../components/AppointmentDialog/VariantJ/CarerSelector';
+import VariantJ from '../../../components/AppointmentDialog/VariantJ';
 
 class Blank extends React.Component {
 
@@ -42,7 +42,7 @@ class Blank extends React.Component {
             runsEnabled={runsEnabled}
             allCarers={carers}
             careRequired={careRequired}
-            CarerSelector={CarerSelector}
+            Variant={VariantJ}
           />
         </Page>
       </div>

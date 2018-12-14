@@ -9,7 +9,8 @@ import Overlay from '../../../Overlay';
 import Popup from '../../../Popup';
 import CarerDetails from '../CarerDetails';
 import {
-  selectRun
+  selectRun,
+  removeCarerSlot
 } from '../../actions';
 
 class CarerSelector extends React.Component {
@@ -26,10 +27,15 @@ class CarerSelector extends React.Component {
         'Run 3'
       ],
       renderRecommendedOverlay: false,
-      renderCarerDetailsPopup: false
+      renderCarerDetailsPopup: false,
+      renderRemoveSlotLink: false
     };
     this.elem = React.createRef();
     this.renderCarerDetailsPopup = this.renderCarerDetailsPopup.bind(this);
+    this.closeRecommendedOverlay = this.closeRecommendedOverlay.bind(this);
+    this.showHideRemoveSlotLink = this.showHideRemoveSlotLink.bind(this);
+    this.showHideCarerPopup = this.showHideCarerPopup.bind(this);
+    this.removeCarerSlot = this.removeCarerSlot.bind(this);
   }
 
   showHideCarerPopup() {
@@ -48,6 +54,20 @@ class CarerSelector extends React.Component {
       this.setState({
         renderCarerDetailsPopup: render
       });
+    }
+  }
+
+  showHideRemoveSlotLink() {
+    this.setState({
+      renderRemoveSlotLink: !this.state.renderRemoveSlotLink
+    });
+  }
+
+  removeCarerSlot() {
+    const { id, carerSlots } = this.props;
+
+    if(carerSlots.length > 1) {
+      this.props.removeCarerSlot(id);
     }
   }
 
@@ -155,29 +175,28 @@ class CarerSelector extends React.Component {
 
   render() {
 
-    const { position, runsEnabled, slot } = this.props;
-    const { renderRecommendedOverlay, renderCarerPopup, renderCarerDetailsPopup } = this.state;
+    const { position, runsEnabled, slot, carerSlots } = this.props;
+    const { renderRecommendedOverlay, renderCarerPopup, renderCarerDetailsPopup, renderRemoveSlotLink } = this.state;
     const selectedCarer = slot.carer;
-    const slotNumber = position + 1;
 
     return (
-      <div>
-        <div style={styles.carerAndRun}>
-          <H5 showLine={true}>Carer {slotNumber}</H5>
-          {runsEnabled && this.renderRunSelector()}
-        </div>
-        <div>
-          <div style={styles.carerSelector} ref={this.elem} onClick={this.showHideCarerPopup.bind(this)}>
-            <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]} onMouseOver={() => this.showHideCarerDetailsPopup(true)} onMouseOut={() => this.showHideCarerDetailsPopup(false)}>
-              {(selectedCarer) ? selectedCarer.name : 'Required'}
-              <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
-              <div>{this.renderShadowingSupervisingText()}</div>
-            </H5>
+      <div onMouseOver={this.showHideRemoveSlotLink} onMouseOut={this.showHideRemoveSlotLink}>
+        <div style={styles.carerSelectorContainer}>
+          <div style={styles.carerSelector} ref={this.elem}>
+            <div style={styles.carerSelectorInner} onClick={this.showHideCarerPopup}>
+              <div style={styles.carerSelectorImage}></div>
+              <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]} onMouseOver={() => this.showHideCarerDetailsPopup(true)} onMouseOut={() => this.showHideCarerDetailsPopup(false)}>
+                {(selectedCarer) ? selectedCarer.name : 'Required'}
+                <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
+                <div>{this.renderShadowingSupervisingText()}</div>
+              </H5>
+            </div>
+            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, !renderRemoveSlotLink ? {opacity: 0} : null]}>Remove Slot</A>
           </div>
           {renderCarerPopup && this.renderCarerPopup()}
           {renderCarerDetailsPopup && this.renderCarerDetailsPopup()}
         </div>
-        {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay.bind(this)}><div style={{height: 1000}}/></Overlay>}
+        {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay}><div style={{height: 1000}}/></Overlay>}
       </div>
     );
   }
@@ -189,7 +208,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectRun: (position, run) => dispatch(selectRun(position, run))
+    selectRun: (position, run) => dispatch(selectRun(position, run)),
+    removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
   };
 };
 

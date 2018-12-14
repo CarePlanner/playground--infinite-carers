@@ -63,18 +63,40 @@ export default {
         position: 'absolute',
         borderColor: 'transparent',
         borderStyle: 'solid',
-        borderWidth: '.5rem .5rem 0',
-        right: 0,
+        borderWidth: '.5rem',
+        bottom: 2,
+        right: -8,
         borderLeftColor: '#CCCCCC'
       },
       '::after': {
         position: 'absolute',
         borderColor: 'transparent',
         borderStyle: 'solid',
-        borderWidth: '.5rem .5rem 0',
-        right: 1,
+        borderWidth: '.5rem',
+        bottom: 2,
+        right: -7,
         borderLeftColor: '#FFFFFF',
       }
+  },
+  popupArrowOnLeft: {
+    '::before': {
+      position: 'absolute',
+      borderColor: 'transparent',
+      borderStyle: 'solid',
+      borderWidth: '.5rem',
+      bottom: 2,
+      left: -31,
+      borderRightColor: '#CCCCCC'
+    },
+    '::after': {
+      position: 'absolute',
+      borderColor: 'transparent',
+      borderStyle: 'solid',
+      borderWidth: '.5rem',
+      bottom: 2,
+      left: -30,
+      borderRightColor: '#FFFFFF',
+    }
   },
   popupArrowGone: {
       '::before': {

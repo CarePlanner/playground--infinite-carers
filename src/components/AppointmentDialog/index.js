@@ -33,7 +33,7 @@ class AppointmentDialog extends React.Component {
 
   renderAppointmentTab() {
 
-    const { allCarers, runsEnabled, carerSlots, careRequired, CarerSelector } = this.props;
+    const { allCarers, runsEnabled, carerSlots, careRequired, Variant } = this.props;
 
     return (
       <div style={styles.form}>
@@ -87,20 +87,11 @@ class AppointmentDialog extends React.Component {
           </div>
         </div>
         <div style={styles.formComponentsContainer}>
-          <div>
-            {carerSlots.map((carerSlot, i) => (
-              <CarerSelector
-                key={carerSlot.id}
-                id={carerSlot.id}
-                slot={carerSlot}
-                position={i}
-                allCarers={allCarers}
-                careRequired={careRequired}
-                runsEnabled={runsEnabled}
-              />
-            ))}
-            <Button theme={'neutral'} label={'Add Carer'} style={{width: '100%'}} onClick={this.addSlot.bind(this)}/>
-          </div>
+          <Variant
+            allCarers={allCarers}
+            careRequired={careRequired}
+            runsEnabled={runsEnabled}
+          />
         </div>
       </div>
     );
