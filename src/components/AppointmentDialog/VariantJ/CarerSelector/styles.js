@@ -6,7 +6,8 @@ export default {
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    ':hover': {}
   },
   carerSelectorContainer: {
     display: 'flex',
@@ -42,6 +43,7 @@ export default {
     color: '#256990'
   },
   removeSlotLink: {
-    color: '#DF2D2A'
+    color: '#DF2D2A',
+    opacity: 0
   }
 };

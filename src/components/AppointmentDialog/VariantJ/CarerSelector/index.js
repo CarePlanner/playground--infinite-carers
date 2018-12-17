@@ -26,14 +26,10 @@ class CarerSelector extends React.Component {
         'Run 2',
         'Run 3'
       ],
-      renderRecommendedOverlay: false,
-      renderCarerDetailsPopup: false,
-      renderRemoveSlotLink: false
+      renderRecommendedOverlay: false
     };
     this.elem = React.createRef();
-    this.renderCarerDetailsPopup = this.renderCarerDetailsPopup.bind(this);
     this.closeRecommendedOverlay = this.closeRecommendedOverlay.bind(this);
-    this.showHideRemoveSlotLink = this.showHideRemoveSlotLink.bind(this);
     this.showHideCarerPopup = this.showHideCarerPopup.bind(this);
     this.removeCarerSlot = this.removeCarerSlot.bind(this);
   }
@@ -41,25 +37,6 @@ class CarerSelector extends React.Component {
   showHideCarerPopup() {
     this.setState({
       renderCarerPopup: !this.state.renderCarerPopup,
-    });
-  }
-
-  showHideCarerDetailsPopup(render) {
-    const { slot } = this.props;
-    const selectedCarer = slot.carer;
-    if(this.state.renderCarerDetailsPopup !== render) {
-      if(!selectedCarer) {
-        return;
-      }
-      this.setState({
-        renderCarerDetailsPopup: render
-      });
-    }
-  }
-
-  showHideRemoveSlotLink() {
-    this.setState({
-      renderRemoveSlotLink: !this.state.renderRemoveSlotLink
     });
   }
 
@@ -176,25 +153,26 @@ class CarerSelector extends React.Component {
   render() {
 
     const { position, runsEnabled, slot, carerSlots } = this.props;
-    const { renderRecommendedOverlay, renderCarerPopup, renderCarerDetailsPopup, renderRemoveSlotLink } = this.state;
+    const { renderRecommendedOverlay, renderCarerPopup } = this.state;
     const selectedCarer = slot.carer;
+    const carerSelectorHovered = Radium.getState(this.state, `carer-selector-${position}`, ':hover');
 
     return (
-      <div onMouseOver={this.showHideRemoveSlotLink} onMouseOut={this.showHideRemoveSlotLink}>
+      <div>
         <div style={styles.carerSelectorContainer}>
-          <div style={styles.carerSelector} ref={this.elem}>
+          <div style={styles.carerSelector} ref={this.elem} key={`carer-selector-${position}`}>
             <div style={styles.carerSelectorInner} onClick={this.showHideCarerPopup}>
               <div style={styles.carerSelectorImage}></div>
-              <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]} onMouseOver={() => this.showHideCarerDetailsPopup(true)} onMouseOut={() => this.showHideCarerDetailsPopup(false)}>
+              <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
                 {(selectedCarer) ? selectedCarer.name : 'Required'}
                 <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
                 <div>{this.renderShadowingSupervisingText()}</div>
               </H5>
             </div>
-            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, !renderRemoveSlotLink ? {opacity: 0} : null]}>Remove Slot</A>
+            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, carerSelectorHovered ? {opacity: 1} : null]}>Remove Slot</A>
           </div>
           {renderCarerPopup && this.renderCarerPopup()}
-          {renderCarerDetailsPopup && this.renderCarerDetailsPopup()}
+          {carerSelectorHovered && selectedCarer && !renderCarerPopup && this.renderCarerDetailsPopup()}
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay}><div style={{height: 1000}}/></Overlay>}
       </div>

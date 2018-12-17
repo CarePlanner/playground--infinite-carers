@@ -37,7 +37,7 @@ class Popup extends React.Component {
       const { allowOffViewport, showOnSides } = this.props;
       const width = (this.props.style && this.props.style.width) || styles.popup.width;
       const height = (this.props.style && this.props.style.height) || styles.popup.height;
-      const { x: triggerX, y: triggerY, height: triggerHeight, width: triggerWidth, top, left } = this.props.trigger.current.getBoundingClientRect();
+      const { x: triggerX, y: triggerY, height: triggerHeight, width: triggerWidth } = this.props.trigger.current.getBoundingClientRect();
       let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
       const offsetX = (this.props.style && this.props.style.offsetX) || 50;
       const offsetY = (this.props.style && this.props.style.offsetY) || 0;
@@ -46,7 +46,7 @@ class Popup extends React.Component {
       const initialMaxY = (showOnSides) ? triggerY + (height / 2) : triggerY + height;
 
       const initialMinX = 50;
-      const initialMinY = triggerY - height - styles.popupArrow.height;
+      const initialMinY = (showOnSides) ? triggerY - (height / 2) : triggerY - height - styles.popupArrow.height;
 
       const maxX = (windowMaxX - triggerX) - width;
       const maxY = (windowMaxY - triggerY) - height;
@@ -89,10 +89,10 @@ class Popup extends React.Component {
           popupArrowY = height / 2 - 1;
         } else if(initialMaxY > windowMaxY) {
           popupY = maxY;
-          popupArrowY = triggerY + (styles.popupArrow.height / 2);
+          popupArrowY =  -popupY + (triggerHeight / 2);
         } else if(initialMinY < 0) {
-          popupY = -initialMinY - height;
-          popupArrowY = triggerY + (styles.popupArrow.height / 2);
+          popupY = -initialMinY - (height / 2);
+          popupArrowY = triggerY + (styles.popupArrow.height * 2) - 1;
         } else {
           popupY = - ((height / 2) - (triggerHeight / 2));
           popupArrowY = height / 2 - 1;
@@ -101,7 +101,7 @@ class Popup extends React.Component {
 
       this.setState({
         popupPosition: [
-          { top: popupY + top, left: popupX + left },
+          { top: popupY + triggerY, left: popupX + triggerX },
           { top: popupArrowY, left: popupArrowX },
           popupArrowPseudoStyle
         ]
