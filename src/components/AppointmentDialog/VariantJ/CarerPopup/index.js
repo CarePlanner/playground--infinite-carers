@@ -24,7 +24,8 @@ import {
   selectCarer,
   removeCarerSlot,
   selectTravelMethod,
-  selectShadowingSupervising
+  selectShadowingSupervising,
+  selectRun
 } from '../../actions';
 const drivingIcon = require('../../../../assets/driving.png');
 const drivingIconSelected = require('../../../../assets/driving-selected.png');
@@ -39,7 +40,7 @@ class CarerPopup extends React.Component {
       renderSlotSettingsPopup: false,
       searchQuery: '',
       travelMethodOptions: [
-        (args.slot.carer !== null) ? `${args.slot.carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+        (args.slot.carer !== null) ? `Change from ${args.slot.carer.name.split(' ')[0]}'s default (${args.slot.carer.defaultTravelMethod})` : 'Click to change from carer\'s default',
         'Bicycle',
         'Driving',
         'Motorcycle',
@@ -48,10 +49,16 @@ class CarerPopup extends React.Component {
         'Walking'
       ],
       shadowingSupervisingOptions: [
-        'Select to mark as shadow or supervisor',
+        'Click to mark as shadow or supervisor',
         'Shadow',
         'Supervisor',
         'Unannounced Supervisor'
+      ],
+      runOptions: [
+        'Click to add to a Run',
+        'Run 1',
+        'Run 2',
+        'Run 3'
       ]
     };
     this.searchField = React.createRef();
@@ -98,7 +105,7 @@ class CarerPopup extends React.Component {
     this.props.selectTravelMethod(position, travelMethod);
     this.setState({
       travelMethodOptions: [
-        (slot.carer !== null) ? `${slot.carer.defaultTravelMethod} (Carer\'s Default)` : 'Carer\'s Default' ,
+        (slot.carer !== null) ? `Change from ${slot.carer.name.split(' ')[0]}'s default (${slot.carer.defaultTravelMethod})` : 'Click to change from carer\'s default',
         'Bicycle',
         'Driving',
         'Motorcycle',
@@ -112,6 +119,11 @@ class CarerPopup extends React.Component {
   selectShadowingSupervising(shadowingSupervising) {
     const { position } = this.props;
     this.props.selectShadowingSupervising(position, shadowingSupervising);
+  }
+
+  selectRun(run) {
+    const { position } = this.props;
+    this.props.selectRun(position, run);
   }
 
   highlightCarer(carer) {
@@ -151,18 +163,18 @@ class CarerPopup extends React.Component {
   }
 
   renderSlotSettingsPopup() {
-    const { travelMethodOptions, shadowingSupervisingOptions } = this.state;
+    const { travelMethodOptions, shadowingSupervisingOptions, runOptions } = this.state;
     const { slot } = this.props;
 
     return (
       <Popup
         trigger={this.slotSettingsLink}
         showOnSides={true}
-        style={{ height: (slot.shadowingSupervising == 0) ? 157 : 172 }}
+        style={{ height: (slot.shadowingSupervising == 0 && slot.run == 0) ? 202 : (slot.shadowingSupervising != 0 && slot.run != 0) ? 230 : 216 }}
       >
         <div style={styles.popupBody}>
           <div style={styles.slotSettingsHeader}>
-            <H5 showLine={true}>Settings</H5>
+            <H5>Special Role</H5>
           </div>
           <Select
             value={slot.shadowingSupervising}
@@ -174,12 +186,26 @@ class CarerPopup extends React.Component {
         </div>
         <div style={styles.popupBody}>
           <div style={styles.slotSettingsHeader}>
-            <H5 showLine={true}>Travel Method</H5>
+            <H5>Travel Method</H5>
           </div>
           <Select
             value={slot.travelMethod}
             options={travelMethodOptions}
+            style={(slot.travelMethod == 0) ? styles.shadowingSupervisingNoneSelected : null}
             onChange={(e) => this.selectTravelMethod(e.target.value)}
+            hideArrow={slot.travelMethod == 0}
+          ></Select>
+        </div>
+        <div style={styles.popupBody}>
+          <div style={styles.slotSettingsHeader}>
+            <H5>Run</H5>
+          </div>
+          <Select
+            value={slot.run}
+            options={runOptions}
+            style={(slot.run == 0) ? styles.shadowingSupervisingNoneSelected : null}
+            onChange={(e) => this.selectRun(e.target.value)}
+            hideArrow={slot.run == 0}
           ></Select>
         </div>
       </Popup>
@@ -203,7 +229,7 @@ class CarerPopup extends React.Component {
 
   render() {
 
-    const { allCarers, onSelectCarer, onRemoveCarerSlot, selectedCarers, slot, selector, onClose } = this.props;
+    const { allCarers, onSelectCarer, onRemoveCarerSlot, selectedCarers, slot, selector, onClose, style } = this.props;
     const { highlightedCarer, searchQuery, renderSlotSettingsPopup } = this.state;
 
     const selectedCarer = slot.carer;
@@ -213,7 +239,7 @@ class CarerPopup extends React.Component {
     const noMatchingCarers = !filteredCarers.length || (filteredCarers.length === 1 && filteredCarers[0] === selectedCarer);
 
     return (
-      <Popup trigger={selector} onClickOff={onClose}>
+      <Popup trigger={selector} onClickOff={onClose} style={style}>
         <div style={styles.popupBodyHeader}>
           <TextBox ref={this.searchField} placeholder={'Type to search...'} style={{width: '100%', border: 0, boxShadow: 'none'}} onKeyUp={(e) => this.updateSearchQuery(e.currentTarget.value)}/>
         </div>
@@ -242,7 +268,7 @@ class CarerPopup extends React.Component {
           {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={{color: '#CCCCCC'}}>No matching carers found</H2></div>}
         </div>
         <div style={styles.popupBodyFooter} ref={this.slotSettingsLink}>
-          <A onClick={this.showHideSlotSettingsPopup}>Change Slot Settings and Travel Method</A>
+          <A onClick={this.showHideSlotSettingsPopup}>Change Role, Travel Method and Run</A>
           {renderSlotSettingsPopup && this.renderSlotSettingsPopup()}
         </div>
       </Popup>
@@ -260,7 +286,8 @@ const mapDispatchToProps = dispatch => {
     deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer)),
     removeCarerSlot: (id) => dispatch(removeCarerSlot(id)),
     selectTravelMethod: (position, travelMethod) => dispatch(selectTravelMethod(position, travelMethod)),
-    selectShadowingSupervising: (position, shadowingSupervising) => dispatch(selectShadowingSupervising(position, shadowingSupervising))
+    selectShadowingSupervising: (position, shadowingSupervising) => dispatch(selectShadowingSupervising(position, shadowingSupervising)),
+    selectRun: (position, run) => dispatch(selectRun(position, run))
   };
 };
 

@@ -9,7 +9,6 @@ import Overlay from '../../../Overlay';
 import Popup from '../../../Popup';
 import CarerDetails from '../CarerDetails';
 import {
-  selectRun,
   removeCarerSlot
 } from '../../actions';
 
@@ -19,13 +18,6 @@ class CarerSelector extends React.Component {
     super(args);
     this.state = {
       renderCarerPopup: false,
-      selectedRun: 0,
-      runs: [
-        'Add to Run',
-        'Run 1',
-        'Run 2',
-        'Run 3'
-      ],
       renderRecommendedOverlay: false
     };
     this.elem = React.createRef();
@@ -48,23 +40,12 @@ class CarerSelector extends React.Component {
     }
   }
 
-  selectRun(run) {
-    const { position } = this.props;
-    const { selectedRun } = this.state;
-
-    this.props.selectRun(position, run);
-
-    this.setState({
-      selectedRun: run
-    });
-  }
-
   renderCarerDetailsPopup() {
     const { slot, careRequired } = this.props;
     return (
       <Popup
         trigger={this.elem}
-        style={{width: 500, height: 350}}
+        style={{width: 500, height: 350, offsetX: 5}}
         allowOffViewport={true}
       >
         <CarerDetails
@@ -107,41 +88,39 @@ class CarerSelector extends React.Component {
         allCarers={allCarers}
         careRequired={careRequired}
         onClose={this.showHideCarerPopup.bind(this)}
+        style={{offsetX: 5}}
       />
     );
   }
 
-  renderRunSelector() {
-    const { selectedRun, runs } = this.state;
-
-    return (
-      <Select
-        style={(selectedRun == 0) ? styles.runSelector : styles.selectedRunSelector}
-        value={selectedRun}
-        options={runs}
-        onChange={(e) => this.selectRun.bind(this)(e.target.value)}
-        hideArrow={true}
-      >
-        <span style={(selectedRun == 0) ? styles.runSelectorArrow : styles.selectedRunSelectorArrow }>&#9662;</span>
-      </Select>
-    );
+  renderRunIndicator() {
+    let { run } = this.props.carerSlots[this.props.position];
+    run = parseInt(run);
+    switch(run) {
+      case 3:
+      return <span style={styles.runIndicator}>Run 3</span>;
+      case 2:
+      return <span style={styles.runIndicator}>Run 2</span>;
+      case 1:
+      return <span style={styles.runIndicator}>Run 1</span>;
+      default:
+      return null;
+    }
   }
 
   renderShadowingSupervisingText() {
-    const { shadowingSupervising } = this.props.carerSlots[this.props.position];
+    let { shadowingSupervising } = this.props.carerSlots[this.props.position];
+    shadowingSupervising = parseInt(shadowingSupervising);
     switch(shadowingSupervising) {
       case 3:
-      case '3':
         return (
           <Span style={styles.carerSelectorIndicators}>Unannounced Supervisor</Span>
         );
       case 2:
-      case '2':
         return (
           <Span style={styles.carerSelectorIndicators}>Supervisor</Span>
         );
       case 1:
-      case '1':
         return (
           <Span style={styles.carerSelectorIndicators}>Shadow</Span>
         );
@@ -167,6 +146,7 @@ class CarerSelector extends React.Component {
                 {(selectedCarer) ? selectedCarer.name : 'Required'}
                 <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
                 <div>{this.renderShadowingSupervisingText()}</div>
+                {this.renderRunIndicator()}
               </H5>
             </div>
             <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, carerSelectorHovered ? {opacity: 1} : null]}>Remove Slot</A>
@@ -186,7 +166,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectRun: (position, run) => dispatch(selectRun(position, run)),
     removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
   };
 };

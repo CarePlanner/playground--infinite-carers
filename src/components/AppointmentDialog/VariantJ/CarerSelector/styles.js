@@ -45,5 +45,17 @@ export default {
   removeSlotLink: {
     color: '#DF2D2A',
     opacity: 0
+  },
+  runIndicator: {
+    borderRadius: 2,
+    backgroundColor: '#01023D',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontFamily: 'Droid Sans',
+    fontSize: 11,
+    paddingLeft: 4,
+    paddingRight: 5,
+    paddingTop: 2,
+    paddingBottom: 1
   }
 };

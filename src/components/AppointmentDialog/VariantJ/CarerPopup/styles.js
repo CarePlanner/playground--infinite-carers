@@ -7,7 +7,9 @@ export default {
     borderBottomStyle: 'solid',
   },
   popupBody: {
-    padding: 15
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   slotSettingsHeader: {
     display: 'flex',
@@ -85,7 +87,7 @@ export default {
     height: 'initial',
     width: 'initial',
     paddingTop: 0,
-    paddingBottom: 0,
+    paddingBottom: 5,
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: 'transparent',

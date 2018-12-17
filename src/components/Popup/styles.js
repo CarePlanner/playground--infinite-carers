@@ -19,7 +19,7 @@ export default {
     width: 10,
     height: 10,
     top: -8,
-    left: 15,
+    left: 0,
     userSelect: 'none'
   },
   popupArrowAbove: {
@@ -85,7 +85,7 @@ export default {
       borderStyle: 'solid',
       borderWidth: '.5rem',
       bottom: 2,
-      left: -31,
+      left: -16,
       borderRightColor: '#CCCCCC'
     },
     '::after': {
@@ -94,7 +94,7 @@ export default {
       borderStyle: 'solid',
       borderWidth: '.5rem',
       bottom: 2,
-      left: -30,
+      left: -15,
       borderRightColor: '#FFFFFF',
     }
   },

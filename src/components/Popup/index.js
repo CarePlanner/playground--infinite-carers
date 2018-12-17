@@ -39,7 +39,7 @@ class Popup extends React.Component {
       const height = (this.props.style && this.props.style.height) || styles.popup.height;
       const { x: triggerX, y: triggerY, height: triggerHeight, width: triggerWidth } = this.props.trigger.current.getBoundingClientRect();
       let { width: windowMaxX, height: windowMaxY } = window.visualViewport;
-      const offsetX = (this.props.style && this.props.style.offsetX) || 50;
+      const offsetX = (this.props.style && this.props.style.offsetX) || 0;
       const offsetY = (this.props.style && this.props.style.offsetY) || 0;
 
       const initialMaxX = triggerX + width;
