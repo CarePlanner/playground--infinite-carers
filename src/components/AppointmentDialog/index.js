@@ -125,7 +125,7 @@ class AppointmentDialog extends React.Component {
 
   renderFooter() {
     return (
-      <Button theme={'neutral'} label={'Save'}/>
+      <Button theme={'neutral'}>Save</Button>
     )
   }
 

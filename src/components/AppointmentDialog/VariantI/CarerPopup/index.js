@@ -423,7 +423,7 @@ class CarerPopup extends React.Component {
               {noMatchingCarers && <div style={{flexGrow: 2, display: 'flex', padding: '0 40px'}}><H2 style={styles.popupRightSectionBody.H1}>No matching carers found</H2></div>}
             </div>
             <div style={styles.popupLeftSectionFooter}>
-              <Button theme={'neutral'} label={'Recommend'} style={{width: '100%'}} onClick={this.openRecommendedOverlay.bind(this)}/>
+              <Button style={{width: '100%'}} onClick={this.openRecommendedOverlay.bind(this)}>Recommend</Button>
             </div>
           </div>
           <div style={styles.popupRightSection}>
@@ -461,10 +461,10 @@ class CarerPopup extends React.Component {
             </div>
         </div>
         <div style={styles.popupBottomSection}>
-          <Button theme={'neutral'} label={'OK'} style={{width: 50}} onClick={this.closePopup.bind(this)} />
+          <Button style={{width: 50}} onClick={this.closePopup.bind(this)}>OK</Button>
           <div>
-              <A style={{marginRight: 20}} onClick={onClose}>Cancel</A>
-              <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
+            <A style={{marginRight: 20}} onClick={onClose}>Cancel</A>
+            <A style={[{color: '#FF0400'}, (carerSlots.length === 1) ? {color: '#CCCCCC', cursor: 'not-allowed'} : null]} onClick={this.removeCarerSlot.bind(this)}>Carer Not Required</A>
           </div>
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay.bind(this)}><div style={{height: 1000}}/></Overlay>}

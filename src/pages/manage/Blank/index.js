@@ -6,7 +6,6 @@ import Page from '../../../components/Page';
 import Navbar from '../../../components/Navbar';
 import AppointmentDialog from '../../../components/AppointmentDialog';
 import { setCarers } from './actions';
-import VariantJ from '../../../components/AppointmentDialog/VariantJ';
 
 class Blank extends React.Component {
 
@@ -26,7 +25,7 @@ class Blank extends React.Component {
   }
 
   render() {
-    const { runsEnabled, carers, careRequired } = this.props;
+    const { runsEnabled, carers, careRequired, variant } = this.props;
     const { initialDialogPosition } = this.state;
 
     const navbar = (
@@ -42,7 +41,7 @@ class Blank extends React.Component {
             runsEnabled={runsEnabled}
             allCarers={carers}
             careRequired={careRequired}
-            Variant={VariantJ}
+            Variant={variant}
           />
         </Page>
       </div>

@@ -1,13 +1,12 @@
 import React from 'react';
 import Radium from 'radium';
 import { connect } from 'react-redux';
-import styles from './styles';
 import CarerSelector from './CarerSelector';
 import { H1, H2, Span, A, H5 } from '../../Text';
 import { Button, Checkbox, Radio, Select, TextBox } from '../../Form';
 import { addCarerSlot } from '../actions';
 
-class VariantJ extends React.Component {
+class VariantI extends React.Component {
 
   constructor(args) {
     super(args);
@@ -23,23 +22,18 @@ class VariantJ extends React.Component {
 
     return (
       <div>
-        <div style={styles.carersHeading}>
-          <H5 showLine={true}>Carers</H5>
-          <A onClick={this.addCarerSlot}>Add Slot</A>
-        </div>
-        <div>
-        {carerSlots.map((carerSlot, i) => (
-          <CarerSelector
-            key={carerSlot.id}
-            id={carerSlot.id}
-            slot={carerSlot}
-            position={i}
-            allCarers={allCarers}
-            careRequired={careRequired}
-            runsEnabled={runsEnabled}
-          />
-        ))}
-        </div>
+      {carerSlots.map((carerSlot, i) => (
+        <CarerSelector
+          key={carerSlot.id}
+          id={carerSlot.id}
+          slot={carerSlot}
+          position={i}
+          allCarers={allCarers}
+          careRequired={careRequired}
+          runsEnabled={runsEnabled}
+        />
+      ))}
+      <Button onClick={this.addCarerSlot} style={{width: '100%'}}>Add Carer</Button>
       </div>
     );
   }
@@ -58,4 +52,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Radium(VariantJ));
+)(Radium(VariantI));

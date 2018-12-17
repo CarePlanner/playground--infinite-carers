@@ -6,6 +6,8 @@ import { personalDetailsTransformer } from './utils';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
+import VariantI from '../../src/components/AppointmentDialog/VariantI';
+import VariantJ from '../../src/components/AppointmentDialog/VariantJ';
 
 const stories = storiesOf('Infinite Carers', module);
 
@@ -21,12 +23,24 @@ const careRequired = [
   'Medication support'
 ]
 
-stories.add('Example', () => (
+stories.add('Variant I', () => (
   <Provider store={createStore(rootReducer)}>
     <Blank
       runsEnabled={boolean('Switch on "Runs"', true)}
       carers={transformedData}
       careRequired={careRequired}
+      variant={VariantI}
+    />
+  </Provider>
+));
+
+stories.add('Variant J', () => (
+  <Provider store={createStore(rootReducer)}>
+    <Blank
+      runsEnabled={boolean('Switch on "Runs"', true)}
+      carers={transformedData}
+      careRequired={careRequired}
+      variant={VariantJ}
     />
   </Provider>
 ));
