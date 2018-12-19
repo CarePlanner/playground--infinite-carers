@@ -15,7 +15,8 @@ export default {
   },
   carerSelectorInner: {
     display: 'flex',
-    flexGrow: 1
+    flexGrow: 1,
+    ':hover': {}
   },
   carerSelectorImage: {
     borderRadius: '100%',
@@ -44,6 +45,7 @@ export default {
   },
   removeSlotLink: {
     color: '#DF2D2A',
+    marginRight: 15,
     opacity: 0
   },
   runIndicator: {

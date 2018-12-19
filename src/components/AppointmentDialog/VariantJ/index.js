@@ -25,7 +25,7 @@ class VariantJ extends React.Component {
       <div>
         <div style={styles.carersHeading}>
           <H5 showLine={true}>Carers</H5>
-          <A onClick={this.addCarerSlot}>Add Slot</A>
+          <A onClick={this.addCarerSlot}>Add</A>
         </div>
         <div>
         {carerSlots.map((carerSlot, i) => (

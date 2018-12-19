@@ -21,6 +21,7 @@ class CarerSelector extends React.Component {
       renderRecommendedOverlay: false
     };
     this.elem = React.createRef();
+    this.openRecommendedOverlay = this.openRecommendedOverlay.bind(this);
     this.closeRecommendedOverlay = this.closeRecommendedOverlay.bind(this);
     this.showHideCarerPopup = this.showHideCarerPopup.bind(this);
     this.removeCarerSlot = this.removeCarerSlot.bind(this);
@@ -135,12 +136,13 @@ class CarerSelector extends React.Component {
     const { renderRecommendedOverlay, renderCarerPopup } = this.state;
     const selectedCarer = slot.carer;
     const carerSelectorHovered = Radium.getState(this.state, `carer-selector-${position}`, ':hover');
+    const carerSelectorInnerHovered = Radium.getState(this.state, `carer-selector-inner-${position}`, ':hover');
 
     return (
       <div>
         <div style={styles.carerSelectorContainer}>
           <div style={styles.carerSelector} ref={this.elem} key={`carer-selector-${position}`}>
-            <div style={styles.carerSelectorInner} onClick={this.showHideCarerPopup}>
+            <div style={styles.carerSelectorInner} key={`carer-selector-inner-${position}`} onClick={this.showHideCarerPopup}>
               <div style={styles.carerSelectorImage}></div>
               <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
                 {(selectedCarer) ? selectedCarer.name : 'Required'}
@@ -149,10 +151,11 @@ class CarerSelector extends React.Component {
                 {this.renderRunIndicator()}
               </H5>
             </div>
-            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, carerSelectorHovered ? {opacity: 1} : null]}>Remove Slot</A>
+            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, carerSelectorHovered ? {opacity: 1} : null]}>Remove</A>
+            <A onClick={this.openRecommendedOverlay}>Recommend</A>
           </div>
           {renderCarerPopup && this.renderCarerPopup()}
-          {carerSelectorHovered && selectedCarer && !renderCarerPopup && this.renderCarerDetailsPopup()}
+          {carerSelectorInnerHovered && selectedCarer && !renderCarerPopup && this.renderCarerDetailsPopup()}
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay}><div style={{height: 1000}}/></Overlay>}
       </div>
