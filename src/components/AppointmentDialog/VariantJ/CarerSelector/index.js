@@ -19,7 +19,9 @@ class CarerSelector extends React.Component {
     super(args);
     this.state = {
       renderCarerPopup: false,
-      renderRecommendedOverlay: false
+      renderRecommendedOverlay: false,
+      renderCarerPopupWithSlotSettingsOpen: false,
+      renderRemovePopup: false
     };
     this.selectorElem = React.createRef();
     this.removeLinkElem = React.createRef();
@@ -31,9 +33,10 @@ class CarerSelector extends React.Component {
     this.removeCarerAndClosePopup = this.removeCarerAndClosePopup.bind(this);
   }
 
-  showHideCarerPopup() {
+  showHideCarerPopup(withSlotSettingsOpen) {
     this.setState({
       renderCarerPopup: !this.state.renderCarerPopup,
+      renderCarerPopupWithSlotSettingsOpen: withSlotSettingsOpen
     });
   }
 
@@ -88,7 +91,7 @@ class CarerSelector extends React.Component {
   renderCarerPopup() {
 
     const { allCarers, position, onRemoveCarerSlot, id, careRequired, slot } = this.props;
-    const { renderCarerDetailsPopup } = this.state;
+    const { renderCarerDetailsPopup, renderCarerPopupWithSlotSettingsOpen } = this.state;
 
     return (
       <CarerPopup
@@ -99,6 +102,7 @@ class CarerSelector extends React.Component {
         allCarers={allCarers}
         careRequired={careRequired}
         onClose={this.showHideCarerPopup.bind(this)}
+        withSlotSettingsOpen={renderCarerPopupWithSlotSettingsOpen}
         style={{offsetX: 5}}
       />
     );
@@ -136,11 +140,11 @@ class CarerSelector extends React.Component {
     run = parseInt(run);
     switch(run) {
       case 3:
-      return <span style={styles.runIndicator}>Run 3</span>;
+      return <span style={styles.runIndicator} onClick={() => this.showHideCarerPopup(true)}>Run 3</span>;
       case 2:
-      return <span style={styles.runIndicator}>Run 2</span>;
+      return <span style={styles.runIndicator} onClick={() => this.showHideCarerPopup(true)}>Run 2</span>;
       case 1:
-      return <span style={styles.runIndicator}>Run 1</span>;
+      return <span style={styles.runIndicator} onClick={() => this.showHideCarerPopup(true)}>Run 1</span>;
       default:
       return null;
     }
@@ -152,15 +156,15 @@ class CarerSelector extends React.Component {
     switch(shadowingSupervising) {
       case 3:
         return (
-          <Span style={styles.carerSelectorIndicators}>Unannounced Supervisor</Span>
+          <Span style={styles.carerSelectorIndicators} onClick={() => this.showHideCarerPopup(true)}>Unannounced Supervisor</Span>
         );
       case 2:
         return (
-          <Span style={styles.carerSelectorIndicators}>Supervisor</Span>
+          <Span style={styles.carerSelectorIndicators} onClick={() => this.showHideCarerPopup(true)}>Supervisor</Span>
         );
       case 1:
         return (
-          <Span style={styles.carerSelectorIndicators}>Shadow</Span>
+          <Span style={styles.carerSelectorIndicators} onClick={() => this.showHideCarerPopup(true)}>Shadow</Span>
         );
       default:
         return null;
@@ -179,11 +183,13 @@ class CarerSelector extends React.Component {
       <div>
         <div style={styles.carerSelectorContainer}>
           <div style={styles.carerSelector} ref={this.selectorElem} key={`carer-selector-${position}`}>
-            <div style={styles.carerSelectorInner} key={`carer-selector-inner-${position}`} onClick={this.showHideCarerPopup}>
+            <div style={styles.carerSelectorInner} key={`carer-selector-inner-${position}`}>
               <div style={styles.carerSelectorImage}></div>
               <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
-                {(selectedCarer) ? selectedCarer.name : 'Required'}
-                <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
+                <div onClick={() => this.showHideCarerPopup(false)}>
+                  {(selectedCarer) ? selectedCarer.name : 'Required'}
+                  <span style={[styles.carerSelectorArrow, (selectedCarer) ? styles.selectedCarerSelectorArrow : null]}>&#9662;</span>
+                </div>
                 <div>{this.renderShadowingSupervisingText()}</div>
                 {this.renderRunIndicator()}
               </H5>

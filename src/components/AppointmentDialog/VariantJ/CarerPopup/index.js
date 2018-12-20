@@ -37,7 +37,7 @@ class CarerPopup extends React.Component {
     super(args);
     this.state = {
       highlightedCarer: null,
-      renderSlotSettingsPopup: false,
+      renderSlotSettingsPopup: args.withSlotSettingsOpen,
       searchQuery: '',
       travelMethodOptions: [
         (args.slot.carer !== null) ? `Change from ${args.slot.carer.name.split(' ')[0]}'s default (${args.slot.carer.defaultTravelMethod})` : 'Click to change from carer\'s default',
@@ -166,6 +166,10 @@ class CarerPopup extends React.Component {
     const { travelMethodOptions, shadowingSupervisingOptions, runOptions } = this.state;
     const { slot } = this.props;
 
+    if(!this.slotSettingsLink.current) {
+       return null;
+    }
+
     return (
       <Popup
         trigger={this.slotSettingsLink}
@@ -261,7 +265,7 @@ class CarerPopup extends React.Component {
                   {carer.defaultTravelMethod === 'Driving' && <img style={styles.carerIcon} src={(isSelectedCarer) ? drivingIconSelected : (inAnotherCarerSlot) ? drivingIconDisabled : drivingIcon} />}
                   <Span style={[styles.carerNameText, (isSelectedCarer) ? styles.selectedCarerNameText : (inAnotherCarerSlot) ? styles.disabledCarerText : null]}>{carer.name}</Span>
                 </div>
-                {isHighlightedCarer && this.renderCarerDetailsPopup(highlightedCarer, this.carersListItems[filteredCarers.indexOf(highlightedCarer)])}
+                {isHighlightedCarer && !renderSlotSettingsPopup && this.renderCarerDetailsPopup(highlightedCarer, this.carersListItems[filteredCarers.indexOf(highlightedCarer)])}
               </div>
             );
           })}
@@ -269,8 +273,8 @@ class CarerPopup extends React.Component {
         </div>
         <div style={styles.popupBodyFooter} ref={this.slotSettingsLink}>
           <A onClick={this.showHideSlotSettingsPopup}>Change Role, Travel Method and Run</A>
-          {renderSlotSettingsPopup && this.renderSlotSettingsPopup()}
         </div>
+        {renderSlotSettingsPopup && this.renderSlotSettingsPopup()}
       </Popup>
     );
   }
