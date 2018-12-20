@@ -59,5 +59,16 @@ export default {
     paddingRight: 5,
     paddingTop: 2,
     paddingBottom: 1
+  },
+  popupBody: {
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  removeCarerLinkWithinPopup: {
+    marginBottom: 15
+  },
+  removeCarerLinkWithinPopupHeader: {
+    marginBottom: 10
   }
 };

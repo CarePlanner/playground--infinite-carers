@@ -9,7 +9,8 @@ import Overlay from '../../../Overlay';
 import Popup from '../../../Popup';
 import CarerDetails from '../CarerDetails';
 import {
-  removeCarerSlot
+  removeCarerSlot,
+  deselectCarer
 } from '../../actions';
 
 class CarerSelector extends React.Component {
@@ -20,16 +21,25 @@ class CarerSelector extends React.Component {
       renderCarerPopup: false,
       renderRecommendedOverlay: false
     };
-    this.elem = React.createRef();
+    this.selectorElem = React.createRef();
+    this.removeLinkElem = React.createRef();
     this.openRecommendedOverlay = this.openRecommendedOverlay.bind(this);
     this.closeRecommendedOverlay = this.closeRecommendedOverlay.bind(this);
     this.showHideCarerPopup = this.showHideCarerPopup.bind(this);
+    this.showHideRemovePopup = this.showHideRemovePopup.bind(this);
     this.removeCarerSlot = this.removeCarerSlot.bind(this);
+    this.removeCarerAndClosePopup = this.removeCarerAndClosePopup.bind(this);
   }
 
   showHideCarerPopup() {
     this.setState({
       renderCarerPopup: !this.state.renderCarerPopup,
+    });
+  }
+
+  showHideRemovePopup() {
+    this.setState({
+      renderRemovePopup: !this.state.renderRemovePopup,
     });
   }
 
@@ -41,11 +51,17 @@ class CarerSelector extends React.Component {
     }
   }
 
+  removeCarerAndClosePopup() {
+    const { position, slot } = this.props;
+    this.props.deselectCarer(position, slot.carer);
+    this.showHideRemovePopup();
+  }
+
   renderCarerDetailsPopup() {
     const { slot, careRequired } = this.props;
     return (
       <Popup
-        trigger={this.elem}
+        trigger={this.selectorElem}
         style={{width: 500, height: 350, offsetX: 5}}
         allowOffViewport={true}
       >
@@ -74,15 +90,9 @@ class CarerSelector extends React.Component {
     const { allCarers, position, onRemoveCarerSlot, id, careRequired, slot } = this.props;
     const { renderCarerDetailsPopup } = this.state;
 
-    if(renderCarerDetailsPopup !== false) {
-      this.setState({
-        renderCarerDetailsPopup: false
-      });
-    }
-
     return (
       <CarerPopup
-        selector={this.elem}
+        selector={this.selectorElem}
         id={id}
         position={position}
         slot={slot}
@@ -91,6 +101,33 @@ class CarerSelector extends React.Component {
         onClose={this.showHideCarerPopup.bind(this)}
         style={{offsetX: 5}}
       />
+    );
+  }
+
+  renderRemovePopup() {
+
+    const { renderCarerDetailsPopup } = this.state;
+    const { carerSlots } = this.props;
+    const carer = this.props.slot.carer;
+
+    return (
+      <Popup
+        trigger={this.removeLinkElem}
+        style={{
+          height: (carer && carerSlots.length > 1) ? 119 : 74,
+          width: 267,
+          offsetX: 5
+        }}
+        onClickOff={this.showHideRemovePopup}
+      >
+        <div style={styles.popupBody}>
+          <div style={styles.removeCarerLinkWithinPopupHeader}>
+            <H5>Select an action</H5>
+          </div>
+          {carer && <A style={styles.removeCarerLinkWithinPopup} onClick={this.removeCarerAndClosePopup}>Unassign {carer.name}</A>}
+          {carerSlots.length > 1 && ( <A style={styles.removeCarerLinkWithinPopup} onClick={this.removeCarerSlot}>Reduce number of carers to {carerSlots.length - 1}{carer && ` and unassign ${carer.name}`}</A>)}
+        </div>
+      </Popup>
     );
   }
 
@@ -133,7 +170,7 @@ class CarerSelector extends React.Component {
   render() {
 
     const { position, runsEnabled, slot, carerSlots } = this.props;
-    const { renderRecommendedOverlay, renderCarerPopup } = this.state;
+    const { renderRecommendedOverlay, renderCarerPopup, renderRemovePopup } = this.state;
     const selectedCarer = slot.carer;
     const carerSelectorHovered = Radium.getState(this.state, `carer-selector-${position}`, ':hover');
     const carerSelectorInnerHovered = Radium.getState(this.state, `carer-selector-inner-${position}`, ':hover');
@@ -141,7 +178,7 @@ class CarerSelector extends React.Component {
     return (
       <div>
         <div style={styles.carerSelectorContainer}>
-          <div style={styles.carerSelector} ref={this.elem} key={`carer-selector-${position}`}>
+          <div style={styles.carerSelector} ref={this.selectorElem} key={`carer-selector-${position}`}>
             <div style={styles.carerSelectorInner} key={`carer-selector-inner-${position}`} onClick={this.showHideCarerPopup}>
               <div style={styles.carerSelectorImage}></div>
               <H5 style={[styles.carerSelectorNameText, (selectedCarer) ? styles.selectedCarerSelectorNameText : null]}>
@@ -151,11 +188,14 @@ class CarerSelector extends React.Component {
                 {this.renderRunIndicator()}
               </H5>
             </div>
-            <A onClick={this.removeCarerSlot} style={[styles.removeSlotLink, carerSlots.length === 1 ? {color: '#CCCCCC', cursor: 'not-allowed'} : null, carerSelectorHovered ? {opacity: 1} : null]}>Remove</A>
+            <span ref={this.removeLinkElem}>
+              <A onClick={this.showHideRemovePopup} style={[styles.removeSlotLink, (carerSelectorHovered || renderRemovePopup) && {opacity: 1}, (carerSlots.length === 1 && !selectedCarer) && {color: '#CCCCCC', cursor: 'not-allowed', pointerEvents: 'none'}]}>Remove</A>
+            </span>
             <A onClick={this.openRecommendedOverlay}>Recommend</A>
           </div>
+          {renderRemovePopup && this.renderRemovePopup()}
           {renderCarerPopup && this.renderCarerPopup()}
-          {carerSelectorInnerHovered && selectedCarer && !renderCarerPopup && this.renderCarerDetailsPopup()}
+          {carerSelectorInnerHovered && selectedCarer && !renderCarerPopup && !renderRemovePopup && this.renderCarerDetailsPopup()}
         </div>
         {renderRecommendedOverlay && <Overlay title={"Recommended Carer"} onClose={this.closeRecommendedOverlay}><div style={{height: 1000}}/></Overlay>}
       </div>
@@ -169,7 +209,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    removeCarerSlot: (id) => dispatch(removeCarerSlot(id))
+    removeCarerSlot: (id) => dispatch(removeCarerSlot(id)),
+    deselectCarer: (position, carer) => dispatch(deselectCarer(position, carer))
   };
 };
 

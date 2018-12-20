@@ -12,9 +12,6 @@ export default {
     paddingRight: 15
   },
   slotSettingsHeader: {
-    display: 'flex',
-    alignContent: 'center',
-    alignItems: 'center',
     marginBottom: 10
   },
   popupBodyFooter: {
