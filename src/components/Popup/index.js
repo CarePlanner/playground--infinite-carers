@@ -65,9 +65,9 @@ class Popup extends React.Component {
       const spaceOnRightOfSelector = windowMaxX - triggerX - triggerWidth;
 
       if(spaceAboveSelector < spaceBelowSelector) {
-        popupY = (initialMaxY > windowMaxY && !allowOffViewport) ? maxY : ((triggerY < 50) ? -triggerY + 50 : styles.popup.top);
+        popupY = (initialMaxY > windowMaxY && !allowOffViewport) ? maxY : ((triggerY < 50) ? -triggerY + 50 : triggerHeight + styles.popupArrow.height);
         popupArrowY = styles.popupArrow.top;
-        popupArrowPseudoStyle = (popupY < 50) ? 'popupArrowGone' : 'popupArrowAbove';
+        popupArrowPseudoStyle = (popupY < (triggerHeight + styles.popupArrow.height)) ? 'popupArrowGone' : 'popupArrowAbove';
       } else {
         popupY = (initialMinY < 0 && !allowOffViewport) ? -initialMinY - height : -height - styles.popupArrow.height;
         popupArrowY = height - 1;
