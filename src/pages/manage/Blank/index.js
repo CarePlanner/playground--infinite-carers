@@ -8,7 +8,7 @@ import AppointmentDialog from '../../../components/AppointmentDialog';
 import VariantI from '../../../components/AppointmentDialog/VariantI';
 import VariantJ from '../../../components/AppointmentDialog/VariantJ';
 import { setCarers } from './actions';
-import { selectCarer, resetState } from '../../../components/AppointmentDialog/actions';
+import { selectCarer, resetState, addCarerSlot, selectShadowingSupervising } from '../../../components/AppointmentDialog/actions';
 import Tour from '../../../tour';
 
 class Blank extends React.Component {
@@ -48,10 +48,19 @@ class Blank extends React.Component {
             Variant={VariantJ}
           />
           <Tour
+            beginTourAction={(context) => this.props.resetState()}
             sectionActions={[
               (context) => {
                 this.props.resetState();
                 this.props.selectCarer(0, this.props.carers[1]);
+              },
+              null,
+              (context) => {
+                this.props.resetState();
+                this.props.addCarerSlot();
+                this.props.selectCarer(0, this.props.carers[1]);
+                this.props.selectCarer(1, this.props.carers[0]);
+                this.props.selectShadowingSupervising(1, 1);
               },
               null,
               (context) => {
@@ -78,6 +87,8 @@ const mapDispatchToProps = dispatch => {
     setCarers: (carers) => dispatch(setCarers(carers)),
     selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
     resetState: () => dispatch(resetState()),
+    addCarerSlot: () => dispatch(addCarerSlot()),
+    selectShadowingSupervising: (position, shadowingSupervising) => dispatch(selectShadowingSupervising(position, shadowingSupervising)),
   };
 };
 

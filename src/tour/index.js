@@ -27,6 +27,7 @@ class Tour extends React.Component {
           tour: this.convertFormToTour(sections),
           metadata,
           loading: false,
+          firstSectionNumber: (!metadata.title && !metadata.description) ? 0 : -1,
           currentSectionNumber: (!metadata.title && !metadata.description) ? 0 : -1,
           shouldShowScrollIndicator: null
         });
@@ -39,18 +40,18 @@ class Tour extends React.Component {
     });
   }
 
-  isFirstSection() {
-    const { currentSectionNumber, metadata } = this.state;
-    return currentSectionNumber === ((!metadata.title && !metadata.description) ? 0 : -1);
-  }
-
   convertFormToTour(form) {
     return form;
   }
 
+  isFirstSection() {
+    const { currentSectionNumber, tour, firstSectionNumber } = this.state;
+    return currentSectionNumber === firstSectionNumber;
+  }
+
   previousStep() {
-    const { sectionActions } = this.props;
-    const { currentSectionNumber, tour } = this.state;
+    const { sectionActions, beginTourAction } = this.props;
+    const { currentSectionNumber, tour, firstSectionNumber } = this.state;
     const currentSection = tour[currentSectionNumber];
 
     if(!this.isFirstSection()) {
@@ -58,6 +59,9 @@ class Tour extends React.Component {
         currentSectionNumber: currentSectionNumber - 1,
         shouldShowScrollIndicator: null
       });
+      if(beginTourAction && currentSectionNumber === firstSectionNumber + 1) {
+        beginTourAction(this);
+      }
       if(sectionActions && sectionActions[currentSectionNumber - 1]) {
         sectionActions[currentSectionNumber - 1](this);
       }
@@ -67,7 +71,7 @@ class Tour extends React.Component {
   }
 
   nextStep() {
-    const { sectionActions } = this.props;
+    const { sectionActions, finishTourAction } = this.props;
     const { currentSectionNumber, tour } = this.state;
     const currentSection = tour[currentSectionNumber];
     const isLastSection = tour.length === currentSectionNumber + 1;
@@ -77,6 +81,9 @@ class Tour extends React.Component {
         currentSectionNumber: currentSectionNumber + 1,
         shouldShowScrollIndicator: null
       });
+      if(finishTourAction && currentSectionNumber === tour.length - 2) {
+        finishTourAction(this);
+      }
       if(sectionActions && sectionActions[currentSectionNumber + 1]) {
         sectionActions[currentSectionNumber + 1](this);
       }
