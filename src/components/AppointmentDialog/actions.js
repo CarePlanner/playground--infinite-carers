@@ -6,6 +6,7 @@ export const SELECT_TRAVEL_METHOD = 'SELECT_TRAVEL_METHOD';
 export const SELECT_SHADOWING_SUPERVISING = 'SELECT_SHADOWING_SUPERVISING';
 export const SELECT_RUN = 'SELECT_RUN';
 export const DESELECT_RUN = 'DESELECT_RUN';
+export const RESET_STATE = 'RESET_STATE';
 
 export const selectCarer = (position, carer) => ({
   type: SELECT_CARER,
@@ -56,4 +57,9 @@ export const selectRun = (position, run) => ({
     position,
     run
   }
+});
+
+export const resetState = () => ({
+  type: RESET_STATE,
+  payload: {}
 });

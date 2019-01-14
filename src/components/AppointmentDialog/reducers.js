@@ -5,7 +5,8 @@ import {
   REMOVE_CARER_SLOT,
   SELECT_TRAVEL_METHOD,
   SELECT_SHADOWING_SUPERVISING,
-  SELECT_RUN
+  SELECT_RUN,
+  RESET_STATE
 } from './actions';
 
 let id = 1;
@@ -118,6 +119,15 @@ function selectRun(state, action) {
   return { ...state, carerSlots, selectedRuns };
 }
 
+function resetState() {
+  id = 1;
+  return {
+    carerSlots: [newSlot()],
+    selectedCarers: [],
+    selectedRuns: []
+  };
+}
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SELECT_CARER:
@@ -134,6 +144,8 @@ export default (state = initialState, action) => {
       return selectShadowingSupervising(state, action);
     case SELECT_RUN:
       return selectRun(state, action);
+    case RESET_STATE:
+      return resetState();
     default:
       return state;
   }

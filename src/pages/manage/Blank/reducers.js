@@ -3,7 +3,10 @@ import {
 } from './actions';
 
 const initialState = {
-  allCarers: []
+  allCarers: [],
+  client: {
+    name: 'Amelie Gibson'
+  }
 };
 
 function setCarers(state, action) {

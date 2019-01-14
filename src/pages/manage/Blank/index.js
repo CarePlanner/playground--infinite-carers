@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 import Page from '../../../components/Page';
 import Navbar from '../../../components/Navbar';
 import AppointmentDialog from '../../../components/AppointmentDialog';
+import VariantI from '../../../components/AppointmentDialog/VariantI';
+import VariantJ from '../../../components/AppointmentDialog/VariantJ';
 import { setCarers } from './actions';
+import { selectCarer, resetState } from '../../../components/AppointmentDialog/actions';
+import Tour from '../../../tour';
 
 class Blank extends React.Component {
 
@@ -41,7 +45,20 @@ class Blank extends React.Component {
             runsEnabled={runsEnabled}
             allCarers={carers}
             careRequired={careRequired}
-            Variant={variant}
+            Variant={VariantJ}
+          />
+          <Tour
+            sectionActions={[
+              (context) => {
+                this.props.resetState();
+                this.props.selectCarer(0, this.props.carers[1]);
+              },
+              null,
+              (context) => {
+                this.props.resetState();
+                this.props.selectCarer(0, this.props.carers[0]);
+              }
+            ]}
           />
         </Page>
       </div>
@@ -58,7 +75,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setCarers: (carers) => dispatch(setCarers(carers))
+    setCarers: (carers) => dispatch(setCarers(carers)),
+    selectCarer: (position, carer) => dispatch(selectCarer(position, carer)),
+    resetState: () => dispatch(resetState()),
   };
 };
 
