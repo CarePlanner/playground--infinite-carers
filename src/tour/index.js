@@ -11,6 +11,7 @@ class Tour extends React.Component {
     this.state = {
       tour: [],
       metadata: {},
+      firstSectionNumber: -1,
       currentSectionNumber: -1,
       loading: true,
       formAnswers: {},
@@ -31,6 +32,7 @@ class Tour extends React.Component {
           currentSectionNumber: (!metadata.title && !metadata.description) ? 0 : -1,
           shouldShowScrollIndicator: null
         });
+        this.goToStep((!metadata.title && !metadata.description) ? 0 : -1);
       });
   }
 
@@ -49,47 +51,54 @@ class Tour extends React.Component {
     return currentSectionNumber === firstSectionNumber;
   }
 
+  isLastSection() {
+    const { currentSectionNumber, tour } = this.state;
+    return currentSectionNumber === tour.length - 1;
+  }
+
   previousStep() {
-    const { sectionActions, beginTourAction } = this.props;
-    const { currentSectionNumber, tour, firstSectionNumber } = this.state;
-    const currentSection = tour[currentSectionNumber];
-
-    if(!this.isFirstSection()) {
-      this.setState({
-        currentSectionNumber: currentSectionNumber - 1,
-        shouldShowScrollIndicator: null
-      });
-      if(beginTourAction && currentSectionNumber === firstSectionNumber + 1) {
-        beginTourAction(this);
-      }
-      if(sectionActions && sectionActions[currentSectionNumber - 1]) {
-        sectionActions[currentSectionNumber - 1](this);
-      }
-    } else {
-
-    }
+    const { currentSectionNumber } = this.state;
+    this.goToStep(currentSectionNumber - 1);
   }
 
   nextStep() {
-    const { sectionActions, finishTourAction } = this.props;
-    const { currentSectionNumber, tour } = this.state;
-    const currentSection = tour[currentSectionNumber];
-    const isLastSection = tour.length === currentSectionNumber + 1;
+    const { currentSectionNumber } = this.state;
+    this.goToStep(currentSectionNumber + 1);
+  }
 
-    if(!isLastSection) {
-      this.setState({
-        currentSectionNumber: currentSectionNumber + 1,
-        shouldShowScrollIndicator: null
-      });
-      if(finishTourAction && currentSectionNumber === tour.length - 2) {
+  goToStep(step) {
+    const { sectionActions, beginTourAction, finishTourAction } = this.props;
+    const { currentSectionNumber, tour, firstSectionNumber } = this.state;
+    const currentSection = tour[currentSectionNumber];
+
+    if(beginTourAction && step === firstSectionNumber) {
+      beginTourAction(this);
+    }
+    else if(step === tour.length) {
+      this.submitForm();
+      if(finishTourAction) {
         finishTourAction(this);
       }
-      if(sectionActions && sectionActions[currentSectionNumber + 1]) {
-        sectionActions[currentSectionNumber + 1](this);
-      }
-    } else {
-
     }
+    else if(sectionActions && sectionActions[step]) {
+      sectionActions[step](this);
+    }
+
+    this.setState({
+      currentSectionNumber: step,
+      shouldShowScrollIndicator: null
+    });
+  }
+
+  submitForm() {
+    const { formAnswers } = this.state;
+    axios.post(
+      'https://docs.google.com/forms/d/1YUBnHM5scM2CrJaH1RVh1FtIbLX7Hi1yNS0Owt-gyac/formResponse',
+      JSON.stringify(formAnswers),
+      {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      }
+    ).then((data) => console.log(data));
   }
 
   saveAnswer(key, value) {
@@ -104,7 +113,7 @@ class Tour extends React.Component {
 
   populateStringTemplate(value) {
     const self = this;
-    return value.replace(/\$\{(?<variable>[^}]+)\}/g, (a, b) => eval(`self.props.${b}`));
+    return value.replace(new RegExp('\\$\\{(?<variable>[^}]+)\\}','g'), (a, b) => eval(`self.props.${b}`));
   }
 
   generateUserInput(item) {
@@ -168,7 +177,7 @@ class Tour extends React.Component {
   }
 
   render() {
-    const { tour, metadata, loading, currentSectionNumber } = this.state;
+    const { tour, metadata, loading, currentSectionNumber, firstSectionNumber } = this.state;
     let { shouldShowScrollIndicator } = this.state;
 
     if(loading) {
@@ -186,6 +195,22 @@ class Tour extends React.Component {
           </div>)}
           <div style={styles.footer}>
             <a key={0} style={[styles.footerButton, styles.buttonPositive]} onClick={this.nextStep}>Begin</a>
+          </div>
+        </div>
+      );
+    }
+
+    if(currentSectionNumber === tour.length) {
+      return (
+        <div style={styles.container}>
+          {metadata.title && (<div style={styles.header}>
+            <h3 style={styles.headerTitle}>{metadata.title}</h3>
+            {metadata.description && (
+              <p style={styles.headerDescription}>Thank you for taking the time to complete the tasks and provide us with feedback - we really appreciate it! 👍</p>
+            )}
+          </div>)}
+          <div style={styles.footer}>
+            <a key={0} style={[styles.footerButton, styles.buttonNeutral, { marginRight: 15 }]} onClick={() => this.goToStep(firstSectionNumber)}>Start Again</a>
           </div>
         </div>
       );
